@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: privmsg.php,v 1.96.2.32 2003/06/12 12:49:01 psotfx Exp $
+ *   $Id: privmsg.php,v 1.96.2.36 2004/07/11 16:46:16 acydburn Exp $
  *
  *
  ***************************************************************************/

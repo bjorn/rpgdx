@@ -57,7 +57,7 @@ You can download RPGDX to any PDA (works on any PDA: Palm Pilot, Windows CE, Com
 <br />
 <h4>Contributors</h4>
 
-<p align="justify"><b>Bjørn Lindeijer</b> [<a href="mailto:b_lindeijer@hotmail.com">e-mail</a>]</p>
+<p align="justify"><b>Bjørn Lindeijer</b> [<a href="mailto:b.lindeijer@gmail.com">e-mail</a>]</p>
 
 <p align="justify">Programmer/webmaster of the current RPGDX, and owner of the rpgdx.net domain.</p>
 
