@@ -160,6 +160,9 @@ else if ($page == 'debug')
         GROUP BY user_id
         ORDER BY reads_count DESC");
 
+    doQuery("DELETE FROM phpbb_reads WHERE read_user_id = -1 OR 
+      read_time < ". (time() - (93*24*60*60)) );
+
     make_table("Amount of user reads stored", $result);
 }
 else if ($page == 'list')
