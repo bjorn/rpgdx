@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_user_ban.php,v 1.21.2.4 2003/03/31 06:56:30 acydburn Exp $
+ *   $Id: admin_user_ban.php,v 1.21.2.5 2004/03/25 15:57:20 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -277,7 +277,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 		{
 			if ( $user_list[$i] != -1 )
 			{
-				$where_sql .= ( ( $where_sql != '' ) ? ', ' : '' ) . $user_list[$i];
+				$where_sql .= ( ( $where_sql != '' ) ? ', ' : '' ) . intval($user_list[$i]);
 			}
 		}
 	}
@@ -290,7 +290,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 		{
 			if ( $ip_list[$i] != -1 )
 			{
-				$where_sql .= ( ( $where_sql != '' ) ? ', ' : '' ) . $ip_list[$i];
+				$where_sql .= ( ( $where_sql != '' ) ? ', ' : '' ) . str_replace("\'", "''", $ip_list[$i]);
 			}
 		}
 	}
@@ -303,7 +303,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 		{
 			if ( $email_list[$i] != -1 )
 			{
-				$where_sql .= ( ( $where_sql != '' ) ? ', ' : '' ) . $email_list[$i];
+				$where_sql .= ( ( $where_sql != '' ) ? ', ' : '' ) . str_replace("\'", "''", $email_list[$i]);
 			}
 		}
 	}

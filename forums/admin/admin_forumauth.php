@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_forumauth.php,v 1.23.2.4 2002/05/21 16:52:08 psotfx Exp $
+ *   $Id: admin_forumauth.php,v 1.23.2.5 2004/03/25 15:57:19 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -102,20 +102,23 @@ if( isset($HTTP_POST_VARS['submit']) )
 	{
 		if(isset($HTTP_POST_VARS['simpleauth']))
 		{
-			$simple_ary = $simple_auth_ary[$HTTP_POST_VARS['simpleauth']];
+			$simple_ary = $simple_auth_ary[intval($HTTP_POST_VARS['simpleauth'])];
 
 			for($i = 0; $i < count($simple_ary); $i++)
 			{
 				$sql .= ( ( $sql != '' ) ? ', ' : '' ) . $forum_auth_fields[$i] . ' = ' . $simple_ary[$i];
 			}
 
+			if (is_array($simple_ary))
+			{
 			$sql = "UPDATE " . FORUMS_TABLE . " SET $sql WHERE forum_id = $forum_id";
+		}
 		}
 		else
 		{
 			for($i = 0; $i < count($forum_auth_fields); $i++)
 			{
-				$value = $HTTP_POST_VARS[$forum_auth_fields[$i]];
+				$value = intval($HTTP_POST_VARS[$forum_auth_fields[$i]]);
 
 				if ( $forum_auth_fields[$i] == 'auth_vote' )
 				{

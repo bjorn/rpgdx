@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_users.php,v 1.57.2.25 2003/06/20 07:40:27 acydburn Exp $
+ *   $Id: admin_users.php,v 1.57.2.26 2004/03/25 15:57:20 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -47,6 +47,7 @@ $html_entities_replace = array('&lt;', '&gt;');
 if( isset( $HTTP_POST_VARS['mode'] ) || isset( $HTTP_GET_VARS['mode'] ) )
 {
 	$mode = ( isset( $HTTP_POST_VARS['mode']) ) ? $HTTP_POST_VARS['mode'] : $HTTP_GET_VARS['mode'];
+	$mode = htmlspecialchars($mode);
 }
 else
 {
@@ -838,7 +839,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 
 			if( isset($HTTP_POST_VARS['avatarcategory']) )
 			{
-				$category = $HTTP_POST_VARS['avatarcategory'];
+				$category = htmlspecialchars($HTTP_POST_VARS['avatarcategory']);
 			}
 			else
 			{

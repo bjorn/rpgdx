@@ -6,7 +6,7 @@
 *     copyright            : (C) 2001 The phpBB Group
 *     email                : support@phpbb.com
 *
-*     $Id: admin_smilies.php,v 1.22.2.12 2002/12/22 15:34:01 psotfx Exp $
+*     $Id: admin_smilies.php,v 1.22.2.13 2004/03/25 15:57:20 acydburn Exp $
 *
 ****************************************************************************/
 
@@ -57,6 +57,7 @@ require('./pagestart.' . $phpEx);
 if( isset($HTTP_POST_VARS['mode']) || isset($HTTP_GET_VARS['mode']) )
 {
 	$mode = ( isset($HTTP_POST_VARS['mode']) ) ? $HTTP_POST_VARS['mode'] : $HTTP_GET_VARS['mode'];
+	$mode = htmlspecialchars($mode);
 }
 else
 {
@@ -313,6 +314,7 @@ else if ( $mode != "" )
 			//
 
 			$smiley_id = ( !empty($HTTP_POST_VARS['id']) ) ? $HTTP_POST_VARS['id'] : $HTTP_GET_VARS['id'];
+			$smiley_id = intval($smiley_id);
 
 			$sql = "DELETE FROM " . SMILIES_TABLE . "
 				WHERE smilies_id = " . $smiley_id;
@@ -333,6 +335,7 @@ else if ( $mode != "" )
 			//
 
 			$smiley_id = ( !empty($HTTP_POST_VARS['id']) ) ? $HTTP_POST_VARS['id'] : $HTTP_GET_VARS['id'];
+			$smiley_id = intval($smiley_id);
 
 			$sql = "SELECT *
 				FROM " . SMILIES_TABLE . "

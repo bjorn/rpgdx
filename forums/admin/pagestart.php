@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: pagestart.php,v 1.1.2.6 2003/05/06 20:18:42 acydburn Exp $
+ *   $Id: pagestart.php,v 1.1.2.7 2004/03/24 14:43:31 psotfx Exp $
  *
  *
  ***************************************************************************/
@@ -56,7 +56,7 @@ if ($HTTP_GET_VARS['sid'] != $userdata['session_id'])
 	$url = preg_replace('/\?$/', '', $url);
 	$url .= ((strpos($url, '?')) ? '&' : '?') . 'sid=' . $userdata['session_id'];
 
-	redirect($url);
+	redirect("index.$phpEx?sid=" . $userdata['session_id']);
 }
 
 if (empty($no_page_header))

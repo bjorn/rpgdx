@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_forums.php,v 1.40.2.10 2003/01/05 02:36:00 psotfx Exp $
+ *   $Id: admin_forums.php,v 1.40.2.11 2004/03/25 15:57:19 acydburn Exp $
  *
  ***************************************************************************/
 
@@ -55,6 +55,7 @@ $forum_auth_ary = array(
 if( isset($HTTP_POST_VARS['mode']) || isset($HTTP_GET_VARS['mode']) )
 {
 	$mode = ( isset($HTTP_POST_VARS['mode']) ) ? $HTTP_POST_VARS['mode'] : $HTTP_GET_VARS['mode'];
+	$mode = htmlspecialchars($mode);
 }
 else
 {

@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_ug_auth.php,v 1.13.2.4 2003/05/17 17:32:19 acydburn Exp $
+ *   $Id: admin_ug_auth.php,v 1.13.2.5 2004/03/25 15:57:20 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -56,6 +56,8 @@ while( list($var, $param) = @each($params) )
 
 $user_id = intval($user_id);
 $group_id = intval($group_id);
+$adv = intval($adv);
+$mode = htmlspecialchars($mode);
 
 //
 // Start program - define vars
