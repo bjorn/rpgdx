@@ -28,6 +28,21 @@ TODO IN NO PARTICULAR ORDER
   * Add native articles stored in RPGDX database
     o Span multiple pages
     o Use bbcode for layout
+  * Possible structure
+     - Engines
+     - Articles
+       - Interviews
+       - Graphics
+       - ...
+     - Graphics
+       - Sprites
+       - Tiles
+       - ...
+     - Libraries
+       - Graphics
+       - Sound
+       - Network
+       - ...
 
 - Change reviews to comments, more focussed on rating
   * Add staff reviews

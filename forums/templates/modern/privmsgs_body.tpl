@@ -82,7 +82,7 @@
 	  <td class="row1" width="5%" align="center" valign="middle"><img src="{listrow.PRIVMSG_FOLDER_IMG}" width="19" height="18" alt="{listrow.L_PRIVMSG_FOLDER_ALT}" title="{listrow.L_PRIVMSG_FOLDER_ALT}" /></td>
 	  <td width="55%" valign="middle" class="row1"><span class="topictitle">&nbsp;<a href="{listrow.U_READ}" class="topictitle">{listrow.SUBJECT}</a></span></td>
 	  <td width="20%" valign="middle" align="center" class="row1"><span class="name">&nbsp;<a href="{listrow.U_FROM_USER_PROFILE}" class="name">{listrow.FROM}</a></span></td>
-	  <td width="15%" align="center" valign="middle" class="row1"><span class="postdetails">{listrow.DATE}</span></td>
+	  <td width="15%" align="center" valign="middle" class="row1" nowrap="nowrap"><span class="postdetails">{listrow.DATE}</span></td>
 	  <td width="5%" align="center" valign="middle" class="row1"><span class="postdetails"> 
 		<input type="checkbox" name="mark[]2" value="{listrow.S_MARK_ID}" />
 		</span></td>

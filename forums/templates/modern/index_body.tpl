@@ -5,7 +5,7 @@
 	<!-- BEGIN switch_user_logged_in -->
 	{LAST_VISIT_DATE}<br />
 	<!-- END switch_user_logged_in -->
-	{CURRENT_TIME}<br /><br /></span></td>
+	{CURRENT_TIME}<br /></span></td>
 	<td align=right valign=top class="gensmall">
 		<!-- BEGIN switch_user_logged_in -->
 		<a href="{U_SEARCH_NEW}" class="gensmall">{L_SEARCH_NEW}</a><br /><a href="{U_SEARCH_SELF}" class="gensmall">{L_SEARCH_SELF}</a><br />
