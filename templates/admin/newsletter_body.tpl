@@ -11,25 +11,25 @@
   TABLE OF CONTENTS
 ------------------------------------------------------------------------------
 
-- Forum highlightes and game news
-- Upcoming contest: [contest name]
-- New official reviews
-  * [game name]
-  * ...
-- Interview with [name]
-- Last month statistics
-- Unsubscribe information
+ - Forum highlightes and game news
+ - Upcoming contest: [contest name]
+ - New official reviews
+    * [game name]
+    * ...
+ - Interview with [name]
+ - Last month statistics
+ - Unsubscribe information
 
 
 ------------------------------------------------------------------------------
   FORUM HIGHLIGHTS AND GAME NEWS
 ------------------------------------------------------------------------------
 
-* Newsitem 1
+ * Newsitem 1
 
-* Newsitem 2
+ * Newsitem 2
 
-* ...
+ * ...
 
 
 ------------------------------------------------------------------------------
@@ -61,10 +61,20 @@
   RPGDX LAST MONTH STATISTICS
 ------------------------------------------------------------------------------
 
-New topics: {NEW_TOPICS}
-New posts: {NEW_POSTS}
-New members: {NEW_MEMBERS}
-New projects: {NEW_PROJECTS}
+ o New topics: {NEW_TOPICS}
+ o New posts: {NEW_POSTS}
+ o New members: {NEW_MEMBERS}
+ o New projects: {NEW_PROJECTS}
+
+
+------------------------------------------------------------------------------
+  YOUR DETAILS (not sure if this section is feasable)
+------------------------------------------------------------------------------
+
+ o Your username is ... 
+ o You have N posts
+ o You registered on DD-MM-YYYY
+ o You last visited our site on DD-MM-YYYY
 
 
 ------------------------------------------------------------------------------
