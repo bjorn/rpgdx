@@ -74,7 +74,9 @@
                 <td class="user_link"><a href="{U_FAQ}">{L_FAQ}</a></td>
                 <td class="user_link"><a href="{U_SEARCH}">{L_SEARCH}</a></td>
                 <td class="user_link"><a href="{U_MEMBERLIST}">{L_MEMBERLIST}</a></td>
+                <!--
                 <td class="user_link"><a href="{U_GROUP_CP}">{L_USERGROUPS}</a></td>
+                -->
                 <!-- BEGIN switch_user_logged_in -->
                 <td class="user_link"><a href="{U_PROFILE}">{L_PROFILE}</a></td>
                 <td class="user_link"><a href="{U_PRIVATEMSGS}">{PRIVATE_MESSAGE_INFO}</a></td>
