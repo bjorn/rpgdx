@@ -789,9 +789,67 @@ function redirect($url)
 }
 
 
+/*
+  FUNCTIONS ADDED FOR RPGDX
+*/
+
+
+// A universal function for creating a link to somebodies profile
+
 function viewprofile_url($user_id)
 {
     return append_sid("http://rpgdx.net/profile.php?user_id=$user_id");
+}
+
+
+// Set the last read time of a forum topic to given time
+
+function set_last_read($topic_id, $time)
+{
+    global $userdata;
+
+    // Delete any previous last read data
+	$sql =
+        "DELETE FROM ". READS_TABLE ." 
+        WHERE read_topic_id = $topic_id AND read_user_id = ". $userdata['user_id'];
+        
+	if ( !($db->sql_query($sql)) ) {
+		message_die(
+            GENERAL_ERROR,
+            'Could not delete previous read status', '', __LINE__, __FILE__, $sql);
+	}
+    
+    // Insert the new last read data
+	$sql =
+		"INSERT INTO ". READS_TABLE ." (read_topic_id, read_user_id, read_time) VALUES 
+		($topic_id, ". $userdata['user_id'] .", ". $time .")";
+        
+	if ( !($db->sql_query($sql)) ) {
+		message_die(
+            GENERAL_ERROR,
+            'Could not insert read status', '', __LINE__, __FILE__, $sql);
+	}
+}
+
+function get_last_read($topic_id)
+{
+    global $userdata;
+
+    $sql =
+        "SELECT r.read_time FROM ". READS_TABLE ." r 
+        WHERE r.read_topic_id = $topic_id AND r.read_user_id = ". $userdata['user_id'];
+        
+    if (!($result = $db->sql_query($sql))) {
+        message_die(
+            GENERAL_ERROR,
+            'Could not retrieve thread last read time', '', __LINE__, __FILE__, $sql);
+    }
+        
+    if ($row = $db->sql_fetchrow($result)) {
+        return max($row['read_time'], $userdata['user_lastread']);
+    } else {
+        return $userdata['user_lastread'];
+    }
 }
 
 ?>

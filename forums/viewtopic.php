@@ -577,35 +577,18 @@ if ( $userdata['session_logged_in'] )
 	$current_time = time();
 
 	// Obtain last time this topic was read
-	$sql = "SELECT read_time FROM ". READS_TABLE ." WHERE read_topic_id = $topic_id AND read_user_id = ". $userdata['user_id'];
-	if ( !($result = $db->sql_query($sql)) ) {
-		message_die(GENERAL_ERROR, 'Could not retrieve thread last read time', '', __LINE__, __FILE__, $sql);
-	}
-	
-	if ($row = $db->sql_fetchrow($result)) {
-		$topic_last_read = max($row['read_time'], $userdata['user_lastread']);
-	} else {
-		$topic_last_read = $userdata['user_lastread'];
-	}
+	$topic_last_read = get_last_read($topic_id);
 
 	// Update the database about the current read time
-	$sql = "DELETE FROM ". READS_TABLE ." WHERE read_topic_id = $topic_id AND read_user_id = ". $userdata['user_id'];
-	if ( !($db->sql_query($sql)) ) {
-		message_die(GENERAL_ERROR, 'Could not delete previous read status', '', __LINE__, __FILE__, $sql);
-	}
-	$sql =
-		"INSERT INTO ". READS_TABLE ." (read_topic_id, read_user_id, read_time) VALUES ".
-		"($topic_id, ". $userdata['user_id'] .", ". $current_time .")";
-	if ( !($db->sql_query($sql)) ) {
-		message_die(GENERAL_ERROR, 'Could not insert read status', '', __LINE__, __FILE__, $sql);
-	}
+    set_last_read($topic_id, $current_time);
 
 	// Clean up any reads that have become unneccesary now
-	// Optain the first unread post time
+	// Optain the first unread post of all forums
 	$sql =
 		"SELECT p.post_time ".
 		"FROM ". POSTS_TABLE . " p ".
-			"LEFT JOIN ". READS_TABLE ." r ON r.read_topic_id = p.topic_id AND r.read_user_id = ". $userdata['user_id'] ." ".
+			"LEFT JOIN ". READS_TABLE ." r "
+            "ON r.read_topic_id = p.topic_id AND r.read_user_id = ". $userdata['user_id'] ." ".
 		"WHERE p.post_time >= ". $userdata['user_lastread'] ." ".
 			"AND IF(r.read_time, p.post_time >= r.read_time, 1) ".
 		"ORDER BY p.post_time ASC ".
