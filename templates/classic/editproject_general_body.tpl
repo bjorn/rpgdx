@@ -14,8 +14,8 @@ One or more errors have occured:<br />
 {form.HIDDEN}
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
-    <td class="th" width="0">Game name:</td>
-    <td class="td" width="100%"><input type="text" name="{form.NAME_FIELD}" value="{GAME_NAME}" class="formInput"></td>
+    <td class="th" width="0">Project name:</td>
+    <td class="td" width="100%"><input type="text" name="{form.NAME_FIELD}" value="{PROJECT_NAME}" class="formInput"></td>
   </tr>
   <tr><td colspan="2"><img src="images/pixel.gif" width="1" height="10" alt="" /></td></tr>
   <tr>
@@ -27,7 +27,7 @@ One or more errors have occured:<br />
       project)</i>
       </span>
     </td>
-    <td class="td"><textarea rows="5" name="{form.PEOPLE_FIELD}" cols="30" class="formInput">{GAME_PEOPLE}</textarea></td>
+    <td class="td"><textarea rows="5" name="{form.PEOPLE_FIELD}" cols="30" class="formInput">{PROJECT_PEOPLE}</textarea></td>
   </tr>
   <tr><td colspan="2"><img src="images/pixel.gif" width="1" height="10" /></td></tr>
   <tr>
@@ -54,6 +54,12 @@ One or more errors have occured:<br />
       </select>
     </td>
   </tr>
+  <tr>
+    <td valign="top" class="th">Reviewing:</td>
+    <td class="td">
+      <input type="checkbox" name="{form.ALLOW_REVIEW_FIELD}" value="1" {PROJECT_ALLOW_REVIEW}> Allow reviewing
+    </td>
+  </tr>
   <tr><td colspan="2"><img src="images/pixel.gif" width="1" height="10" /></td></tr>
   <tr>
     <td valign="top" class="th">
@@ -62,7 +68,7 @@ One or more errors have occured:<br />
       ignores newlines
       </div>
     </td>
-    <td class="td"><textarea rows="3" name="{form.BRIEF_FIELD}" cols="30" class="formInput">{GAME_BRIEF}</textarea></td>
+    <td class="td"><textarea rows="3" name="{form.BRIEF_FIELD}" cols="30" class="formInput">{PROJECT_BRIEF}</textarea></td>
   </tr>
   <tr><td colspan="2"><img src="images/pixel.gif" width="1" height="10" /></td></tr>
   <tr>
@@ -72,16 +78,16 @@ One or more errors have occured:<br />
       {BBCODE_ON}
       </div>
     </td>
-    <td class="td"><textarea rows="6" name="{form.LENGTHY_FIELD}" cols="30" class="formInput">{GAME_LENGTHY}</textarea></td>
+    <td class="td"><textarea rows="6" name="{form.LENGTHY_FIELD}" cols="30" class="formInput">{PROJECT_LENGTHY}</textarea></td>
   </tr>
   <tr><td colspan="2"><img src="images/pixel.gif" width="1" height="10" /></td></tr>
   <tr>
-    <td valign="top" class="th">Game webpage:</td>
-    <td class="td"><input type="text" name="{form.URL_FIELD}" class="formInput" value="{GAME_URL}"></td>
+    <td valign="top" class="th">Project webpage:</td>
+    <td class="td"><input type="text" name="{form.URL_FIELD}" class="formInput" value="{PROJECT_URL}"></td>
   </tr>
   <tr>
     <td valign="top" class="th">Download URL:</td>
-    <td class="td"><input type="text" name="{form.DOWNLOAD_FIELD}" class="formInput" value="{GAME_DOWNLOAD}"></td>
+    <td class="td"><input type="text" name="{form.DOWNLOAD_FIELD}" class="formInput" value="{PROJECT_DOWNLOAD}"></td>
   </tr>
 
   <!-- BEGIN edit -->
@@ -106,7 +112,7 @@ One or more errors have occured:<br />
 
 <!-- BEGIN remove -->
 <p align="center">
-<b>Are you sure you want to remove the game "{GAME_NAME}" from RPGDX?</b><br />
+<b>Are you sure you want to remove the project "{PROJECT_NAME}" from RPGDX?</b><br />
 [<a href="{remove.YES_LINK}">yes</a>] [<a href="{remove.NO_LINK}">no</a>]
 </p>
 <!-- END remove -->

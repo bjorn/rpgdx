@@ -24,12 +24,12 @@ $project_name = $row->project_name;
 //$project_icon_file = $row->project_icon_file;
 
 $template->assign_vars(array(
-	'EDIT_GENERAL_URL'             => 'editproject_general.php?action=edit&project_id='. $project_id,
+	'EDIT_GENERAL_URL'             => append_sid('editproject_general.php?action=edit&project_id='. $project_id),
 	'SCREENSHOT_UPLOAD_TARGET'     => 'submit_screenshots.php?action=add&project_id='. $project_id,
 	'SCREENSHOT_REMOVE_TARGET'     => 'submit_screenshots.php?action=remove&project_id='. $project_id,
 	'ICON_UPLOAD_TARGET'           => 'submit_icon.php?project_id='. $project_id,
 	'ICON_REMOVE_TARGET'           => 'submit_icon.php?project_id='. $project_id,
-	'PROJECT_PAGE_URL'             => 'showgame.php?project_id='. $project_id,
+	'PROJECT_PAGE_URL'             => append_sid('showgame.php?project_id='. $project_id),
 	
 	'PROJECT_ID_FIELD'             => 'project_id',
 	'SCREENSHOT_FILE_FIELD'        => 'uploaded_screenshot',
@@ -55,7 +55,7 @@ if (mysql_num_rows($result) > 0)
 	while ($row = mysql_fetch_object($result))
 	{
 		$url = $row->screenshot_url;
-		$size = getimagesize($url);
+		$size = @getimagesize($url);
 
 		$template->assign_block_vars('screenshots.shot', array(
 			'URL'         => $url.'.thumb.jpg',
