@@ -58,6 +58,7 @@ $mark_list = ( !empty($HTTP_POST_VARS['mark']) ) ? $HTTP_POST_VARS['mark'] : 0;
 if ( isset($HTTP_POST_VARS['folder']) || isset($HTTP_GET_VARS['folder']) )
 {
 	$folder = ( isset($HTTP_POST_VARS['folder']) ) ? $HTTP_POST_VARS['folder'] : $HTTP_GET_VARS['folder'];
+    $folder = htmlspecialchars($folder);
 
 	if ( $folder != 'inbox' && $folder != 'outbox' && $folder != 'sentbox' && $folder != 'savebox' )
 	{
@@ -102,6 +103,7 @@ if ( $cancel )
 if ( !empty($HTTP_POST_VARS['mode']) || !empty($HTTP_GET_VARS['mode']) )
 {
 	$mode = ( !empty($HTTP_POST_VARS['mode']) ) ? $HTTP_POST_VARS['mode'] : $HTTP_GET_VARS['mode'];
+    $mode = htmlspecialchars($mode);
 }
 else
 {
