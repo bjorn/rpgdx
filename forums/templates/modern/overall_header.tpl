@@ -40,7 +40,7 @@
             <a href="{U_RPGDX}"><img src="templates/modern/images/rpgdx_logo.png" style="margin: 0px 0px 0px 4px;" alt="RPGDX" title="" border="0" /></a><img src="templates/modern/images/rpgdx_logotext.png" alt="The center of Indie-RPG gaming" title="" style="margin: 0px 0px 3px 8px;" />
           </td>
           <td style="text-align: right;">
-            <img src="templates/modern/images/chloris.png" />
+          <!-- Optional image here -->
           </td>
         </tr>
       </table>

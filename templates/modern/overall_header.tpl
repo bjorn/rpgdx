@@ -24,7 +24,9 @@
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
           <td valign="bottom" style="padding: 3px;"><img src="{TEMPL_DIR}images/rpgdx_logotext.png" alt="The center of Indie-RPG gaming" title="" /></td>
-          <td style="text-align: right;"><img src="{TEMPL_DIR}images/chloris.png" /></td>
+          <td style="text-align: right;">
+          <!-- Optional image here -->
+          </td>
         </tr>
       </table>
     </td>
