@@ -1,0 +1,127 @@
+/* Content classes */
+
+BODY {
+	background-color: rgb(102,102,102);
+	margin: 0px;
+	padding: 5px;
+}
+
+BODY, TD, TH, TEXTAREA, INPUT {
+	font-family: Verdana, Sans-Serif;
+	font-size: 11px;
+}
+
+H2 {
+	margin: 0px;
+	font-size: 20px;
+	font-weight: bold;
+}
+H3 {
+	font-size: 17px;
+	font-weight: bold;
+}
+H4 {
+	font-size: 15px;
+	margin: 0px; padding: 0px;
+	margin-bottom: 10px;
+}
+
+
+/* Anchor classes */
+
+A:link    {color: rgb(128,  0,  0); text-decoration: none;}
+A:visited {color: rgb(128,  0,  0); text-decoration: none;}
+A:hover   {color: rgb(255,  0,  0); text-decoration: none;}
+
+
+/* Form classes */
+
+.formInput {
+	background-color: rgb(200,200,200);
+	width: 100%;
+	border: 1px solid rgb(128,128,128);
+	padding-left: 2px;
+}
+
+
+/* Table classes */
+
+TD.th {
+	background-color: rgb(200,128,128);
+	padding: 2px 4px 2px 4px;
+	white-space: nowrap;
+}
+TD.td {
+	padding: 1px 4px 1px 4px;
+	border-bottom: 1px solid rgb(200,128,128);
+}
+
+
+/* Shadow classes */
+
+.shadow {
+	background-color: rgb(75,75,75);
+}
+
+.lift_block {
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+	top: -3px;
+	left: -3px;
+}
+
+
+/* Menu classes */
+
+DIV.menu_block {
+	width: 150px;
+}
+
+DIV.menu {
+	border: 1px solid rgb(0,0,0);
+	background-color: rgb(200,200,200);
+	padding: 5px;
+}
+
+DIV.menu_title {
+	background-color: rgb(255,0,0);
+	border: 1px solid rgb(0,0,0);
+	padding: 2px;
+	font-weight: bold;
+	text-align: center;
+}
+
+DIV.menu_item {
+	border-bottom: 1px solid rgb(128,128,128);
+	padding: 2px 2px 2px 4px;
+}
+
+
+/* Main body classes */
+
+DIV.main_block {
+}
+
+DIV.main {
+	padding: 5px;
+	border: 1px solid rgb(0,0,0);
+	background-color: rgb(200,200,200);
+}
+
+
+/* Misc classes */
+
+DIV.bottom_info {
+	margin-top: 20px;
+	text-align: center;
+	font-size: 10px;
+	color: rgb(255,255,255);
+}
+
+DIV.body {
+	border: 1px solid rgb(0,0,0);
+	background-color: rgb(150,150,150);
+	margin: 10px;
+	padding: 10px;
+}

@@ -1,0 +1,245 @@
+BODY {
+	background-color: rgb(66,66,115);
+	margin: 0px;
+	padding: 0px;
+}
+
+BODY, TD, TH, TEXTAREA, INPUT {
+	font-family: Sans-Serif;
+	font-size: 13px;
+}
+
+H2 {
+	font-size: 20px;
+	font-weight: bold;
+}
+H3 {
+	font-size: 17px;
+	font-weight: bold;
+}
+H4 {
+	font-size: 15px;
+	margin: 0px; padding: 0px;
+	margin-bottom: 10px;
+}
+
+A:link   {color: rgb(255,255,255); text-decoration: none;}
+A:visited{color: rgb(255,255,255); text-decoration: none;}
+A:hover  {color: rgb(200,200,255); text-decoration: none;}
+
+/* Form stuff */
+
+TD.formNameCell {
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.formInput {
+	background-color: rgb(180,180,212);
+	width: 100%;
+	border-top: 1px solid rgb(0,0,0);
+	border-left: 1px solid rgb(0,0,0);
+	border-right: 1px solid rgb(200,200,225);
+	border-bottom: 1px solid rgb(200,200,225);
+	padding-left: 2px;
+}
+
+.formListBox {
+	background-color: rgb(180,180,212);
+	border-top: 1px solid rgb(0,0,0);
+	border-left: 1px solid rgb(0,0,0);
+	border-right: 1px solid rgb(200,200,225);
+	border-bottom: 1px solid rgb(200,200,225);
+	padding-left: 2px;
+}
+
+.formButton {
+	background-color: rgb(80,80,130);
+	font-size: 11px;
+	border-top: 1px solid rgb(200,200,225);
+	border-left: 1px solid rgb(200,200,225);
+	border-right: 1px solid rgb(0,0,0);
+	border-bottom: 1px solid rgb(0,0,0);
+	color: rgb(165,167,191);
+	margin: 1px;
+}
+
+.fileFormInput {
+	background-color: rgb(180,180,212);
+	border-top: 1px solid rgb(0,0,0);
+	border-left: 1px solid rgb(0,0,0);
+	border-right: 1px solid rgb(200,200,225);
+	border-bottom: 1px solid rgb(200,200,225);
+}
+
+
+/* Remarks (smaller and cursed) */
+
+.remark {
+	font-weight: normal; font-size: 85%;
+	font-style: italic;
+}
+
+
+TABLE.sidebarTable {
+	width: 123px;
+}
+
+TD.sidebarTitle {
+	color: rgb(0,0,0);
+	text-align: center; white-space: nowrap;
+	font-weight: bold;
+	height: 42px;
+}
+
+TD.sidebarSubtitle {
+	background-image: url("images/block_subtitle.gif");
+	color: rgb(156,156,182);
+	text-align: center; white-space: nowrap;
+	font-weight: bold;
+	height: 28px;
+}
+
+TD.sidebarBottom {
+	background-image: url("images/block_bottom.gif");
+	background-repeat: no-repeat;
+	height: 20px; font-size: 0px;
+}
+
+TD.sidebarItem {
+	text-align: center;
+	background-image: url("images/block_back.gif");
+	padding: 2px;
+	padding-left: 8px;
+	padding-right: 6px;
+}
+
+
+/* Styles for box layout */
+
+.boxHead {
+	background-color: rgb(80,80,130);
+	padding: 2px 4px 2px 4px;
+	white-space: nowrap;
+	font-weight: bold;
+	text-align: center;
+}
+
+.boxBody {
+	background-color: rgb(66,66,115);
+	padding: 8px;
+	border-color: rgb(80,80,130);
+	border-style: solid;
+	border-width: 0px;
+/*	border: 1px solid 
+	border-top-width: 0px;*/
+}
+
+
+/* Rating bar styles */
+
+.barBackground {
+	width: 102px;
+	background-color: rgb(66,66,115);
+	border: 1px solid;
+	border-top-color: rgb(36,36,75);
+	border-left-color: rgb(36,36,75);
+	border-right-color: rgb(115,115,175);
+	border-bottom-color: rgb(115,115,175);
+	text-align: left;
+}
+
+.barForeground {
+	background-color: rgb(88,66,115);
+	border: 1px solid;
+	border-top-color: rgb(151,127,183);
+	border-left-color: rgb(151,127,183);
+	border-right-color: rgb(66,46,80);
+	border-bottom-color: rgb(66,46,80);
+	width: 100px;
+	font-size: 10px;
+}
+
+
+.smallDate {
+	font-size: 10px;
+	color: rgb(50,50,100);
+	text-align: center;
+}
+
+.newsHeader {
+	background-color: rgb(80,80,130);
+	padding: 2px 5px 2px 5px;
+}
+.newsMessage {
+	background-color: rgb(66,66,115);
+	padding: 2px 5px 2px 5px;
+}
+
+TD.td {
+	background-color: rgb(66,66,115);
+	padding: 1px 4px 1px 4px;
+	border-bottom: 1px solid rgb(80,80,130);
+}
+TD.th {
+	background-color: rgb(80,80,130);
+	padding: 2px 4px 2px 4px;
+	white-space: nowrap;
+}
+
+TD.tableCell {
+	background-color: rgb(66,66,115);
+	padding: 1px 4px 1px 4px;
+	border-bottom: 1px solid rgb(80,80,130);
+}
+TD.tableHeader {
+	background-color: rgb(80,80,130);
+	padding: 2px 4px 2px 4px;
+	white-space: nowrap;
+}
+
+.copyright {
+	text-align: center;
+}
+
+.screenshots {
+	margin: 10px 3px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid rgb(80,80,130);
+}
+
+.screenshot {
+	border: 3px solid rgb(56,56,97);
+	padding: 0px;
+	margin: 0px;
+}
+
+.description {
+	margin: 10px 3px 0px 3px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid rgb(80,80,130);
+}
+
+
+
+
+/* bbcode quote & code blocks */
+.code {
+	font-family: Courier, 'Courier New', sans-serif; font-size: 11px;
+	background-color: rgb(60, 60, 100);
+	border: 1px solid rgb(50,50,80);
+}
+
+.quote {
+	font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px;
+	background-color: rgb(60, 60, 100);
+	border: 1px solid rgb(50,50,80);
+}
+
+/* bbcode general text */
+.gen { font-size: 12px; }
+.genmed { font-size: 11px; }
+.gensmall { font-size: 10px; }
+
+/* other things from phpbb2 */
+th.thHead,td.catHead { background-color: rgb(80,80,130); }
