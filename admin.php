@@ -2,17 +2,45 @@
 $override_theme = 'admin';
 include("./includes/main.php");
 
+
+function make_table($title, $result)
+{
+    global $template;
+    
+    $template->assign_block_vars('table', array('TITLE' => $title));
+    $row = mysql_fetch_assoc($result);
+    if ($row) {
+        $template->assign_block_vars('table.header', array());
+        foreach ($row as $key => $col_value) {
+            $template->assign_block_vars(
+                'table.header.column', array('TITLE' => strtoupper($key)));
+        }
+    }
+
+    while ($row) {
+        $template->assign_block_vars('table.row', array());
+        foreach ($row as $key => $col_value) {
+            $template->assign_block_vars(
+                'table.row.cell', array('VALUE' => $col_value));
+        }
+        $row = mysql_fetch_assoc($result);
+    }
+}
+
+
 $template->assign_vars(array(
-	'U_RPGDX'       => append_sid("index.php"),
-	'U_FORUMS'      => append_sid("http://forums.rpgdx.net/"),
-	'U_LOG'         => append_sid("admin.php?page=log"),
-	'U_STATS'       => append_sid("admin.php?page=stats"),
-	'U_PROJECTS'    => append_sid("admin.php?page=list&class=project"),
-	'U_ARTICLES'    => append_sid("admin.php?page=list&class=article"),
-	'U_REVIEWS'     => append_sid("admin.php?page=list&class=review"),
-	'U_USERS'       => append_sid("admin.php?page=list&class=member"),
-    'U_NEWSLETTER'  => append_sid("admin.php?page=newsletter"))
+    'U_RPGDX'       => append_sid("index.php"),
+    'U_FORUMS'      => append_sid("http://forums.rpgdx.net/"),
+    'U_LOG'         => append_sid("admin.php?page=log"),
+    'U_STATS'       => append_sid("admin.php?page=stats"),
+    'U_PROJECTS'    => append_sid("admin.php?page=list&class=project"),
+    'U_ARTICLES'    => append_sid("admin.php?page=list&class=article"),
+    'U_REVIEWS'     => append_sid("admin.php?page=list&class=review"),
+    'U_USERS'       => append_sid("admin.php?page=list&class=member"),
+    'U_NEWSLETTER'  => append_sid("admin.php?page=newsletter"),
+    'U_DEBUG'       => append_sid("admin.php?page=debug"))
 );
+
 
 if (!($userdata['session_logged_in'] && $userdata['user_level'] == 1)) {
 	placeHeader(array(array("Admin section")));
@@ -112,6 +140,27 @@ else if ($page == 'newsletter')
         'NEW_PROJECTS' => $new_projects,
         'NEW_MEMBERS' => $new_members
     ));
+}
+else if ($page == 'debug')
+{
+	$subsection = "Information";
+	$subpage = "Debug";
+    
+    $template->set_filenames(array(
+        'body' => 'debug_body.tpl'
+    ));
+
+    $result = doQuery(
+        "SELECT user_id, username,
+            MIN(FROM_UNIXTIME(read_time)) AS min_read_time,
+            FROM_UNIXTIME(user_lastread) AS user_lastread,
+            COUNT(user_id) AS reads_count
+        FROM phpbb_reads
+        LEFT JOIN phpbb_users ON read_user_id = user_id
+        GROUP BY user_id
+        ORDER BY reads_count DESC");
+
+    make_table("Amount of user reads stored", $result);
 }
 else if ($page == 'list')
 {

@@ -32,6 +32,7 @@
       <div class="menu_item"><a href="{U_LOG}">Log</a></div>
       <div class="menu_item"><a href="{U_STATS}">Statistics</a></div>
       <div class="menu_item"><a href="{U_NEWSLETTER}">Newsletter</a></div>
+      <div class="menu_item"><a href="{U_DEBUG}">Debug</a></div>
       <br />
 
       <div class="menu_title">Administration</div>
