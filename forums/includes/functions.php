@@ -806,7 +806,7 @@ function viewprofile_url($user_id)
 
 function set_last_read($topic_id, $time)
 {
-    global $userdata;
+    global $userdata, $db;
 
     // Delete any previous last read data
 	$sql =
@@ -833,7 +833,7 @@ function set_last_read($topic_id, $time)
 
 function get_last_read($topic_id)
 {
-    global $userdata;
+    global $userdata, $db;
 
     $sql =
         "SELECT r.read_time FROM ". READS_TABLE ." r 

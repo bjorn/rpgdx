@@ -58,4 +58,4 @@ TODO IN NO PARTICULAR ORDER
   * Fix new post indication in search.php (maybe only searching for author)
   * Add new post count for forums/forum/thread indication
   * Take pages into account when updating last read date
-  * Fix bug causing entries not to be removed
+  * Remove entries older than 1 month

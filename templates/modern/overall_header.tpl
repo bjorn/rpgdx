@@ -17,16 +17,17 @@
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
-    <td width="0" valign="top" colspan="1" class="menu_background">
+    <td width="0" valign="top" colspan="1" class="menu_background" style="text-align: center;">
+      <a href="http://www.rpgdx.net/"><img src="{TEMPL_DIR}images/rpgdx_logo.png" style="margin: 0px;" alt="RPGDX" title="" border="0" /></a>
+    </td>
+    <td width="100%" valign="bottom" colspan="3">
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
-          <td align="center">
-            <a href="http://www.rpgdx.net/"><img src="{TEMPL_DIR}images/rpgdx_logo.png" style="margin: 0px;" alt="RPGDX" title="" border="0" /></a>
-          </td>
+          <td valign="bottom" style="padding: 3px;"><img src="{TEMPL_DIR}images/rpgdx_logotext.png" alt="The center of Indie-RPG gaming" title="" /></td>
+          <td style="text-align: right;"><img src="{TEMPL_DIR}images/chloris.png" /></td>
         </tr>
       </table>
     </td>
-    <td width="100%" valign="bottom" colspan="3" style="padding: 3px;"><img src="{TEMPL_DIR}images/rpgdx_logotext.png" alt="The center of Indie-RPG gaming" title="" /></td>
   </tr>
   <tr>
     <td colspan="4">

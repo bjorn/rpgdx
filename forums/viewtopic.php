@@ -584,15 +584,15 @@ if ( $userdata['session_logged_in'] )
 
 	// Clean up any reads that have become unneccesary now
 	// Optain the first unread post of all forums
-	$sql =
-		"SELECT p.post_time ".
-		"FROM ". POSTS_TABLE . " p ".
-			"LEFT JOIN ". READS_TABLE ." r "
-            "ON r.read_topic_id = p.topic_id AND r.read_user_id = ". $userdata['user_id'] ." ".
-		"WHERE p.post_time >= ". $userdata['user_lastread'] ." ".
-			"AND IF(r.read_time, p.post_time >= r.read_time, 1) ".
-		"ORDER BY p.post_time ASC ".
-		"LIMIT 1";
+	$sql = "
+		SELECT p.post_time 
+		FROM ". POSTS_TABLE . " p 
+			LEFT JOIN ". READS_TABLE ." r 
+            ON r.read_topic_id = p.topic_id AND r.read_user_id = ". $userdata['user_id'] ." 
+		WHERE p.post_time >= ". $userdata['user_lastread'] ." 
+			AND IF(r.read_time, p.post_time >= r.read_time, 1) 
+		ORDER BY p.post_time ASC 
+		LIMIT 1";
 	if ( !($result = $db->sql_query($sql)) ) {
 		message_die(GENERAL_ERROR, 'Could not obtain time of oldest new post', '', __LINE__, __FILE__, $sql);
 	}
@@ -605,7 +605,9 @@ if ( $userdata['session_logged_in'] )
 			message_die(GENERAL_ERROR, 'Could not update user_lastread variable to time of oldest new post', '', __LINE__, __FILE__, $sql);
 		}
 		// Delete any reads older than or equal to user_lastread
-		$sql = "DELETE FROM ". READS_TABLE ." WHERE read_time <= ". $oldest_new_post_time ." AND read_user_id = ". $userdata['user_id'];
+		$sql = "DELETE FROM ". READS_TABLE ."
+            WHERE (read_time <= ". $oldest_new_post_time ." 
+            AND read_user_id = ". $userdata['user_id'] .")";
 		if ( !($result = $db->sql_query($sql)) ) {
 			message_die(GENERAL_ERROR, 'Could not delete all reads older than user_lastread', '', __LINE__, __FILE__, $sql);
 		}

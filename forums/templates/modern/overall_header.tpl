@@ -33,8 +33,17 @@
 <a name="top"></a>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
-    <td width="0" valign="top" colspan="1">
-      <a href="{U_RPGDX}"><img src="templates/modern/images/rpgdx_logo.png" style="margin: 0px 0px 0px 4px;" alt="RPGDX" title="" border="0" /></a><img src="templates/modern/images/rpgdx_logotext.png" alt="The center of Indie-RPG gaming" title="" style="margin: 0px 0px 3px 8px;" />
+    <td width="0" valign="top">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td>
+            <a href="{U_RPGDX}"><img src="templates/modern/images/rpgdx_logo.png" style="margin: 0px 0px 0px 4px;" alt="RPGDX" title="" border="0" /></a><img src="templates/modern/images/rpgdx_logotext.png" alt="The center of Indie-RPG gaming" title="" style="margin: 0px 0px 3px 8px;" />
+          </td>
+          <td style="text-align: right;">
+            <img src="templates/modern/images/chloris.png" />
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
   <tr>
