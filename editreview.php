@@ -17,18 +17,23 @@ if (isset($action) && $action != 'add') {
 	}
 }
 
-if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "add")) {
+if (!isset($action) || ($action != "edit" && $action != "remove"
+    && $action != "add")) {
 	abort_with_error('No valid action specified.');
 }
 
-if ($action == 'add' && !($project_id > 0)) {
-	abort_with_error('No valid game to review specified.');
+if ($action == 'add') {
+  if (!($project_id > 0)) {
+    abort_with_error('No valid game to review specified.');
+  }
 }
 
 
 if (isset($project_id) && $project_id > 0) {
 	// Extract game information
-	$game = mysql_fetch_object(doQuery("SELECT project_name, project_allow_review FROM ". PROJECTS_TABLE ." WHERE project_id=$project_id"));
+	$game = mysql_fetch_object(doQuery(
+    "SELECT project_name, project_allow_review FROM ". PROJECTS_TABLE ." ".
+    "WHERE project_id=$project_id"));
 
 	if (!$game) {
 		abort_with_error('No valid game to review specified.');
@@ -42,12 +47,13 @@ if (isset($project_id) && $project_id > 0) {
 
 if ($action == "remove" && isset($confirmed) && $review_id > 0 && strlen($error) == 0)
 {
-	// DELETE game from database
+	// DELETE review from database
 	doQuery("DELETE FROM ". REVIEWS_TABLE ." WHERE review_id=$review_id");
 	header("Location: userpage.php"); die();
 }
 
-if (($action == "edit" || $action == "add") && isset($submit) && strlen($error) == 0)
+if (($action == "edit" || $action == "add") &&
+    isset($submit) && strlen($error) == 0)
 {
 	// Checks information on these conditions:
 	// - Scores should be between 1 and 10
@@ -58,6 +64,10 @@ if (($action == "edit" || $action == "add") && isset($submit) && strlen($error) 
 	if ($review_score < 1  || $review_score > 10) {
 		$error = "Please fill in a rating from 1 to 10.";
 	}
+
+  if (strlen($review_text) == 0) {
+    $error = "No review text.";
+  }
 
 	if (strlen($error) == 0) {
 		if ($action == "edit") {
@@ -152,7 +162,7 @@ if ($action == "edit" || $action == "add")
 	}
 
 	$template->assign_block_vars('form', array(
-		'ACTION'         => "editreview.php?action=$action",
+		'ACTION'         => append_sid("editreview.php?action=$action"),
 		'HIDDEN'         => $hidden,
 		'RATING_FIELD'   => 'review_score',
 		'TEXT_FIELD'     => 'review_text',
