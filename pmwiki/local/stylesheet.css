@@ -1,0 +1,114 @@
+BODY {
+	background-color: rgb(66,66,115);
+	padding: 0px;
+	margin: 0px;
+}
+
+BODY, TD, TH, TEXTAREA, INPUT {
+	font-family: Verdana, Sans-Serif;
+	font-size: 13px;
+}
+
+BODY, TD, TH {
+	color: rgb(180,180,200);
+}
+
+H2 {
+	font-size: 20px;
+	font-weight: bold;
+}
+H3 {
+	font-size: 17px;
+	font-weight: bold;
+}
+H4 {
+	font-size: 15px;
+	margin: 0px; padding: 0px;
+	margin-bottom: 10px;
+}
+
+A:link   {color: rgb(255,255,255); text-decoration: none;}
+A:visited{color: rgb(255,255,255); text-decoration: none;}
+A:hover  {color: rgb(200,200,255); text-decoration: none;}
+
+
+
+TD.body_header {
+	background-color: rgb(56,56,97);
+	text-align: left;
+	font-weight: bold;
+	font-size: 20px;
+	height: 20px;
+	padding: 3px 5px 3px 5px;
+	border: 1px solid rgb(50,50,70);
+	border-bottom-width: 0px;
+}
+
+TD.navigation {
+	background-color: rgb(100,100,128);
+	font-size: 12px;
+	font-weight: normal;
+	padding: 0px 5px 1px 5px;
+	border: 1px solid rgb(50,50,70);
+	border-top-width: 0px;
+}
+
+.body_main {
+	padding: 5px;
+}
+
+
+/* User bar */
+
+.user_bar {
+	background-color: rgb(145,145,150);
+	background-color: rgb(160,160,170);
+	padding: 3px;
+	padding-left: 10px;
+	color: rgb(0,0,0);
+	border-top: 1px solid rgb(0,0,0);
+	border-bottom: 1px solid rgb(0,0,0);
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+.user_links {
+	border-left: 1px solid rgb(100,100,100);
+	border-right: 1px solid rgb(200,200,200);
+}
+
+.user_link {
+	padding-right: 5px;
+	padding-left: 5px;
+	border-right: 1px solid rgb(100,100,100);
+	border-left: 1px solid rgb(200,200,200);
+	white-space: nowrap;
+}
+
+/* Shadow helpers */
+
+.thin_shadow {
+	background-color: rgb(33,33,57);
+}
+
+.lift_by_one {
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+	top: -1px;
+	left: -1px;
+}
+
+
+/* bbcode quote & code blocks */
+.code {
+	font-family: Courier, 'Courier New', sans-serif; font-size: 12px;
+	background-color: rgb(60, 60, 100);
+	border: 1px solid rgb(50,50,80);
+}
+
+.quote {
+	font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px;
+	background-color: rgb(60, 60, 100);
+	border: 1px solid rgb(50,50,80);
+}

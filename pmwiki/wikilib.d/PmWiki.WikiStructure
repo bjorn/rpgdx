@@ -1,0 +1,7 @@
+version=pmwiki-0.5.11
+newline=�
+text=Authors have a range of options to choose from when organising a collection of wiki pages. Used in combination, these give a lot of flexibility.께:WikiWord:The most powerful organising principle is the author's choice of page names. When a search returns a list of pages, their names need to be clear enough to guide a visitor to the right place.께:WikiGroup:This wiki requires every page to be a member of a group. A group is like a wiki within a wiki; it can have its own presentation look, security controls and navigation aids.께:PmWiki/{{WikiTrail|s}}:A collection of pages, either in the same group or across multiple groups, can be designated as a trail. A visitor can move from stop to stop by clicking on ''next'' and ''previous'' links.께:PmWiki/{{free link|s}}:A page name that does not follow the WikiWord convention. Use it to avoid creating an artificial or ugly page name, or just because you want to.께%trail%<<|PmWiki.DocumentationIndex|>>
+time=1058996423
+host=165.95.1.187
+agent=Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)
+rev=9

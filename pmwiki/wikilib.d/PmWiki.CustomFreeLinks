@@ -1,0 +1,6 @@
+version=pmwiki-0.4.25
+text=The administrator can configure non-existent free links to display as (alternate text)? for greater clarity.께In the local.php file, add the line께  [=$WikiPageCreateSpaceFmt = �    "(\$LinkText)<a href='\$PageUrl?action=edit'>?</a>";=]께If you want all pages to display as (newpage)?, then also add the line께  [=$WikiPageCreateFmt =�    "(\$LinkText)<a href='\$PageUrl?action=edit'>?</a>";=]께%trail%<<|PmWiki.DocumentationIndex|>>
+time=1052707771
+host=66.114.67.233
+agent=Mozilla/5.0 (Macintosh; U; PPC Mac OS X; en-us) AppleWebKit/73 (KHTML, like Gecko) Safari/73
+rev=2

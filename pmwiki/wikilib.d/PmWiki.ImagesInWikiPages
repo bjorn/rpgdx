@@ -1,0 +1,8 @@
+version=pmwiki-0.5.21
+newline=²
+text=To place an image inside a wiki page, simply enter the address (URL) of the image you want to include.  For example, the URL @@[=http://www.pmichaud.com/toast/ptart-1c.gif=]@@ displays in the text as²²http://www.pmichaud.com/toast/ptart-1c.gif²²All [=URLs=] ending in .gif, .jpg, .jpeg, and .png are automatically treated as image placeholders in PmWiki.  The position of the image URL in a line determines how it will display in the page:²* an image URL at the beginning of a line displays the image at the left margin with text wrapped to the right²* an image URL at the end of a line displays the image at the right margin with text wrapped to the left²* an image URL in the middle of a line displays the image in line with the text²* an image URL on a line by itself is displayed by itself²²The special markup [=[[<<]]=] can be used to tell PmWiki to skip to a point below any floating images.²²Images must be stored on a webserver somewhere in order to be displayed in PmWiki.  If the system has been configured to enable {{uploads}}, then you can upload an image as a page attachment and include it using the @@[=Attach:=]@@ markup.  Otherwise, HowToUploadImages describes the process of uploading images to a webserver.²²Images may be specified as the target of a link using the double brackets markup by specifying an image URL as the text for a link (see LinksToExternalPages).  For example, the image to the right of this paragraph is a link to the Strawberry Pop-Tart Blow-Torches page. [[http://www.pmichaud.com/toast http://www.pmichaud.com/toast/ptart-1c.gif]] ²[[<<]]²²%trail%<<|PmWiki.DocumentationIndex|>>²
+time=1062578356
+host=24.155.25.197
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)
+rev=15
+post= Save 
