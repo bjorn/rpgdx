@@ -788,4 +788,10 @@ function redirect($url)
 	exit;
 }
 
+
+function viewprofile_url($user_id)
+{
+    return append_sid("http://rpgdx.net/profile.php?user_id=$user_id");
+}
+
 ?>

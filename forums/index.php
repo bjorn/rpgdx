@@ -234,7 +234,7 @@ if( ( $total_categories = count($category_rows) ) )
 	$forum_moderators = array();
 	while( $row = $db->sql_fetchrow($result) )
 	{
-		$forum_moderators[$row['forum_id']][] = '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '">' . $row['username'] . '</a>';
+		$forum_moderators[$row['forum_id']][] = '<a href="' . viewprofile_url($row['user_id']) . '">' . $row['username'] . '</a>';
 	}
 
 	$sql = "SELECT aa.forum_id, g.group_id, g.group_name 
@@ -277,7 +277,7 @@ if( ( $total_categories = count($category_rows) ) )
 	$template->assign_vars(array(
 		'TOTAL_POSTS' => sprintf($l_total_post_s, $total_posts),
 		'TOTAL_USERS' => sprintf($l_total_user_s, $total_users),
-		'NEWEST_USER' => sprintf($lang['Newest_user'], '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$newest_uid") . '">', $newest_user, '</a>'), 
+		'NEWEST_USER' => sprintf($lang['Newest_user'], '<a href="' . viewprofile_url($newest_uid) . '">', $newest_user, '</a>'), 
 
 		'FORUM_IMG' => $images['forum'],
 		'FORUM_NEW_IMG' => $images['forum_new'],
@@ -372,7 +372,7 @@ if( ( $total_categories = count($category_rows) ) )
 
 								$last_post = $last_post_time . '<br />';
 
-								$last_post .= ( $forum_data[$j]['user_id'] == ANONYMOUS ) ? ( ($forum_data[$j]['post_username'] != '' ) ? $forum_data[$j]['post_username'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $forum_data[$j]['user_id']) . '">' . $forum_data[$j]['username'] . '</a> ';
+								$last_post .= ( $forum_data[$j]['user_id'] == ANONYMOUS ) ? ( ($forum_data[$j]['post_username'] != '' ) ? $forum_data[$j]['post_username'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . viewprofile_url($forum_data[$j]['user_id']) . '">' . $forum_data[$j]['username'] . '</a> ';
 								
 								$last_post .= '<a href="' . append_sid("viewtopic.$phpEx?"  . POST_POST_URL . '=' . $forum_data[$j]['forum_last_post_id']) . '#' . $forum_data[$j]['forum_last_post_id'] . '"><img src="' . $images['icon_latest_reply'] . '" border="0" alt="' . $lang['View_latest_post'] . '" title="' . $lang['View_latest_post'] . '" /></a>';
 							}
