@@ -1,0 +1,47 @@
+---------------------------
+TODO IN NO PARTICULAR ORDER
+---------------------------
+
+- favicon.ico
+
+- Integrate profile page of forum and main RPGDX site
+
+- News comments
+  * Integrate with an (invisible) news forum
+
+- Safe custom searches
+  * Replaces current project categories
+
+- Script to make newsletter template
+  * Editorial
+  * Upcoming contest
+  * Games updated/added since ...
+  * Articles updated/added since ...
+  * Forum highlights
+  * Statistics
+    o Number of new posts since ...
+    o Number of new threads since ...
+    o Number of new members since ...
+  * Interview with <Member>
+
+- Refine articles section
+  * Change name to Resources
+  * Current articles are merely links
+  * Add native articles stored in RPGDX database
+    o Span multiple pages
+    o Use bbcode for layout
+
+- Change reviews to comments, more focussed on rating
+  * Add staff reviews
+
+- Add featured project
+  * Shows screenshot in sidebar on news page
+
+- Don't use phpBB templates, but rather XSLT for laying out pages
+  * Allows better seperation of logic/layout
+  * A lot of simple decisions can be made with XSLT
+
+- Some changes to new post indication
+  * Fix new post indication in search.php (maybe only searching for author)
+  * Add new post count for forums/forum/thread indication
+  * Take pages into account when updating last read date
