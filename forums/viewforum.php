@@ -121,10 +121,11 @@ if ( !$is_auth['auth_read'] || !$is_auth['auth_view'] )
 //
 if ( $mark_read == 'topics' )
 {
-	//// RPGDX HACKERY
+  //// RPGDX HACKERY
 
-	// Basically, add reads for each topic in this forum. But this is only needed for the topic in which the last post
-	// has been posted after $userdata['user_lastread']
+  // Basically, add reads for each topic in this forum. But this is only needed
+  // for the topic in which the last post has been posted after
+  // $userdata['user_lastread']
 
 	$sql =
 		"SELECT t.topic_id ".

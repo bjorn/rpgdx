@@ -102,6 +102,13 @@ if (
 		$current_email = trim(htmlspecialchars($HTTP_POST_VARS['current_email']));
 	}
 
+  // Begin hack to stop URL people registering
+  if ( $mode == 'register' && isset($HTTP_POST_VARS['website']))
+  {
+    message_die(GENERAL_ERROR, 'Setting website url on registering not allowed');
+  }
+  // End hack
+
 	$strip_var_list = array('username' => 'username', 'email' => 'email', 'icq' => 'icq', 'aim' => 'aim', 'msn' => 'msn', 'yim' => 'yim', 'website' => 'website', 'location' => 'location', 'occupation' => 'occupation', 'interests' => 'interests');
 
 	// Strip all tags from data ... may p**s some people off, bah, strip_tags is

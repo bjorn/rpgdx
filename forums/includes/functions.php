@@ -812,29 +812,34 @@ function viewprofile_url($user_id)
 
 function set_last_read($topic_id, $time)
 {
-    global $userdata, $db;
+  global $userdata, $db;
 
-    // Delete any previous last read data
-	$sql =
-        "DELETE FROM ". READS_TABLE ." 
-        WHERE read_topic_id = $topic_id AND read_user_id = ". $userdata['user_id'];
+  // Don't add last_read entries for anonymous users
+  if ($userdata['user_id'] == -1) {
+    return;
+  }
+
+  // Delete any previous last read data
+  $sql =
+    "DELETE FROM ". READS_TABLE ." 
+    WHERE read_topic_id = $topic_id AND read_user_id = ". $userdata['user_id'];
         
-	if ( !($db->sql_query($sql)) ) {
-		message_die(
-            GENERAL_ERROR,
-            'Could not delete previous read status', '', __LINE__, __FILE__, $sql);
-	}
+  if ( !($db->sql_query($sql)) ) {
+    message_die(
+      GENERAL_ERROR,
+      'Could not delete previous read status', '', __LINE__, __FILE__, $sql);
+  }
     
-    // Insert the new last read data
-	$sql =
-		"INSERT INTO ". READS_TABLE ." (read_topic_id, read_user_id, read_time) VALUES 
-		($topic_id, ". $userdata['user_id'] .", ". $time .")";
+  // Insert the new last read data
+  $sql =
+		"INSERT INTO ". READS_TABLE ." (read_topic_id, read_user_id, read_time) 
+    VALUES ($topic_id, ". $userdata['user_id'] .", ". $time .")";
         
-	if ( !($db->sql_query($sql)) ) {
-		message_die(
-            GENERAL_ERROR,
-            'Could not insert read status', '', __LINE__, __FILE__, $sql);
-	}
+  if ( !($db->sql_query($sql)) ) {
+    message_die(
+      GENERAL_ERROR,
+      'Could not insert read status', '', __LINE__, __FILE__, $sql);
+  }
 }
 
 function get_last_read($topic_id)

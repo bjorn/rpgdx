@@ -577,57 +577,70 @@ $post_alt = ( $forum_topic_data['forum_status'] == FORUM_LOCKED ) ? $lang['Forum
 //
 if ( $userdata['session_logged_in'] )
 {
-	// Get the current time here, to prevent synchonization errors when the following
-	// queries get mixed up with other queries. Otherwise, new posts might 'slip through'.
-	$current_time = time();
+  // Get the current time here, to prevent synchonization errors when the
+  // following queries get mixed up with other queries. Otherwise, new posts
+  // might 'slip through'.
+  $current_time = time();
 
-	// Obtain last time this topic was read
-	$topic_last_read = get_last_read($topic_id);
+  // Obtain last time this topic was read
+  $topic_last_read = get_last_read($topic_id);
 
-	// Update the database about the current read time
-    set_last_read($topic_id, $current_time);
+  // Update the database about the current read time
+  set_last_read($topic_id, $current_time);
 
-	// Clean up any reads that have become unneccesary now
-	// Optain the first unread post of all forums
-	$sql = "
-		SELECT p.post_time 
-		FROM ". POSTS_TABLE . " p 
-			LEFT JOIN ". READS_TABLE ." r 
-            ON r.read_topic_id = p.topic_id AND r.read_user_id = ". $userdata['user_id'] ." 
-		WHERE p.post_time >= ". $userdata['user_lastread'] ." 
-			AND IF(r.read_time, p.post_time >= r.read_time, 1) 
-		ORDER BY p.post_time ASC 
-		LIMIT 1";
-	if ( !($result = $db->sql_query($sql)) ) {
-		message_die(GENERAL_ERROR, 'Could not obtain time of oldest new post', '', __LINE__, __FILE__, $sql);
-	}
+  // Clean up any reads that have become unneccesary now
+  // Optain the first (oldest) unread post of all forums that is not older than
+  // one month (31*24*60*60 seconds)
+  $sql = "
+    SELECT p.post_time 
+    FROM ". POSTS_TABLE . " p 
+      LEFT JOIN ". READS_TABLE ." r 
+        ON r.read_topic_id = p.topic_id 
+        AND r.read_user_id = ". $userdata['user_id'] ." 
+    WHERE p.post_time >= ". $userdata['user_lastread'] ." 
+      AND p.post_time >= ". ($current_time - (31*24*60*60)) ." 
+      AND IF(r.read_time, p.post_time >= r.read_time, 1) 
+    ORDER BY p.post_time ASC 
+    LIMIT 1";
+  if ( !($result = $db->sql_query($sql)) ) {
+    message_die(GENERAL_ERROR, 'Could not obtain time of oldest new post', '',
+      __LINE__, __FILE__, $sql);
+  }
 
-	if ( ($row = $db->sql_fetchrow($result)) ) {
-		// Set user_lastread to the time of the first unread post
-		$oldest_new_post_time = $row['post_time'];
-		$sql = "UPDATE ". USERS_TABLE ." SET user_lastread = ". $oldest_new_post_time ." WHERE user_id = ". $userdata['user_id'];
-		if ( !($result = $db->sql_query($sql)) ) {
-			message_die(GENERAL_ERROR, 'Could not update user_lastread variable to time of oldest new post', '', __LINE__, __FILE__, $sql);
-		}
-		// Delete any reads older than or equal to user_lastread
-		$sql = "DELETE FROM ". READS_TABLE ."
+  if ( ($row = $db->sql_fetchrow($result)) ) {
+    // Set user_lastread to the time of the first unread post
+    $oldest_new_post_time = $row['post_time'];
+    $sql = "UPDATE ". USERS_TABLE ." SET user_lastread = ".
+      $oldest_new_post_time ." WHERE user_id = ". $userdata['user_id'];
+    if ( !($result = $db->sql_query($sql)) ) {
+      message_die(GENERAL_ERROR, 'Could not update user_lastread variable to 
+        time of oldest new post', '', __LINE__, __FILE__, $sql);
+    }
+    // Delete any reads older than or equal to user_lastread
+    $sql = "DELETE FROM ". READS_TABLE ."
             WHERE (read_time <= ". $oldest_new_post_time ." 
             AND read_user_id = ". $userdata['user_id'] .")";
-		if ( !($result = $db->sql_query($sql)) ) {
-			message_die(GENERAL_ERROR, 'Could not delete all reads older than user_lastread', '', __LINE__, __FILE__, $sql);
-		}
-	}
-	else {
-		// No oldest new post? Well then, we'll set the current time as the last read time and delete any reads
-		$sql = "UPDATE ". USERS_TABLE ." SET user_lastread = ". $current_time ." WHERE user_id = ". $userdata['user_id'];
-		if ( !($result = $db->sql_query($sql)) ) {
-			message_die(GENERAL_ERROR, 'Could not update user_lastread variable to time of oldest new post', '', __LINE__, __FILE__, $sql);
-		}
-		$sql = "DELETE FROM ". READS_TABLE ." WHERE read_user_id = ". $userdata['user_id'];
-		if ( !($result = $db->sql_query($sql)) ) {
-			message_die(GENERAL_ERROR, 'Could not delete all reads older than user_lastread', '', __LINE__, __FILE__, $sql);
-		}
-	}
+    if ( !($result = $db->sql_query($sql)) ) {
+      message_die(GENERAL_ERROR, 'Could not delete all reads older than
+        user_lastread', '', __LINE__, __FILE__, $sql);
+    }
+  }
+  else {
+    // No oldest new post? Well then, we'll set the current time as the last
+    // read time and delete any reads
+    $sql = "UPDATE ". USERS_TABLE ." SET user_lastread = ". $current_time ." 
+      WHERE user_id = ". $userdata['user_id'];
+    if ( !($result = $db->sql_query($sql)) ) {
+      message_die(GENERAL_ERROR, 'Could not update user_lastread variable to 
+        time of oldest new post', '', __LINE__, __FILE__, $sql);
+    }
+    $sql = "DELETE FROM ". READS_TABLE ." WHERE read_user_id = ".
+      $userdata['user_id'];
+    if ( !($result = $db->sql_query($sql)) ) {
+      message_die(GENERAL_ERROR, 'Could not delete all reads older than
+        user_lastread', '', __LINE__, __FILE__, $sql);
+    }
+  }
 }
 
 //
