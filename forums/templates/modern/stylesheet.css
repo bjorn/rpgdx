@@ -1,0 +1,385 @@
+BODY {
+	background-color: rgb(66,66,115);
+	margin: 0px;
+	padding: 0px;
+}
+
+BODY, TD, TH, TEXTAREA, INPUT {
+	font-family: Verdana, Sans-Serif, Arial, Helvetica;
+	font-size: 13px;
+}
+
+BODY, TD, TH {
+	color: rgb(180,180,200);
+}
+
+IFRAME {
+	border-top: 1px solid rgb(25,25,50);
+	border-left: 1px solid rgb(25,25,50);
+	border-right: 1px solid rgb(200,200,225);
+	border-bottom: 1px solid rgb(200,200,225);
+}
+
+H2 {
+	font-size: 20px;
+	font-weight: bold;
+}
+H3 {
+	font-size: 17px;
+	font-weight: bold;
+}
+H4 {
+	font-size: 15px;
+	margin: 0px; padding: 0px;
+	margin-bottom: 10px;
+}
+
+A:link   {color: rgb(255,255,255); text-decoration: none;}
+A:visited{color: rgb(255,255,255); text-decoration: none;}
+A:hover  {color: rgb(200,200,255); text-decoration: none;}
+
+
+.menu_background {
+	background-color: rgb(128,128,150);
+}
+
+.menu {
+	width: 145px;
+	padding: 0px 2px;
+}
+
+.menu_title {
+	background-color: rgb(150,75,75);
+	text-align: center;
+	white-space: nowrap;
+	font-weight: bold;
+	border: 1px solid rgb(64,64,100);
+	border-top-width: 0px;
+	color: rgb(200,200,200);
+	padding: 0px 5px 1px 5px;
+}
+
+.menu_item {
+	text-align: left;
+	border-bottom: 1px solid rgb(64,64,100);
+	padding: 1px 5px 2px 5px;
+	color: rgb(0,0,0);
+}
+
+.menu_footer {
+	background-color: rgb(128,128,64);
+}
+
+
+TD.body_header {
+	background-color: rgb(56,56,97);
+	text-align: left;
+	font-weight: bold;
+	font-size: 20px;
+	height: 20px;
+	padding: 3px 5px 3px 5px;
+	border: 1px solid rgb(50,50,70);
+	border-bottom-width: 0px;
+}
+
+TD.navigation {
+	background-color: rgb(100,100,128);
+	font-size: 12px;
+	font-weight: normal;
+	padding: 0px 5px 1px 5px;
+	border: 1px solid rgb(50,50,70);
+	border-top-width: 0px;
+}
+
+TD.navigation_only {
+	background-color: rgb(100,100,128);
+	font-size: 12px;
+	font-weight: normal;
+	padding: 1px 5px 1px 5px;
+	border: 1px solid rgb(50,50,70);
+}
+
+TD.seperation {
+	font-size: 0px;
+	height: 5px;
+}
+
+TD.body_main {
+	padding: 5px;
+}
+
+TD.body_footer {
+	text-align: center;
+	white-space: nowrap;
+	height: 20px;
+}
+
+
+
+.sidebar {
+	width: 150px;
+	border: 1px solid rgb(50,50,70);
+	border-bottom: 0px;
+}
+
+.sidebar_title {
+	background-color: rgb(70,70,120);
+	padding: 5px;
+	text-align: center;
+	border-bottom: 1px solid rgb(50,50,70);
+}
+
+.sidebar_item {
+	background-color: rgb(100,100,150);
+	text-align: center;
+	border-bottom: 1px solid rgb(50,50,70);
+}
+
+
+
+.news_header {
+	background-color: rgb(80,80,130);
+	padding: 2px 5px 2px 5px;
+	white-space: nowrap;
+}
+
+.news_main {
+	padding: 2px 5px 2px 5px;
+}
+
+.news_footer {
+}
+
+
+.user_bar {
+	background-color: rgb(145,145,150);
+	background-color: rgb(160,160,170);
+	padding: 3px;
+	padding-left: 10px;
+	color: rgb(0,0,0);
+	border-top: 1px solid rgb(0,0,0);
+	border-bottom: 1px solid rgb(0,0,0);
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+.user_links {
+	border-left: 1px solid rgb(100,100,100);
+	border-right: 1px solid rgb(200,200,200);
+}
+
+.user_link {
+	padding-right: 5px;
+	padding-left: 5px;
+	border-right: 1px solid rgb(100,100,100);
+	border-left: 1px solid rgb(200,200,200);
+	white-space: nowrap;
+}
+
+
+DIV.copyright {
+	margin: 10px;
+	padding: 10px;
+	text-align: center;
+	border-top: 2px solid rgb(50,50,70);
+}
+
+DIV.small_date {
+	font-size: 10px;
+	color: rgb(25,25,50);
+	text-align: center;
+}
+
+
+
+
+TD.td {
+	background-color: rgb(66,66,115);
+	padding: 1px 4px 1px 4px;
+	border-bottom: 1px solid rgb(80,80,130);
+}
+TD.th {
+	background-color: rgb(80,80,130);
+	padding: 2px 4px 2px 4px;
+	white-space: nowrap;
+}
+
+
+/* Form stuff */
+
+TD.formNameCell {
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+INPUT, TEXTAREA, SELECT {
+	background-color: rgb(180,180,212);
+	border-top: 1px solid rgb(0,0,0);
+	border-left: 1px solid rgb(0,0,0);
+	border-right: 1px solid rgb(200,200,225);
+	border-bottom: 1px solid rgb(200,200,225);
+}
+
+INPUT.button, .mainoption, .liteoption {
+	background-color: rgb(80,80,130);
+	font-size: 11px;
+	border-top: 1px solid rgb(200,200,225);
+	border-left: 1px solid rgb(200,200,225);
+	border-right: 1px solid rgb(0,0,0);
+	border-bottom: 1px solid rgb(0,0,0);
+	color: rgb(165,167,191);
+	margin: 1px;
+}
+
+/*
+.mainoption {
+	font-weight: bold;
+}
+*/
+
+.fileFormInput {
+	background-color: rgb(180,180,212);
+	border-top: 1px solid rgb(0,0,0);
+	border-left: 1px solid rgb(0,0,0);
+	border-right: 1px solid rgb(200,200,225);
+	border-bottom: 1px solid rgb(200,200,225);
+}
+
+
+.screenshots {
+	padding: 2px 2px 0px 2px;
+	margin: 0px;
+}
+
+.screenshot {
+	width: 140px;
+	border: 1px solid rgb(56,56,97);
+	padding: 0px;
+	margin: 1px 1px 3px 1px;
+}
+
+.description {
+	margin: 0px;
+	padding: 10px 3px 5px 3px;
+	border-bottom: 1px solid rgb(80,80,130);
+}
+
+
+/* Contest awards related */
+
+.award_block {
+/*	border: 1px solid rgb(50,50,70);*/
+	padding: 0px;
+	margin: 5px;
+}
+
+.award_image {
+}
+
+
+
+/* Remarks (smaller and cursed) */
+
+.remark {
+	font-weight: normal; font-size: 85%;
+	font-style: italic;
+}
+
+
+/* Shadow helpers */
+
+.thin_shadow {
+	background-color: rgb(33,33,57);
+}
+
+.lift_by_one {
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+	top: -1px;
+	left: -1px;
+}
+
+
+/* Styles for box layout */
+
+.boxHead {
+	background-color: rgb(80,80,130);
+	padding: 2px 4px 2px 4px;
+	white-space: nowrap;
+	font-weight: bold;
+	text-align: center;
+}
+
+.boxBody {
+	background-color: rgb(66,66,115);
+	padding: 8px;
+	border-color: rgb(80,80,130);
+	border-style: solid;
+	border-width: 0px;
+/*	border: 1px solid 
+	border-top-width: 0px;*/
+}
+
+
+/* Rating bar styles */
+
+.barBackground {
+	width: 102px;
+	background-color: rgb(66,66,115);
+	border: 1px solid;
+	border-top-color: rgb(36,36,75);
+	border-left-color: rgb(36,36,75);
+	border-right-color: rgb(115,115,175);
+	border-bottom-color: rgb(115,115,175);
+	text-align: left;
+}
+
+.barForeground {
+	background-color: rgb(88,66,115);
+	border: 1px solid;
+	border-top-color: rgb(151,127,183);
+	border-left-color: rgb(151,127,183);
+	border-right-color: rgb(66,46,80);
+	border-bottom-color: rgb(66,46,80);
+	width: 100px;
+	font-size: 10px;
+}
+
+
+
+/* bbcode quote & code blocks */
+.code {
+	font-family: Courier, 'Courier New', sans-serif; font-size: 12px;
+	background-color: rgb(60, 60, 100);
+	border: 1px solid rgb(50,50,80);
+}
+
+.quote {
+	font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px;
+	background-color: rgb(60, 60, 100);
+	border: 1px solid rgb(50,50,80);
+}
+
+/* bbcode general text */
+.gen { font-size: 12px; }
+.genmed { font-size: 11px; }
+.gensmall { font-size: 10px; }
+
+
+
+/* phpBB specific classes */
+
+.thCornerL, .thCornerR, .thTop {
+	background-color: rgb(80,80,130);
+	padding: 2px 4px 2px 4px;
+	white-space: nowrap;
+	font-weight: bold;
+	text-align: center;
+}
+
+.row1, .row2, .row3, .row3Right {
+	border-bottom: 1px solid rgb(80,80,130);
+	padding: 1px 0px 1px 0px;
+	font-size: 11px;
+}

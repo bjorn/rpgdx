@@ -1,0 +1,239 @@
+/*
+  An RPGDX theme for phpBB version 2+
+  Created by Bjørn Lindeijer
+  http://indierpg.net/rpgdx
+*/
+
+
+/* General page style. The scroll bar colours only visible in IE5.5+ */
+body {
+	background-color: rgb(66,66,115);
+/*
+	scrollbar-face-color: #DEE3E7;
+	scrollbar-highlight-color: #FFFFFF;
+	scrollbar-shadow-color: #DEE3E7;
+	scrollbar-3dlight-color: #D1D7DC;
+	scrollbar-arrow-color:  #006699;
+	scrollbar-track-color: #EFEFEF;
+	scrollbar-darkshadow-color: #98AAB1;
+*/
+}
+
+/* General font families for common tags */
+hr	{ color: rgb(100,100,150); height: 1px; border: 0px solid rgb(100,100,150); border-top-width: 1px;}
+
+/* Added stuff for RPGDX layout */
+BODY, P, FONT, TD, TH, TEXTAREA, INPUT, H2, H3, H4 {
+	font-family: Sans-Serif;
+	font-size: 13px;
+	color: rgb(165,167,191);
+}
+A:link   {color: rgb(255,255,255); text-decoration: none;}
+A:visited{color: rgb(255,255,255); text-decoration: none;}
+A:hover  {color: rgb(200,200,255); text-decoration: none;}
+
+
+/* This is the border line & background colour round the entire page */
+.bodyline {
+	border: 1px solid rgb(56,56,97);
+	padding: 5px;
+}
+
+/* This is the outline round the main forum tables */
+.forumline {
+}
+
+
+/* Main table cell colours and backgrounds */
+td.row1	{  }
+td.row2	{ border-bottom: 1px solid rgb(80,80,130); }
+td.row3	{ border-bottom: 1px solid rgb(80,80,130); }
+
+td.row1 {
+	border-bottom: 1px solid rgb(80,80,130);
+}
+
+
+/*
+  This is for the table cell above the Topics, Post & Last posts on the index.php page
+*/
+td.rowpic {
+	background-color: rgb(100,100,150);
+}
+
+/* Header cells */
+th	{
+	font-weight: normal;
+	background-color: rgb(80,80,130);
+	padding: 2px 4px 2px 4px;
+}
+
+td.cat,td.catHead,td.catSides,td.catLeft,td.catRight {
+	background-color: rgb(100,100,150);
+	/*background-image: url(images/cellpic1.gif);
+	background-repeat: repeat-x;*/
+}
+td.catBottom {
+	background-color: rgb(80,80,130);
+}
+
+
+/*
+  Setting additional nice inner borders for the main table cells.
+  The names indicate which sides the border will be on.
+  Don't worry if you don't understand this, just ignore it :-)
+*/
+td.cat,td.catHead,td.catBottom {
+}
+th.thHead,th.thSides,th.thTop,th.thLeft,th.thRight,th.thBottom,th.thCornerL,th.thCornerR {
+}
+td.spaceRow {
+	background-color: rgb(80,80,130);
+}
+td.row3Right {
+	border-bottom: 1px solid rgb(80,80,130);
+}
+
+th.thHead,td.catHead {  }
+th.thSides,td.catSides	 {  }
+th.thRight,td.catRight	 {  }
+th.thLeft,td.catLeft	  {  }
+th.thBottom,td.catBottom  {  }
+th.thTop	 {  }
+th.thCornerL {  }
+th.thCornerR {  }
+
+
+/* The largest text used in the index page title and toptic title etc. */
+.maintitle, h1, h2	{
+	font-weight: bold;
+}
+
+
+/* General text */
+.gen { font-size: 12px; }
+.genmed { font-size: 11px; }
+.gensmall { font-size: 10px; }
+.gen,.genmed,.gensmall {  }
+a.gen,a.genmed,a.gensmall {  }
+a.gen:hover,a.genmed:hover,a.gensmall:hover	{  }
+
+
+/* The register, login, search etc links at the top of the page */
+.mainmenu		   { font-size: 11px; }
+a.mainmenu		   { color: rgb(165,167,191); }
+a.mainmenu:link    { color: rgb(165,167,191); }
+a.mainmenu:visited { color: rgb(165,167,191); }
+a.mainmenu:hover   { color: rgb(200,200,255); }
+
+
+/* Forum category titles */
+.cattitle		{ font-weight: normal; }
+a.cattitle		{  }
+a.cattitle:hover{  }
+
+
+/* Forum title: Text and link to the forums used in: index.php */
+.forumlink		{ font-weight: bold; }
+a.forumlink 	{  }
+a.forumlink:hover{  }
+
+
+/* Used for the navigation text, (Page 1,2,3 etc) and the navigation bar when in a forum */
+.nav			{ font-size: 11px; }
+a.nav			{  }
+a.nav:hover		{  }
+
+
+/* titles for the topics: could specify viewed link colour too */
+.topictitle			{ font-size: 11px; }
+a.topictitle:link   { color: rgb(255,255,255); }
+a.topictitle:visited { color: rgb(200,200,200); }
+a.topictitle:hover	{ color: rgb(200,200,255); }
+
+
+/* Name of poster in viewmsg.php and viewtopic.php and other places */
+.name			{ font-size: 11px; }
+
+/* Location, number of posts, post date etc */
+.postdetails		{ font-size: 10px; }
+
+
+/* The content of the posts (body of text) */
+.postbody { font-size: 12px;}
+a.postlink:link	{  }
+a.postlink:visited {  }
+a.postlink:hover {  }
+
+
+/* Quote & Code blocks */
+.code {
+	font-family: Courier, 'Courier New', sans-serif; font-size: 11px;
+	background-color: rgb(60, 60, 100);
+	border: 1px solid rgb(50,50,80);
+}
+
+.quote {
+	font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px;
+	background-color: rgb(60, 60, 100);
+	border: 1px solid rgb(50,50,80);
+}
+
+
+/* Copyright and bottom info */
+.copyright		{ font-size: 10px; color: rgb(165,167,191); }
+a.copyright		{  }
+a.copyright:hover {  }
+
+
+/* Form elements */
+input,textarea, select {
+	color: #000000;
+	font: normal 11px Verdana, Arial, Helvetica, sans-serif;
+	border-color: #000000;
+}
+
+/* The text input fields background colour */
+input.post, textarea.post, select {
+	background-color: rgb(180,180,212);
+	border-top: 1px solid rgb(0,0,0);
+	border-left: 1px solid rgb(0,0,0);
+	border-right: 1px solid rgb(200,200,225);
+	border-bottom: 1px solid rgb(200,200,225);
+}
+
+
+/* The buttons used for bbCode styling in message post */
+input.button {
+	background-color: rgb(80,80,130);
+	font-size: 11px;
+	border-top: 1px solid rgb(200,200,225);
+	border-left: 1px solid rgb(200,200,225);
+	border-right: 1px solid rgb(0,0,0);
+	border-bottom: 1px solid rgb(0,0,0);
+	color: rgb(165,167,191);
+	background-color: #FAFAFA;
+	font-weight: bold;
+}
+
+/* The main submit button option */
+input.mainoption {
+	background-color: #FAFAFA;
+	font-weight: bold;
+}
+
+/* None-bold submit button */
+input.liteoption {
+	background-color: #FAFAFA;
+	font-weight: normal;
+}
+
+/* This is the line in the posting page which shows the rollover
+  help line. This is actually a text box, but if set to be the same
+  colour as the background no one will know ;)
+*/
+.helpline { background-color: rgb(66,66,115); border-style: none; color: rgb(165,167,191); }
+
+
+/* Import the fancy styles for IE only (NS4.x doesn't use the @import function) */
+@import url("formIE.css");
