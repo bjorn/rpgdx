@@ -12,7 +12,7 @@
 <p align="justify">
 <b>IRC channel</b><br />
 <br />
-Our regular IRC channel is #rpgdx on irc.esper.net.<br /><a href="irc://irc.esper.net/rpgdx">irc://irc.esper.net/rpgdx</a>.
+Our regular IRC channel is #indie-rpg on irc.esper.net. This channel is shared by several sites geared towards independent RPGs. (<a href="irc://irc.esper.net/rpgdx">irc://irc.esper.net/indie-rpg</a>)
 </p>
 
 <p align="justify">
@@ -20,11 +20,11 @@ Our regular IRC channel is #rpgdx on irc.esper.net.<br /><a href="irc://irc.espe
 <br />
 You can help make this community grow larger by linking to our site. Here's a little bit of code you can add to your page to show our banner:<br />
 <pre>
-&lt;a href="http://www.rpgdx.net/"&gt;
-&lt;img src="http://www.rpgdx.net/images/rpgdx_banner.png" width="88" height="31" border="0"&gt;
+&lt;a href="http://rpgdx.net/"&gt;
+&lt;img src="http://rpgdx.net/images/rpgdx_banner.png" width="88" height="31" border="0"&gt;
 &lt;/a&gt;
 </pre>
-<a href="http://www.rpgdx.net/">
+<a href="http://rpgdx.net/">
 <img src="images/rpgdx_banner.png" width="88" height="31" border="0">
 </a>
 </p>
