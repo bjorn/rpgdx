@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: functions.php,v 1.133.2.31 2003/07/20 13:14:27 acydburn Exp $
+ *   $Id: functions.php,v 1.133.2.32 2004/07/17 13:48:31 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -203,10 +203,11 @@ function make_jumpbox($action, $match_forum_id = 0)
 		$boxstring .= '<select name="' . POST_FORUM_URL . '" onchange="if(this.options[this.selectedIndex].value != -1){ forms[\'jumpbox\'].submit() }"></select>';
 	}
 
-	if ( !empty($SID) )
-	{
+	// Let the jumpbox work again in sites having additional session id checks.
+//	if ( !empty($SID) )
+//	{
 		$boxstring .= '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" />';
-	}
+//	}
 
 	$template->set_filenames(array(
 		'jumpbox' => 'jumpbox.tpl')
@@ -766,6 +767,11 @@ function redirect($url)
 	if (!empty($db))
 	{
 		$db->sql_close();
+	}
+
+	if (strstr(urldecode($url), "\n") || strstr(urldecode($url), "\r"))
+	{
+		message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url.');
 	}
 
 	$server_protocol = ($board_config['cookie_secure']) ? 'https://' : 'http://';

@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: groupcp.php,v 1.58.2.18 2003/06/10 17:18:13 acydburn Exp $
+ *   $Id: groupcp.php,v 1.58.2.21 2004/07/11 22:18:27 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -435,7 +435,7 @@ else if ( $group_id )
 			$sql = "SELECT g.group_moderator, g.group_type, aa.auth_mod 
 				FROM " . GROUPS_TABLE . " g, " . AUTH_ACCESS_TABLE . " aa 
 				WHERE g.group_id = $group_id
-					AND aa.group_id = g.group_id(+)";
+					AND aa.group_id (+) = g.group_id";
 			break;
 
 		default:
@@ -1169,6 +1169,8 @@ else
 	// Select all group that the user is a member of or where the user has
 	// a pending membership.
 	//
+	$in_group = array();
+	
 	if ( $userdata['session_logged_in'] ) 
 	{
 		$sql = "SELECT g.group_id, g.group_name, g.group_type, ug.user_pending 
@@ -1275,7 +1277,7 @@ else
 			$template->assign_block_vars('switch_groups_remaining', array() );
 		}
 
-		$s_hidden_fields = '';
+		$s_hidden_fields = '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" />';
 
 		$template->assign_vars(array(
 			'L_GROUP_MEMBERSHIP_DETAILS' => $lang['Group_member_details'],

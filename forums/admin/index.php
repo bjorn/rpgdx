@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: index.php,v 1.40.2.5 2003/08/03 11:50:51 acydburn Exp $
+ *   $Id: index.php,v 1.40.2.6 2004/07/11 16:46:15 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -332,7 +332,7 @@ elseif( isset($HTTP_GET_VARS['pane']) && $HTTP_GET_VARS['pane'] == 'right' )
 		WHERE s.session_logged_in = " . TRUE . " 
 			AND u.user_id = s.session_user_id 
 			AND u.user_id <> " . ANONYMOUS . " 
-			AND u.user_session_time >= " . ( time() - 300 ) . " 
+			AND s.session_time >= " . ( time() - 300 ) . " 
 		ORDER BY u.user_session_time DESC";
 	if(!$result = $db->sql_query($sql))
 	{

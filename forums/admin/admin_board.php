@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_board.php,v 1.51.2.6 2003/06/10 00:37:12 psotfx Exp $
+ *   $Id: admin_board.php,v 1.51.2.8 2004/07/15 18:02:44 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -43,7 +43,7 @@ else
 	{
 		$config_name = $row['config_name'];
 		$config_value = $row['config_value'];
-		$default_config[$config_name] = $config_value;
+		$default_config[$config_name] = isset($HTTP_POST_VARS['submit']) ? str_replace("'", "\'", $config_value) : $config_value;
 		
 		$new[$config_name] = ( isset($HTTP_POST_VARS[$config_name]) ) ? $HTTP_POST_VARS[$config_name] : $default_config[$config_name];
 

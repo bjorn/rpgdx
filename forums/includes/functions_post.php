@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: functions_post.php,v 1.9.2.34 2003/06/09 15:45:10 psotfx Exp $
+ *   $Id: functions_post.php,v 1.9.2.36 2004/07/11 16:46:19 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -769,7 +769,7 @@ function generate_smilies($mode, $page_id)
 
 		$gen_simple_header = TRUE;
 
-		$page_title = $lang['Review_topic'] . " - $topic_title";
+		$page_title = $lang['Emoticons'] . " - $topic_title";
 		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
 
 		$template->set_filenames(array(

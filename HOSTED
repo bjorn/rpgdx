@@ -1,19 +1,21 @@
-Subdomain    Email            MySQL              Disk Usage
-------------------------------------------------------------
+Subdomain    Email            MySQL                Disk Usage
+-------------------------------------------------------------
 barok        
-ccps                          Y (indierp_ccps)   1 MB
-darkdreams   POP (darkdread)                     4 MB
-jihgfed      Forward                             3 MB
-juno         Forward                             5 MB
-locrian      POP                                 1 MB
-mandrake     POP                                 8 MB
-moonlight                                        35 MB
-pixel-zone   Forward                             7 MB
-ragnarok     POP (badmrbox)                      3 MB
-syn9         POP              Y (indie-rp_syn9)  2 MB
+ccps                          Y (indierp_ccps)     1 MB
+darkdreams   POP (darkdread)                       4 MB
+dbent                                              1 MB
+jihgfed      Forward                               3 MB
+juno         Forward                               5 MB
+locrian      POP                                   1 MB
+mandrake     POP                                   8 MB
+moonlight                                          35 MB
+pixel-zone   Forward                               7 MB
+ragnarok     POP (badmrbox)                        3 MB
+syn9         POP              Y (indie-rp_syn9)    2 MB
+tsunami      POP              Y (indie-rp_tsunami) 1 MB
 twinsen      Forward
-warspawn     Forward                             1 MB
-whitedoor    Forward                             15 MB
+warspawn     Forward                               1 MB
+whitedoor    Forward                               15 MB
 xmark        POP
 ...          POP (vsdbs)
 ...          Forward (bjorn)
@@ -21,6 +23,5 @@ xmark        POP
 ...          Forward (admin)
 ...                           Y (indierp_xmb1)
 www                           Y (indierp_main)
-forums                                           5 MB
-/uploads                                         14 MB
-sheersoft (redirect)
+forums                                             5 MB
+/uploads                                           14 MB

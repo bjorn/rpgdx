@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_styles.php,v 1.27.2.12 2004/03/25 15:57:20 acydburn Exp $
+ *   $Id: admin_styles.php,v 1.27.2.13 2004/07/15 17:57:50 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -47,6 +47,9 @@ $cancel = ( isset($HTTP_POST_VARS['cancel']) ) ? TRUE : FALSE;
 $no_page_header = (!empty($HTTP_POST_VARS['send_file']) || $cancel) ? TRUE : FALSE;
 
 require('./pagestart.' . $phpEx);
+
+$confirm = ( isset($HTTP_POST_VARS['confirm']) ) ? TRUE : FALSE;
+$cancel = ( isset($HTTP_POST_VARS['cancel']) ) ? TRUE : FALSE;
 
 if ($cancel)
 {

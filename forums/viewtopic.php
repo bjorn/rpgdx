@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: viewtopic.php,v 1.186.2.32 2003/06/20 16:34:58 psotfx Exp $
+ *   $Id: viewtopic.php,v 1.186.2.36 2004/07/11 16:46:18 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -105,6 +105,11 @@ if ( isset($HTTP_GET_VARS['view']) && empty($HTTP_GET_VARS[POST_POST_URL]) )
 		else if ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_sid']) || isset($HTTP_GET_VARS['sid']) )
 		{
 			$session_id = isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_sid']) ? $HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_sid'] : $HTTP_GET_VARS['sid'];
+
+			if (!preg_match('/^[A-Za-z0-9]*$/', $session_id)) 
+			{
+				$session_id = '';
+			}
 
 			if ( $session_id )
 			{

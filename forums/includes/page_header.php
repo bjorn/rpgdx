@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header.php,v 1.106.2.20 2003/06/10 20:48:19 acydburn Exp $
+ *   $Id: page_header.php,v 1.106.2.23 2004/07/11 16:46:19 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -91,6 +91,7 @@ $logged_visible_online = 0;
 $logged_hidden_online = 0;
 $guests_online = 0;
 $online_userlist = '';
+$l_online_users = '';
 
 if (defined('SHOW_ONLINE'))
 {
@@ -111,7 +112,7 @@ if (defined('SHOW_ONLINE'))
 	$userlist_visible = array();
 
 	$prev_user_id = 0;
-	$prev_user_ip = '';
+	$prev_user_ip = $prev_session_ip = '';
 
 	while( $row = $db->sql_fetchrow($result) )
 	{

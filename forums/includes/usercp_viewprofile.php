@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: usercp_viewprofile.php,v 1.5.2.1 2003/02/25 23:28:30 acydburn Exp $
+ *   $Id: usercp_viewprofile.php,v 1.5.2.2 2004/07/11 16:46:20 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -41,6 +41,7 @@ if ( !($result = $db->sql_query($sql)) )
 	message_die(GENERAL_ERROR, 'Could not obtain ranks information', '', __LINE__, __FILE__, $sql);
 }
 
+$ranksrow = array();
 while ( $row = $db->sql_fetchrow($result) )
 {
 	$ranksrow[] = $row;

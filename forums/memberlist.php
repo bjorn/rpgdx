@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: memberlist.php,v 1.36.2.8 2003/06/09 13:06:19 psotfx Exp $
+ *   $Id: memberlist.php,v 1.36.2.10 2004/07/11 16:46:15 acydburn Exp $
  *
  ***************************************************************************/
 
@@ -245,7 +245,7 @@ if ( $row = $db->sql_fetchrow($result) )
 		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
 
 		$template->assign_block_vars('memberrow', array(
-			'ROW_NUMBER' => $i + ( $HTTP_GET_VARS['start'] + 1 ),
+			'ROW_NUMBER' => $i + ( $start + 1 ),
 			'ROW_COLOR' => '#' . $row_color,
 			'ROW_CLASS' => $row_class,
 			'USERNAME' => $username,

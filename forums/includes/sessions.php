@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: sessions.php,v 1.58.2.10 2003/04/05 12:04:33 acydburn Exp $
+ *   $Id: sessions.php,v 1.58.2.11 2004/07/11 16:46:19 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -45,6 +45,12 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 		$sessiondata = array();
 		$session_id = ( isset($HTTP_GET_VARS['sid']) ) ? $HTTP_GET_VARS['sid'] : '';
 		$sessionmethod = SESSION_METHOD_GET;
+	}
+
+	//
+	if (!preg_match('/^[A-Za-z0-9]*$/', $session_id)) 
+	{
+		$session_id = '';
 	}
 
 	$last_visit = 0;
@@ -218,6 +224,12 @@ function session_pagestart($user_ip, $thispage_id)
 	}
 
 	//
+	if (!preg_match('/^[A-Za-z0-9]*$/', $session_id))
+	{
+		$session_id = '';
+	}
+
+	//
 	// Does a session exist?
 	//
 	if ( !empty($session_id) )
@@ -355,6 +367,11 @@ function session_end($session_id, $user_id)
 		$sessionmethod = SESSION_METHOD_GET;
 	}
 
+	if (!preg_match('/^[A-Za-z0-9]*$/', $session_id))
+	{
+		return;
+	}
+	
 	//
 	// Delete existing session
 	//

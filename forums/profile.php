@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: profile.php,v 1.193.2.3 2003/03/02 23:16:17 acydburn Exp $
+ *   $Id: profile.php,v 1.193.2.4 2004/07/11 16:46:17 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -83,6 +83,7 @@ function gen_rand_string($hash)
 if ( isset($HTTP_GET_VARS['mode']) || isset($HTTP_POST_VARS['mode']) )
 {
 	$mode = ( isset($HTTP_GET_VARS['mode']) ) ? $HTTP_GET_VARS['mode'] : $HTTP_POST_VARS['mode'];
+	$mode = htmlspecialchars($mode);
 
 	if ( $mode == 'viewprofile' )
 	{

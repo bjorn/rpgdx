@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: faq.php,v 1.14 2002/03/31 00:06:33 psotfx Exp $
+ *   $Id: faq.php,v 1.14.2.2 2004/07/11 16:46:15 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -33,6 +33,9 @@ init_userprefs($userdata);
 //
 // End session management
 //
+
+// Set vars to prevent naughtiness
+$faq = array();
 
 //
 // Load the appropriate faq file
@@ -107,7 +110,7 @@ include($phpbb_root_path . 'includes/page_header.'.$phpEx);
 $template->set_filenames(array(
 	'body' => 'faq_body.tpl')
 );
-make_jumpbox('viewforum.'.$phpEx, $forum_id);
+make_jumpbox('viewforum.'.$phpEx);
 
 $template->assign_vars(array(
 	'L_FAQ_TITLE' => $l_title, 

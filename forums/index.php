@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: index.php,v 1.99.2.1 2002/12/19 17:17:40 psotfx Exp $
+ *   $Id: index.php,v 1.99.2.3 2004/07/11 16:46:15 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -128,6 +128,7 @@ if( !($result = $db->sql_query($sql)) )
 	message_die(GENERAL_ERROR, 'Could not query categories list', '', __LINE__, __FILE__, $sql);
 }
 
+$category_rows = array();
 while( $category_rows[] = $db->sql_fetchrow($result) );
 
 if( ( $total_categories = count($category_rows) ) )
