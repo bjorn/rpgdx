@@ -13,13 +13,15 @@ if (!isset($categories)) {
 }
 if (!isset($contest_id)) {
 	abort_with_error('No contest_id specified.');
+} else {
+  $contest_id = intval($contest_id);
 }
 
 // Get all the information about the contest
 $result = doQuery(
 	"SELECT contest_id, contest_name, contest_description, contest_start, contest_end, contest_status ".
 	"FROM ". CONTESTS_TABLE ." ".
-	"WHERE contest_id=". intval($contest_id)
+	"WHERE contest_id=". $contest_id
 );
 
 // The contest ID must be valid
@@ -45,6 +47,7 @@ if ($num_categories != sizeof($categories)) {
 // and each vote needs to be on a valid category (existing and belonging
 // to the right contest)
 $projects = array();
+$blank_votes = 0;
 foreach ($categories as $key => $col_value)
 {
 	// Check whether this is a valid category 
@@ -57,34 +60,57 @@ foreach ($categories as $key => $col_value)
 	}
 
 	// Check whether this is a valid entry
-	$result = doQuery(
-		"SELECT entry_id FROM ". CONTEST_ENTRIES_TABLE ." ".
-		"WHERE entry_id = ". $col_value ." AND entry_contest = ". $contest_id
-	);
-	if (mysql_num_rows($result) != 1) {
-		abort_with_error('At least one entry you voted on seems to be invalid.');
-	}
+  if (intval($col_value) != -1) {
+    $result = doQuery(
+      "SELECT entry_id FROM ". CONTEST_ENTRIES_TABLE ." ".
+      "WHERE entry_id = ". $col_value ." AND entry_contest = ". $contest_id
+    );
+    if (mysql_num_rows($result) != 1) {
+      abort_with_error('At least one entry you voted on seems to be invalid.');
+    }
 
-	if (isset($projects[$col_value])) {
-		abort_with_error('You cannot vote multiple times for the same project.');
-	}
-	else {
-		$projects[$col_value] = $key;
-	}
+    if (isset($projects[$col_value])) {
+      abort_with_error('You cannot vote multiple times for the same project.');
+    } else {
+      $projects[$col_value] = $key;
+    }
+  } else {
+    // Blank entry, there can be as much as lacking qualified entries
+    $blank_votes += 1;
+  }
 }
 
-// Each user can only vote 1 time
-//$result = doQuery(
-//	"SELECT vote_id FROM ". 
+// Get number of qualified entries
+$result = doQuery(
+	"SELECT entry_id FROM ". CONTEST_ENTRIES_TABLE ." ".
+	"WHERE entry_disqualified = 0 AND entry_contest = ". $contest_id
+);
+$qualified_entries = mysql_num_rows($result);
+
+// Number of blank votes cannot supercede lacking qualified entries
+if ($num_categories - $qualified_entries > 0) {
+  if ($blank_votes > $num_categories - $qualified_entries) {
+    abort_with_error('Too many blank votes.');
+  }
+}
 
 // All errors have been checked, apply vote to the database.
 
 foreach ($categories as $category_id => $entry_id)
 {
 	// Remove any previous votes by this user for this category
-	doQuery("DELETE FROM ". CONTEST_VOTES_TABLE ." WHERE vote_user = ". $userdata['user_id'] ." AND vote_category = $category_id");
-	// Add current vote vote for this category to the database
-	doQuery("INSERT INTO ". CONTEST_VOTES_TABLE ." (vote_entry, vote_user, vote_category) VALUES ($entry_id, ". $userdata['user_id'] .", $category_id)");
+	doQuery(
+    "DELETE FROM ". CONTEST_VOTES_TABLE ." ".
+    "WHERE vote_user = ". $userdata['user_id'] ." ".
+    "AND vote_category = $category_id");
+
+  if (intval($entry_id) != -1) {
+    // Add current vote for this category to the database
+    doQuery(
+      "INSERT INTO ". CONTEST_VOTES_TABLE ." ".
+      "(vote_entry, vote_user, vote_category) VALUES (".
+      "$entry_id, ". $userdata['user_id'] .", $category_id)");
+  }
 };
 
 header("Location: showcontest.php?contest_id=$contest_id");

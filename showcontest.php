@@ -10,7 +10,8 @@ if (!isset($contest_id)) {
  */
 
 $result = doQuery(
-	"SELECT contest_id, contest_name, contest_description, contest_start, contest_end, contest_status ".
+	"SELECT contest_id, contest_name, contest_description, contest_start, ".
+    "contest_end, contest_status ".
 	"FROM ". CONTESTS_TABLE ." ".
 	"WHERE contest_id=". intval($contest_id)
 );
@@ -83,7 +84,8 @@ if ($contest->contest_status == CON_CLOSED)
 
 
 $result = doQuery(
-	"SELECT username, ". USERS_TABLE .".user_id, project_name, project_id, entry_date, entry_id ".
+	"SELECT username, ". USERS_TABLE .".user_id, project_name, project_id, ".
+    "entry_date, entry_id ".
 	"FROM ". CONTEST_ENTRIES_TABLE .
 		" LEFT JOIN ". PROJECTS_TABLE ." ON entry_project = project_id ".
 		" LEFT JOIN ". USERS_TABLE ." USING (user_id) ".
