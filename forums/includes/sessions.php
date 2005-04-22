@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: sessions.php,v 1.58.2.11 2004/07/11 16:46:19 acydburn Exp $
+ *   $Id: sessions.php,v 1.58.2.13 2005/03/15 18:24:37 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -53,6 +53,8 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 		$session_id = '';
 	}
 
+	$page_id = (int) $page_id;
+
 	$last_visit = 0;
 	$current_time = time();
 	$expiry_time = $current_time - $board_config['session_length'];
@@ -79,7 +81,7 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 			if ( isset($sessiondata['autologinid']) && $userdata['user_active'] )
 			{
 				// We have to login automagically
-				if( $sessiondata['autologinid'] == $auto_login_key )
+				if( $sessiondata['autologinid'] === $auto_login_key )
 				{
 					// autologinid matches password
 					$login = 1;
@@ -91,6 +93,11 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 					$login = 0; 
 					$enable_autologin = 0; 
 					$user_id = $userdata['user_id'] = ANONYMOUS;
+				
+					$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . ANONYMOUS;
+					$result = $db->sql_query($sql);
+					$userdata = $db->sql_fetchrow($result);
+					$db->sql_freeresult($result);
 				}
 			}
 			else
@@ -99,6 +106,11 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 				$login = 0;
 				$enable_autologin = 0;
 				$user_id = $userdata['user_id'] = ANONYMOUS;
+
+				$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . ANONYMOUS;
+				$result = $db->sql_query($sql);
+				$userdata = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
 			}
 		}
 		else
@@ -228,6 +240,8 @@ function session_pagestart($user_ip, $thispage_id)
 	{
 		$session_id = '';
 	}
+
+	$thispage_id = (int) $thispage_id;
 
 	//
 	// Does a session exist?

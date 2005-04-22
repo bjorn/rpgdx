@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: template.php,v 1.10.2.3 2002/12/21 19:09:57 psotfx Exp $
+ *   $Id: template.php,v 1.10.2.4 2005/02/21 18:37:50 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -230,7 +230,7 @@ class Template {
 		// Check if it's an absolute or relative path.
 		if (substr($filename, 0, 1) != '/')
 		{
-       		$filename = phpbb_realpath($this->root . '/' . $filename);
+       		$filename = ($rp_filename = phpbb_realpath($this->root . '/' . $filename)) ? $rp_filename : $filename;
 		}
 
 		if (!file_exists($filename))

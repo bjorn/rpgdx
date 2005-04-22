@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: modcp.php,v 1.71.2.24 2004/07/11 16:46:15 acydburn Exp $
+ *   $Id: modcp.php,v 1.71.2.25 2005/03/15 18:09:22 acydburn Exp $
  *
  ***************************************************************************/
 
@@ -130,6 +130,11 @@ if ( !empty($topic_id) )
 	}
 	$topic_row = $db->sql_fetchrow($result);
 
+	if (!$topic_row)
+	{
+		message_die(GENERAL_MESSAGE, 'Topic_post_not_exist');
+	}
+
 	$forum_topics = ( $topic_row['forum_topics'] == 0 ) ? 1 : $topic_row['forum_topics'];
 	$forum_id = $topic_row['forum_id'];
 	$forum_name = $topic_row['forum_name'];
@@ -144,6 +149,11 @@ else if ( !empty($forum_id) )
 		message_die(GENERAL_MESSAGE, 'Forum_not_exist');
 	}
 	$topic_row = $db->sql_fetchrow($result);
+
+	if (!$topic_row)
+	{
+		message_die(GENERAL_MESSAGE, 'Forum_not_exist');
+	}
 
 	$forum_topics = ( $topic_row['forum_topics'] == 0 ) ? 1 : $topic_row['forum_topics'];
 	$forum_name = $topic_row['forum_name'];

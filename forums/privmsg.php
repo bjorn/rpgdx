@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: privmsg.php,v 1.96.2.37 2004/11/18 17:49:36 acydburn Exp $
+ *   $Id: privmsg.php,v 1.96.2.38 2005/03/15 18:09:23 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -560,9 +560,9 @@ else if ( $mode == 'read' )
 	// If the board has HTML off but the post has HTML
 	// on then we process it, else leave it alone
 	//
-	if ( !$board_config['allow_html'] )
+	if ( !$board_config['allow_html'] || !$userdata['user_allowhtml'])
 	{
-		if ( $user_sig != '' && $privmsg['privmsgs_enable_sig'] && $userdata['user_allowhtml'] )
+		if ( $user_sig != '')
 		{
 			$user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", $user_sig);
 		}
@@ -1522,9 +1522,9 @@ else if ( $submit || $refresh || $mode != '' )
 		//
 		// Finalise processing as per viewtopic
 		//
-		if ( !$html_on )
+		if ( !$html_on || !$board_config['allow_html'] || !$userdata['user_allowhtml'] )
 		{
-			if ( $user_sig != '' || !$userdata['user_allowhtml'] )
+			if ( $user_sig != '' )
 			{
 				$user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", $user_sig);
 			}
