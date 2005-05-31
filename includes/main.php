@@ -89,24 +89,24 @@ else
 
 
 $template->assign_vars(array(
-	'TEMPL_DIR'       => "templates/$template_dir/",
+  'TEMPL_DIR'       => "templates/$template_dir/",
 
-	'TITLE'           => 'RPGDX',
-	'LOGINBAR_TEXT'   => $loginbar_text,
+  'TITLE'           => 'RPGDX',
+  'LOGINBAR_TEXT'   => $loginbar_text,
 
   'U_NEWS'          => append_sid('index.php'),
   'U_FORUMS'        => append_sid('http://forums.rpgdx.net/'),
-	'U_WIKI'          => append_sid('http://wiki.rpgdx.net/Main/HomePage'),
+  'U_WIKI'          => append_sid('wiki/index.php/Main_Page'),
   'U_ABOUT'         => append_sid('about.php'),
-	'U_CONTESTS'      => append_sid('showcontests.php'),
-	'U_SEARCH'        => append_sid('search.php'),
+  'U_CONTESTS'      => append_sid('showcontests.php'),
+  'U_SEARCH'        => append_sid('search.php'),
 
-	'S_LOGIN_ACTION'  => append_sid('login.php'),
-	
+  'S_LOGIN_ACTION'  => append_sid('login.php'),
+
   'HIDE_URL'        => 'onmouseover="status=\'\'; return true;"',
   'BBCODE_ON'       => 'bbcode enabled',
-	
-	'MAX_SCREENSHOTS' => $rpgdx_config['screenshots_limit'])
+
+  'MAX_SCREENSHOTS' => $rpgdx_config['screenshots_limit'])
 );
 
 
