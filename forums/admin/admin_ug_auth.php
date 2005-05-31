@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_ug_auth.php,v 1.13.2.5 2004/03/25 15:57:20 acydburn Exp $
+ *   $Id: admin_ug_auth.php,v 1.13.2.7 2005/05/13 20:59:06 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -505,6 +505,48 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 			if( !($result = $db->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't update user level", "", __LINE__, __FILE__, $sql);
+			}
+		}
+
+		$sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . "
+			WHERE group_id = $group_id";
+		$result = $db->sql_query($sql);
+
+		$group_user = array();
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$group_user[$row['user_id']] = $row['user_id'];
+		}
+		$db->sql_freeresult($result);
+
+		$sql = "SELECT ug.user_id, COUNT(auth_mod) AS is_auth_mod 
+			FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug 
+			WHERE ug.user_id IN (" . implode(', ', $group_user) . ") 
+				AND aa.group_id = ug.group_id 
+				AND aa.auth_mod = 1
+			GROUP BY ug.user_id";
+		if ( !($result = $db->sql_query($sql)) )
+		{
+			message_die(GENERAL_ERROR, 'Could not obtain moderator status', '', __LINE__, __FILE__, $sql);
+		}
+
+		while ($row = $db->sql_fetchrow($result))
+		{
+			if ($row['is_auth_mod'])
+			{
+				unset($group_user[$row['user_id']]);
+			}
+		}
+		$db->sql_freeresult($result);
+
+		if (sizeof($group_user))
+		{
+			$sql = "UPDATE " . USERS_TABLE . " 
+				SET user_level = " . USER . " 
+				WHERE user_id IN (" . implode(', ', $group_user) . ") AND user_level = " . MOD;
+			if ( !($result = $db->sql_query($sql)) )
+			{
+				message_die(GENERAL_ERROR, 'Could not update user level', '', __LINE__, __FILE__, $sql);
 			}
 		}
 

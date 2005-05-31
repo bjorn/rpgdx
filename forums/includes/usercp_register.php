@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: usercp_register.php,v 1.20.2.59 2005/02/21 18:37:51 acydburn Exp $
+ *   $Id: usercp_register.php,v 1.20.2.60 2005/05/07 14:17:36 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -425,9 +425,9 @@ if ( isset($HTTP_POST_VARS['submit']) )
 			// Error is already triggered, since one field is empty.
 			$error = TRUE;
 		}
-		else if ( $username != $userdata['username'] || $mode == 'register' )
+		else if ( $username != $userdata['username'] || $mode == 'register')
 		{
-			if (strtolower($username) != strtolower($userdata['username']))
+			if (strtolower($username) != strtolower($userdata['username']) || $mode == 'register')
 			{
 				$result = validate_username($username);
 				if ( $result['error'] )

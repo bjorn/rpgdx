@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: usercp_viewprofile.php,v 1.5.2.3 2004/11/18 17:49:45 acydburn Exp $
+ *   $Id: usercp_viewprofile.php,v 1.5.2.4 2005/05/06 20:50:12 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -32,6 +32,11 @@ if ( empty($HTTP_GET_VARS[POST_USERS_URL]) || $HTTP_GET_VARS[POST_USERS_URL] == 
 	message_die(GENERAL_MESSAGE, $lang['No_user_id_specified']);
 }
 $profiledata = get_userdata($HTTP_GET_VARS[POST_USERS_URL]);
+
+if (!$profiledata)
+{
+	message_die(GENERAL_MESSAGE, $lang['No_user_id_specified']);
+}
 
 $sql = "SELECT *
 	FROM " . RANKS_TABLE . "
