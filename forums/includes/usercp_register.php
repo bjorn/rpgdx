@@ -749,17 +749,17 @@ if ( isset($HTTP_POST_VARS['submit']) )
 					
 					$emailer->email_address(trim($row['user_email']));
 					$emailer->use_template("admin_activate", $row['user_lang']);
-				$emailer->set_subject($lang['New_account_subject']);
+					$emailer->set_subject($lang['New_account_subject']);
 
-				$emailer->assign_vars(array(
+					$emailer->assign_vars(array(
 						'USERNAME' => preg_replace($unhtml_specialchars_match, $unhtml_specialchars_replace, substr(str_replace("\'", "'", $username), 0, 25)),
-					'EMAIL_SIG' => str_replace('<br />', "\n", "-- \n" . $board_config['board_email_sig']),
+						'EMAIL_SIG' => str_replace('<br />', "\n", "-- \n" . $board_config['board_email_sig']),
 
-					'U_ACTIVATE' => $server_url . '?mode=activate&' . POST_USERS_URL . '=' . $user_id . '&act_key=' . $user_actkey)
-				);
-				$emailer->send();
-				$emailer->reset();
-			}
+						'U_ACTIVATE' => $server_url . '?mode=activate&' . POST_USERS_URL . '=' . $user_id . '&act_key=' . $user_actkey)
+					);
+					$emailer->send();
+					$emailer->reset();
+				}
 				$db->sql_freeresult($result);
 			}
 
@@ -865,7 +865,7 @@ if( isset($HTTP_POST_VARS['avatargallery']) && !$error )
 {
 	include($phpbb_root_path . 'includes/usercp_avatar.'.$phpEx);
 
-	$avatar_category = ( !empty($HTTP_POST_VARS['avatarcategory']) ) ? $HTTP_POST_VARS['avatarcategory'] : '';
+	$avatar_category = ( !empty($HTTP_POST_VARS['avatarcategory']) ) ? htmlspecialchars($HTTP_POST_VARS['avatarcategory']) : '';
 
 	$template->set_filenames(array(
 		'body' => 'profile_avatar_gallery.tpl')

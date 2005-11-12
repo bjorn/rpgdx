@@ -279,6 +279,7 @@ if ( $row = $db->sql_fetchrow($result) )
 		$i++;
 	}
 	while ( $row = $db->sql_fetchrow($result) );
+	$db->sql_freeresult($result);
 }
 
 if ( $mode != 'topten' || $board_config['topics_per_page'] < 10 )
@@ -298,6 +299,7 @@ if ( $mode != 'topten' || $board_config['topics_per_page'] < 10 )
 
 		$pagination = generate_pagination("memberlist.$phpEx?mode=$mode&amp;order=$sort_order", $total_members, $board_config['topics_per_page'], $start). '&nbsp;';
 	}
+	$db->sql_freeresult($result);
 }
 else
 {

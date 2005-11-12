@@ -30,18 +30,18 @@ function server_parse($socket, $response, $line = __LINE__)
 {
 	$server_response = '';
 	while (substr($server_response, 3, 1) != ' ') 
-   { 
+	{
 		if (!($server_response = fgets($socket, 256))) 
-      { 
+		{ 
 			message_die(GENERAL_ERROR, "Couldn't get mail server response codes", "", $line, __FILE__); 
-      } 
-   } 
+		} 
+	} 
 
 	if (!(substr($server_response, 0, 3) == $response)) 
-   { 
+	{ 
 		message_die(GENERAL_ERROR, "Ran into problems sending Mail. Response: $server_response", "", $line, __FILE__); 
-   } 
-} 
+	} 
+}
 
 // Replacement or substitute for PHP's mail command
 function smtpmail($mail_to, $subject, $message, $headers = '')
@@ -119,21 +119,21 @@ function smtpmail($mail_to, $subject, $message, $headers = '')
 	// This improved as provided by SirSir to accomodate
 	if( !empty($board_config['smtp_username']) && !empty($board_config['smtp_password']) )
 	{ 
-		fputs($socket, "EHLO " . $board_config['smtp_host'] . "\r\n"); 
+		fputs($socket, "EHLO " . $board_config['smtp_host'] . "\r\n");
 		server_parse($socket, "250", __LINE__);
 
-		fputs($socket, "AUTH LOGIN\r\n"); 
+		fputs($socket, "AUTH LOGIN\r\n");
 		server_parse($socket, "334", __LINE__);
 
-		fputs($socket, base64_encode($board_config['smtp_username']) . "\r\n"); 
+		fputs($socket, base64_encode($board_config['smtp_username']) . "\r\n");
 		server_parse($socket, "334", __LINE__);
 
-		fputs($socket, base64_encode($board_config['smtp_password']) . "\r\n"); 
+		fputs($socket, base64_encode($board_config['smtp_password']) . "\r\n");
 		server_parse($socket, "235", __LINE__);
-	} 
-	else 
-	{ 
-		fputs($socket, "HELO " . $board_config['smtp_host'] . "\r\n"); 
+	}
+	else
+	{
+		fputs($socket, "HELO " . $board_config['smtp_host'] . "\r\n");
 		server_parse($socket, "250", __LINE__);
 	}
 
@@ -145,10 +145,10 @@ function smtpmail($mail_to, $subject, $message, $headers = '')
 	// Specify each user to send to and build to header.
 	$to_header = '';
 
-		// Add an additional bit of error checking to the To field.
+	// Add an additional bit of error checking to the To field.
 	$mail_to = (trim($mail_to) == '') ? 'Undisclosed-recipients:;' : trim($mail_to);
 	if (preg_match('#[^ ]+\@[^ ]+#', $mail_to))
-		{
+	{
 		fputs($socket, "RCPT TO: <$mail_to>\r\n");
 		server_parse($socket, "250", __LINE__);
 	}

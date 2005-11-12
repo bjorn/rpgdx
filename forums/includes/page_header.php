@@ -395,10 +395,10 @@ $template->assign_vars(array(
 	'U_LOGIN_LOGOUT' => append_sid($u_login_logout),
 	'U_GROUP_CP' => append_sid('groupcp.'.$phpEx),
 
-  'U_RPGDX'        => append_sid('http://www.rpgdx.net/'),
-  'U_NEWS'         => append_sid('http://www.rpgdx.net/'),
-  'U_FORUMS'       => append_sid('http://forums.rpgdx.net/'),
-  'U_ABOUT'        => append_sid('http://www.rpgdx.net/about.php'),
+	'U_RPGDX'        => append_sid('http://www.rpgdx.net/'),
+	'U_NEWS'         => append_sid('http://www.rpgdx.net/'),
+	'U_FORUMS'       => append_sid('http://forums.rpgdx.net/'),
+	'U_ABOUT'        => append_sid('http://www.rpgdx.net/about.php'),
 	'U_CONTESTS'     => append_sid('http://www.rpgdx.net/showcontests.php'),
 	'U_SEARCH_RPGDX' => append_sid('http://www.rpgdx.net/search.php'),
 

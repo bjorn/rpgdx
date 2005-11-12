@@ -107,15 +107,15 @@ class emailer
 				$tpl_file = $phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/email/' . $template_file . '.tpl';
 
 				if (!@file_exists(@phpbb_realpath($tpl_file)))
-		{
+				{
 					message_die(GENERAL_ERROR, 'Could not find email template file :: ' . $template_file, '', __LINE__, __FILE__);
-		}
-	}
+				}
+			}
 
 			if (!($fd = @fopen($tpl_file, 'r')))
-	{
+			{
 				message_die(GENERAL_ERROR, 'Failed opening template file :: ' . $tpl_file, '', __LINE__, __FILE__);
-		}
+			}
 
 			$this->tpl_msg[$template_lang . $template_file] = fread($fd, filesize($tpl_file));
 			fclose($fd);
@@ -134,7 +134,7 @@ class emailer
 
 	// Send the mail out to the recipients set previously in var $this->address
 	function send()
-		{
+	{
 		global $board_config, $lang, $phpEx, $phpbb_root_path, $db;
 
     	// Escape all quotes, else the eval will fail.
@@ -221,7 +221,7 @@ class emailer
 				if (!$db->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, 'Unable to update config table', '', __LINE__, __FILE__, $sql);
-		}
+				}
 
 				$board_config['sendmail_fix'] = 1;
 				$result = @mail($to, $this->subject, preg_replace("#(?<!\r)\n#s", "\n", $this->msg), $this->extra_headers);

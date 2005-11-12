@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group        
  *   email                : support@phpbb.com                           
  *                                                          
- *   $Id: auth.php,v 1.37.2.3 2003/02/25 16:02:59 acydburn Exp $                                                           
+ *   $Id: auth.php,v 1.37.2.5 2004/03/01 16:49:03 psotfx Exp $                                                           
  *                                                            
  * 
  ***************************************************************************/ 
@@ -132,7 +132,6 @@ function auth($type, $forum_id, $userdata, $f_access = '')
 			$db->sql_freeresult($result);
 			return array();
 		}
-
 		$db->sql_freeresult($result);
 	}
 
@@ -172,6 +171,7 @@ function auth($type, $forum_id, $userdata, $f_access = '')
 			}
 			while( $row = $db->sql_fetchrow($result) );
 		}
+		$db->sql_freeresult($result);
 	}
 
 	$is_admin = ( $userdata['user_level'] == ADMIN && $userdata['session_logged_in'] ) ? TRUE : 0;

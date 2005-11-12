@@ -80,6 +80,7 @@ $unlock = ( isset($HTTP_POST_VARS['unlock']) ) ? TRUE : FALSE;
 if ( isset($HTTP_POST_VARS['mode']) || isset($HTTP_GET_VARS['mode']) )
 {
 	$mode = ( isset($HTTP_POST_VARS['mode']) ) ? $HTTP_POST_VARS['mode'] : $HTTP_GET_VARS['mode'];
+	$mode = htmlspecialchars($mode);
 }
 else
 {
@@ -231,7 +232,7 @@ switch( $mode )
 		{
 			include($phpbb_root_path . 'includes/functions_search.'.$phpEx);
 
-			$topics = ( isset($HTTP_POST_VARS['topic_id_list']) ) ?  $HTTP_POST_VARS['topic_id_list'] : array($topic_id);
+			$topics = ( isset($HTTP_POST_VARS['topic_id_list']) ) ? $HTTP_POST_VARS['topic_id_list'] : array($topic_id);
 
 			$topic_id_sql = '';
 			for($i = 0; $i < count($topics); $i++)
@@ -488,7 +489,7 @@ switch( $mode )
 
 				$sql = "SELECT * 
 					FROM " . TOPICS_TABLE . " 
-					WHERE topic_id IN ($topic_list) 
+					WHERE topic_id IN ($topic_list)
 						AND forum_id = $old_forum_id
 						AND topic_status <> " . TOPIC_MOVED;
 				if ( !($result = $db->sql_query($sql, BEGIN_TRANSACTION)) )
@@ -768,7 +769,7 @@ switch( $mode )
 
 				$new_forum_id = intval($HTTP_POST_VARS['new_forum_id']);
 				$topic_time = time();
-
+				
 				$sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . '
 					WHERE forum_id = ' . $new_forum_id;
 				if ( !($result = $db->sql_query($sql)) )

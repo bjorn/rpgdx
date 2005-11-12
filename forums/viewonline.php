@@ -207,7 +207,7 @@ while ( $row = $db->sql_fetchrow($result) )
 					break;
 				case PAGE_RPGDX:
 					$location = 'Viewing RPGDX main site';
-					$location_url = "http://www.rpgdx.net/";
+					$location_url = "http://rpgdx.net/";
 					break;
 				default:
 					$location = $lang['Forum_index'];

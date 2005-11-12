@@ -58,7 +58,7 @@ $mark_list = ( !empty($HTTP_POST_VARS['mark']) ) ? $HTTP_POST_VARS['mark'] : 0;
 if ( isset($HTTP_POST_VARS['folder']) || isset($HTTP_GET_VARS['folder']) )
 {
 	$folder = ( isset($HTTP_POST_VARS['folder']) ) ? $HTTP_POST_VARS['folder'] : $HTTP_GET_VARS['folder'];
-    $folder = htmlspecialchars($folder);
+	$folder = htmlspecialchars($folder);
 
 	if ( $folder != 'inbox' && $folder != 'outbox' && $folder != 'sentbox' && $folder != 'savebox' )
 	{
@@ -103,7 +103,7 @@ if ( $cancel )
 if ( !empty($HTTP_POST_VARS['mode']) || !empty($HTTP_GET_VARS['mode']) )
 {
 	$mode = ( !empty($HTTP_POST_VARS['mode']) ) ? $HTTP_POST_VARS['mode'] : $HTTP_GET_VARS['mode'];
-    $mode = htmlspecialchars($mode);
+	$mode = htmlspecialchars($mode);
 }
 else
 {
@@ -876,7 +876,7 @@ else if ( $save && $mark_list && $folder != 'savebox' && $folder != 'outbox' )
 	{
 		redirect(append_sid("login.$phpEx?redirect=privmsg.$phpEx&folder=inbox", true));
 	}
-
+	
 	if (sizeof($mark_list))
 	{
 		// See if recipient is at their savebox limit
@@ -2122,7 +2122,7 @@ if ( !($result = $db->sql_query($sql)) )
 
 if ( $row = $db->sql_fetchrow($result) )
 {
-    $i = 0;
+	$i = 0;
 	do
 	{
 		$privmsg_id = $row['privmsgs_id'];
@@ -2157,7 +2157,7 @@ if ( $row = $db->sql_fetchrow($result) )
 
 		$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
 		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-                $i++;
+		$i++;
 
 		$template->assign_block_vars('listrow', array(
 			'ROW_COLOR' => '#' . $row_color,

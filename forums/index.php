@@ -130,6 +130,7 @@ if( !($result = $db->sql_query($sql)) )
 
 $category_rows = array();
 while( $category_rows[] = $db->sql_fetchrow($result) );
+$db->sql_freeresult($result);
 
 if( ( $total_categories = count($category_rows) ) )
 {
@@ -181,6 +182,7 @@ if( ( $total_categories = count($category_rows) ) )
 	{
 		$forum_data[] = $row;
 	}
+	$db->sql_freeresult($result);
 
 	if ( !($total_forums = count($forum_data)) )
 	{
@@ -191,7 +193,7 @@ if( ( $total_categories = count($category_rows) ) )
 	// Obtain a list of topic ids which contain
 	// posts made since user last visited
 	//
-	if ( $userdata['session_logged_in'] )
+	if ($userdata['session_logged_in'])
 	{
 		$sql =
 			"SELECT t.forum_id, t.topic_id, p.post_time ".
@@ -212,6 +214,7 @@ if( ( $total_categories = count($category_rows) ) )
 		{
 			$new_topic_data[$topic_data['forum_id']][$topic_data['topic_id']] = $topic_data['post_time'];
 		}
+		$db->sql_freeresult($result);
 	}
 
 	//
@@ -237,6 +240,7 @@ if( ( $total_categories = count($category_rows) ) )
 	{
 		$forum_moderators[$row['forum_id']][] = '<a href="' . viewprofile_url($row['user_id']) . '">' . $row['username'] . '</a>';
 	}
+	$db->sql_freeresult($result);
 
 	$sql = "SELECT aa.forum_id, g.group_id, g.group_name 
 		FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g 
@@ -256,6 +260,7 @@ if( ( $total_categories = count($category_rows) ) )
 	{
 		$forum_moderators[$row['forum_id']][] = '<a href="' . append_sid("groupcp.$phpEx?" . POST_GROUPS_URL . "=" . $row['group_id']) . '">' . $row['group_name'] . '</a>';
 	}
+	$db->sql_freeresult($result);
 
 	//
 	// Find which forums are visible for this user

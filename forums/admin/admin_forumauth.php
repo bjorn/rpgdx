@@ -111,8 +111,8 @@ if( isset($HTTP_POST_VARS['submit']) )
 
 			if (is_array($simple_ary))
 			{
-			$sql = "UPDATE " . FORUMS_TABLE . " SET $sql WHERE forum_id = $forum_id";
-		}
+				$sql = "UPDATE " . FORUMS_TABLE . " SET $sql WHERE forum_id = $forum_id";
+			}
 		}
 		else
 		{

@@ -293,7 +293,7 @@ function session_pagestart($user_ip, $thispage_id)
 		$sessionmethod = SESSION_METHOD_GET;
 	}
 
-	//
+	// 
 	if (!preg_match('/^[A-Za-z0-9]*$/', $session_id))
 	{
 		$session_id = '';

@@ -144,7 +144,8 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 
 		if (!empty($HTTP_POST_VARS['redirect']) || !empty($HTTP_GET_VARS['redirect']))
 		{
-			$url = (!empty($HTTP_POST_VARS['redirect'])) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : $HTTP_GET_VARS['redirect'];
+			$url = (!empty($HTTP_POST_VARS['redirect'])) ? htmlspecialchars($HTTP_POST_VARS['redirect']) : htmlspecialchars($HTTP_GET_VARS['redirect']);
+			$url = str_replace('&amp;', '&', $url);
 			redirect(append_sid($url, true));
 		}
 		else
