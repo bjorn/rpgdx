@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: index.php,v 1.99.2.3 2004/07/11 16:46:15 acydburn Exp $
+ *   $Id: index.php,v 1.99.2.6 2005/10/30 15:17:13 acydburn Exp $
  *
  *
  ***************************************************************************/

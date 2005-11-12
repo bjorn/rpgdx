@@ -236,14 +236,14 @@
 	<tr> 
 	  <td class="row1"><span class="gen">{L_UPLOAD_AVATAR_URL}</span></td>
 	  <td class="row2"> 
-		<input type="text" name="avatarurl" size="40" class="post" style="width: 200px"  />
+		<input class="post" type="text" name="avatarurl" size="40" style="width: 200px"  />
 	  </td>
 	</tr>
 	<!-- END avatar_remote_upload -->
 	<tr> 
 	  <td class="row1"><span class="gen">{L_LINK_REMOTE_AVATAR}</span></td>
 	  <td class="row2"> 
-		<input type="text" name="avatarremoteurl" size="40" class="post" style="width: 200px"  />
+		<input class="post" type="text" name="avatarremoteurl" size="40" style="width: 200px"  />
 	  </td>
 	</tr>
 	<!-- BEGIN avatar_local_gallery -->

@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: modcp.php,v 1.71.2.25 2005/03/15 18:09:22 acydburn Exp $
+ *   $Id: modcp.php,v 1.71.2.27 2005/09/14 18:14:30 acydburn Exp $
  *
  ***************************************************************************/
 
@@ -221,7 +221,7 @@ switch( $mode )
 	case 'delete':
 		if (!$is_auth['auth_delete'])
 		{
-			message_die(MESSAGE, sprintf($lang['Sorry_auth_delete'], $is_auth['auth_delete_type']));
+			message_die(GENERAL_MESSAGE, sprintf($lang['Sorry_auth_delete'], $is_auth['auth_delete_type']));
 		}
 
 		$page_title = $lang['Mod_CP'];
@@ -461,6 +461,20 @@ switch( $mode )
 
 			$new_forum_id = intval($HTTP_POST_VARS['new_forum']);
 			$old_forum_id = $forum_id;
+
+			$sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . '
+				WHERE forum_id = ' . $new_forum_id;
+			if ( !($result = $db->sql_query($sql)) )
+			{
+				message_die(GENERAL_ERROR, 'Could not select from forums table', '', __LINE__, __FILE__, $sql);
+			}
+			
+			if (!$db->sql_fetchrow($result))
+			{
+				message_die(GENERAL_MESSAGE, 'New forum does not exist');
+			}
+
+			$db->sql_freeresult($result);
 
 			if ( $new_forum_id != $old_forum_id )
 			{
@@ -754,6 +768,20 @@ switch( $mode )
 
 				$new_forum_id = intval($HTTP_POST_VARS['new_forum_id']);
 				$topic_time = time();
+
+				$sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . '
+					WHERE forum_id = ' . $new_forum_id;
+				if ( !($result = $db->sql_query($sql)) )
+				{
+					message_die(GENERAL_ERROR, 'Could not select from forums table', '', __LINE__, __FILE__, $sql);
+				}
+			
+				if (!$db->sql_fetchrow($result))
+				{
+					message_die(GENERAL_MESSAGE, 'New forum does not exist');
+				}
+
+				$db->sql_freeresult($result);
 
 				$sql  = "INSERT INTO " . TOPICS_TABLE . " (topic_title, topic_poster, topic_time, forum_id, topic_status, topic_type)
 					VALUES ('" . str_replace("\'", "''", $post_subject) . "', $first_poster, " . $topic_time . ", $new_forum_id, " . TOPIC_UNLOCKED . ", " . POST_NORMAL . ")";
@@ -1056,7 +1084,7 @@ switch( $mode )
 					'L_SEARCH_POSTS' => sprintf($lang['Search_user_posts'], $username), 
 
 					'U_PROFILE' => ($id == ANONYMOUS) ? "modcp.$phpEx?mode=ip&amp;" . POST_POST_URL . "=" . $post_id . "&amp;" . POST_TOPIC_URL . "=" . $topic_id . "&amp;sid=" . $userdata['session_id'] : viewprofile_url($id),
-					'U_SEARCHPOSTS' => append_sid("search.$phpEx?search_author=" . urlencode($username) . "&amp;showresults=topics"))
+					'U_SEARCHPOSTS' => append_sid("search.$phpEx?search_author=" . (($id == ANONYMOUS) ? 'Anonymous' : urlencode($username)) . "&amp;showresults=topics"))
 				);
 
 				$i++; 
