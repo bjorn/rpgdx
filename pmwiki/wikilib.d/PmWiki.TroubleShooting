@@ -1,7 +1,0 @@
-version=pmwiki-0.5.19
-newline=²
-text=This page lists various problems encountered when using PmWiki.²²* ResettingPagePermissions²* Setting up PmWiki with php SAFE MODE: PhpSafeMode²* Getting revisions to work on windows: DiffAndPatchForWindows²* If you have problems extracting the installation file on Windows (which I had using WinZip and PKZip), try WinRAR from http://www.rarlab.com - it worked for me.²* ...
-time=1060676637
-host=193.150.218.60
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624 Netscape/7.1 (ax)
-rev=9

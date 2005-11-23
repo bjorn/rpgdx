@@ -1,7 +1,0 @@
-version=pmwiki-0.5.9
-newline=²
-text=System Requirements are one of the beauties of PmWiki.²²PmWiki requires a server that runs PHP4.²It does not run on an older PHP version ( I tried ).²²PmWiki does [++'''NOT'''++] require:²* an SQL or an other database²* a CGI bin²* the ability to run CGI scripts²²%trail%<<|PmWiki.DocumentationIndex|>>
-time=1058296712
-host=66.33.200.186
-agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)
-rev=6

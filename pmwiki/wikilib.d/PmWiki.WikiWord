@@ -1,7 +1,0 @@
-version=pmwiki-0.5.20
-newline=²
-text=A WikiWord is a set of two or more words run together where the first letter of each word is capitalized.  Sometimes this is known as "mixed case" or "camel case".  (The name "camel {{WikiWord}}s are used as link and page titles in a WikiWikiWeb.  The standard definition for WikiWord says that 1-letter words such as "a" should not be capitalized in a WikiWord (for various programming reasons), but the software running this Wiki site doesn't have that restriction.  In other words, you can just string any sequence of words together and capitalize the first letter of each word to make a valid WikiWord.²²²%trail%<<|PmWiki.DocumentationIndex|>>
-time=1061556757
-host=24.155.25.197
-agent=Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)
-rev=18
