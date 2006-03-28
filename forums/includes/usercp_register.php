@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: usercp_register.php,v 1.20.2.67 2005/10/31 06:40:27 grahamje Exp $
+ *   $Id: usercp_register.php,v 1.20.2.70 2005/12/29 11:51:11 acydburn Exp $
  *
  *
  ***************************************************************************/
@@ -123,8 +123,7 @@ if (
   }
   // End hack
 
-	$strip_var_list = array('username' => 'username', 'email' => 'email', 'icq' => 'icq', 'aim' => 'aim', 'msn' => 'msn', 'yim' => 'yim', 'website' => 'website', 'location' => 'location', 'occupation' => 'occupation', 'interests' => 'interests');
-	$strip_var_list['confirm_code'] = 'confirm_code';
+	$strip_var_list = array('email' => 'email', 'icq' => 'icq', 'aim' => 'aim', 'msn' => 'msn', 'yim' => 'yim', 'website' => 'website', 'location' => 'location', 'occupation' => 'occupation', 'interests' => 'interests', 'confirm_code' => 'confirm_code');
 
 	// Strip all tags from data ... may p**s some people off, bah, strip_tags is
 	// doing the job but can still break HTML output ... have no choice, have
@@ -136,6 +135,8 @@ if (
 			$$var = trim(htmlspecialchars($HTTP_POST_VARS[$param]));
 		}
 	}
+
+	$username = ( !empty($HTTP_POST_VARS['username']) ) ? phpbb_clean_username($HTTP_POST_VARS['username']) : '';
 
 	$trim_var_list = array('cur_password' => 'cur_password', 'new_password' => 'new_password', 'password_confirm' => 'password_confirm', 'signature' => 'signature');
 
@@ -311,6 +312,12 @@ if ( isset($HTTP_POST_VARS['submit']) )
 
 			if ($row = $db->sql_fetchrow($result))
 			{
+				// Only compare one char if the zlib-extension is not loaded
+				if (!@extension_loaded('zlib'))
+				{
+					$row['code'] = substr($row['code'], -1);
+				}
+
 				if ($row['code'] != $confirm_code)
 				{
 					$error = TRUE;
