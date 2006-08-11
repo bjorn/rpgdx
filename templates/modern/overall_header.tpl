@@ -98,13 +98,13 @@
       <br />
       <br />
       <b>Vote for us</b><br />
-      <a href="http://www.rpg-dev.net/top50/vote.php?user=Bjorn"><img src="images/rpgdev_top50.gif" alt="" width="88" height="31" border=0 style="margin-top: 10px;"></a><br />
+      <a href="http://www.rpg-dev.net/top50/vote.aspx?user=Bjorn"><img src="images/rpgdev_top50.gif" alt="" width="88" height="31" border=0 style="margin-top: 10px;"></a><br />
       <br />
       <b>Affiliates</b><br />
       <a href="http://www.rpg-dev.net/"><img src="images/rpgdev_banner.gif" alt="" width="88" height="31" border=0 style="margin-top: 10px;"></a><br />
       <a href="http://www.abstract-productions.net/"><img src="images/ap_banner.png" alt="" width="88" height="31" border=0 style="margin-top: 10px;"></a><!--<br />
       <b>Hosted:</b><br />-->
-      
+
       </div>
     </td>
     <td><img src="{TEMPL_DIR}images/pixel.gif" width="10" height="1" alt="" /></td>
