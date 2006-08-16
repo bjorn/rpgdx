@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: login.php,v 1.47.2.21 2005/12/29 11:51:13 acydburn Exp $
+ *   $Id: login.php,v 1.47.2.24 2006/04/22 20:28:42 grahamje Exp $
  *
  *
  ***************************************************************************/
@@ -82,7 +82,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 				
 				// Check to see if user is allowed to login again... if his tries are exceeded
 				if ($row['user_last_login_try'] && $board_config['login_reset_time'] && $board_config['max_login_attempts'] && 
-					$row['user_last_login_try'] >= (time() - ($board_config['login_reset_time'] * 60)) && $row['user_login_tries'] >= $board_config['max_login_attempts'])
+					$row['user_last_login_try'] >= (time() - ($board_config['login_reset_time'] * 60)) && $row['user_login_tries'] >= $board_config['max_login_attempts'] && $userdata['user_level'] != ADMIN)
 				{
 					message_die(GENERAL_MESSAGE, sprintf($lang['Login_attempts_exceeded'], $board_config['max_login_attempts'], $board_config['login_reset_time']));
 				}
@@ -107,7 +107,8 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 						message_die(CRITICAL_ERROR, "Couldn't start session : login", "", __LINE__, __FILE__);
 					}
 				}
-				else
+				// Only store a failed login attempt for an active user - inactive users can't login even with a correct password
+				elseif( $row['user_active'] )
 				{
 					// Save login tries and last login
 					if ($row['user_id'] != ANONYMOUS)
@@ -117,23 +118,23 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 							WHERE user_id = ' . $row['user_id'];
 						$db->sql_query($sql);
 					}
-					
-					$redirect = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : '';
-					$redirect = str_replace('?', '&', $redirect);
-
-					if (strstr(urldecode($redirect), "\n") || strstr(urldecode($redirect), "\r"))
-					{
-						message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url.');
-					}
-
-					$template->assign_vars(array(
-						'META' => "<meta http-equiv=\"refresh\" content=\"3;url=login.$phpEx?redirect=$redirect\">")
-					);
-
-					$message = $lang['Error_login'] . '<br /><br />' . sprintf($lang['Click_return_login'], "<a href=\"login.$phpEx?redirect=$redirect\">", '</a>') . '<br /><br />' .  sprintf($lang['Click_return_index'], '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
-
-					message_die(GENERAL_MESSAGE, $message);
 				}
+
+				$redirect = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : '';
+				$redirect = str_replace('?', '&', $redirect);
+
+				if (strstr(urldecode($redirect), "\n") || strstr(urldecode($redirect), "\r"))
+				{
+					message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url.');
+				}
+
+				$template->assign_vars(array(
+					'META' => "<meta http-equiv=\"refresh\" content=\"3;url=login.$phpEx?redirect=$redirect\">")
+				);
+
+				$message = $lang['Error_login'] . '<br /><br />' . sprintf($lang['Click_return_login'], "<a href=\"login.$phpEx?redirect=$redirect\">", '</a>') . '<br /><br />' .  sprintf($lang['Click_return_index'], '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
+
+				message_die(GENERAL_MESSAGE, $message);
 			}
 		}
 		else

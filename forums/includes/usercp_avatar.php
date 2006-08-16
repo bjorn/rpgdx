@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: usercp_avatar.php,v 1.8.2.22 2005/10/30 15:17:14 acydburn Exp $
+ *   $Id: usercp_avatar.php,v 1.8.2.24 2006/05/23 21:09:27 grahamje Exp $
  *
  *
  ***************************************************************************/
@@ -100,6 +100,8 @@ function user_avatar_url($mode, &$error, &$error_msg, $avatar_filename)
 		$avatar_filename = 'http://' . $avatar_filename;
 	}
 
+	$avatar_filename = substr($avatar_filename, 0, 100);
+
 	if ( !preg_match("#^((ht|f)tp://)([^ \?&=\#\"\n\r\t<]*?(\.(jpg|jpeg|gif|png))$)#is", $avatar_filename) )
 	{
 		$error = true;
@@ -120,7 +122,7 @@ function user_avatar_upload($mode, $avatar_mode, &$current_avatar, &$current_typ
 	$width = $height = 0;
 	$type = '';
 
-	if ( $avatar_mode == 'remote' && preg_match('/^(http:\/\/)?([\w\-\.]+)\:?([0-9]*)\/(.*)$/', $avatar_filename, $url_ary) )
+	if ( $avatar_mode == 'remote' && preg_match('/^(http:\/\/)?([\w\-\.]+)\:?([0-9]*)\/([^ \?&=\#\"\n\r\t<]*?(\.(jpg|jpeg|gif|png)))$/', $avatar_filename, $url_ary) )
 	{
 		if ( empty($url_ary[4]) )
 		{

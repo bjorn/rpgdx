@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: common.php,v 1.74.2.22 2005/12/30 09:51:01 acydburn Exp $
+ *   $Id: common.php,v 1.74.2.25 2006/05/26 17:46:59 grahamje Exp $
  *
  ***************************************************************************/
 
@@ -82,10 +82,11 @@ if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals
 
 	while (list($var,) = @each($input))
 	{
-		if (!in_array($var, $not_unset))
+		if (in_array($var, $not_unset))
 		{
-			unset($$var);
+			die('Hacking attempt!');
 		}
+		unset($$var);
 	}
 
 	unset($input);
@@ -170,6 +171,7 @@ $theme = array();
 $images = array();
 $lang = array();
 $nav_links = array();
+$dss_seeded = false;
 $gen_simple_header = FALSE;
 
 include($phpbb_root_path . 'config.'.$phpEx);
