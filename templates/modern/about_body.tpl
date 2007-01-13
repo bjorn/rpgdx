@@ -57,11 +57,11 @@ You can download RPGDX to any PDA (works on any PDA: Palm Pilot, Windows CE, Com
 <br />
 <h4>Contributors</h4>
 
-<p align="justify"><b>Bjørn Lindeijer</b> [<a href="mailto:b.lindeijer@gmail.com">e-mail</a>]</p>
+<p align="justify"><b>Bjørn Lindeijer</b> [<a href="mailto:&#098;&#046;&#108;&#105;&#110;&#100;&#101;&#105;&#106;&#101;&#114;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">e-mail</a>]</p>
 
 <p align="justify">Programmer/webmaster of the current RPGDX, and owner of the rpgdx.net domain.</p>
 
-<p align="justify"><b>Mandrake</b> [<a href="mailto:mandrake@rpgdx.net">e-mail</a>]</p>
+<p align="justify"><b>Mandrake</b> [<a href="mailto:&#109;&#097;&#110;&#100;&#114;&#097;&#107;&#101;&#064;&#114;&#112;&#103;&#100;&#120;&#046;&#110;&#101;&#116;">e-mail</a>]</p>
 
 <p align="justify">The guy that started all this. You can visit Mandrake's homepage and play his nifty games <a href="http://mandrake.rpgdx.net/">here</a>.</p>
 
