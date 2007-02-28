@@ -1,23 +1,24 @@
 Subdomain    Email            MySQL                Disk Usage
 -------------------------------------------------------------
-barok
-ccps                          Y (indierp_ccps)     1 MB
+barok                                              (empty)
+ccps                          Y (indierp_ccps)     (redirect)
 darkdreams   POP (darkdread)                       4 MB
-darkfantasy  Forward
+darkfantasy  Forward                               (empty)
 dbent                                              1 MB
+faeriering
 jihgfed      Forward                               3 MB
-juno         Forward                               5 MB
+juno         Forward                               5 MB (inactive)
 locrian      POP                                   1 MB
-mandrake     POP                                   8 MB
+mandrake     POP                                   (redirect)
 moonlight                                          35 MB
 pixel-zone   Forward                               7 MB
 ragnarok     POP (badmrbox)                        3 MB
 syn9         POP              Y (indie-rp_syn9)    2 MB
 tsunami      POP              Y (indie-rp_tsunami) 1 MB
-twinsen      Forward
+twinsen      Forward                               0.3 MB (inactive)
 warspawn     Forward                               1 MB
 whitedoor    Forward                               15 MB
-xmark        POP
+xmark        POP                                   (redirect)
 ...          POP (vsdbs)
 ...          Forward (bjorn)
 ...          Forward (georg)

@@ -73,7 +73,7 @@ if ($profiledata['user_avatar_type'] && $profiledata['user_allowavatar']) {
 	switch($profiledata['user_avatar_type'])
 	{
 		case USER_AVATAR_UPLOAD:
-			$avatar_img = ($board_config['allow_avatar_upload']) ? $board_config['avatar_path'] .'/'. $profiledata['user_avatar'] : '';
+			$avatar_img = ($board_config['allow_avatar_upload']) ? 'forums/'. $board_config['avatar_path'] .'/'. $profiledata['user_avatar'] : '';
 			break;
 		case USER_AVATAR_REMOTE:
 			$avatar_img = ($board_config['allow_avatar_remote']) ? $profiledata['user_avatar'] : '';
