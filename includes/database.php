@@ -12,7 +12,7 @@ include_once('database_connect.php');
 function doQuery($query, $die = 2)
 {
 	if (!$result = mysql_query($query)) {
-		$error = "<p><b>Error during MySQL query (please notify current <a href=\"mailto:b_lindeijer@hotmail.com\">maintainer</a>):</b><br />&nbsp;$query<br>&nbsp;<span style=\"color: rgb(255,0,0);\">". mysql_error() ."</span></p>";
+		$error = "<p><b>Error during MySQL query (please notify current <a href=\"mailto:admin@rpgdx.net\">maintainer</a>):</b><br />&nbsp;$query<br>&nbsp;<span style=\"color: rgb(255,0,0);\">". mysql_error() ."</span></p>";
 		switch ($die) {
 			case 0: break;
 			case 1: print($error); break;
