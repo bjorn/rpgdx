@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: usercp_avatar.php,v 1.8.2.24 2006/05/23 21:09:27 grahamje Exp $
+ *   $Id: usercp_avatar.php 5962 2006-05-23 21:09:27Z grahamje $
  *
  *
  ***************************************************************************/

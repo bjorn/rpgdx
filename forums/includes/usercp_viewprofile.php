@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: usercp_viewprofile.php,v 1.5.2.6 2005/09/14 18:14:30 acydburn Exp $
+ *   $Id: usercp_viewprofile.php 5204 2005-09-14 18:14:30Z acydburn $
  *
  *
  ***************************************************************************/

@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_user_ban.php,v 1.21.2.6 2005/10/30 15:17:13 acydburn Exp $
+ *   $Id: admin_user_ban.php 5283 2005-10-30 15:17:14Z acydburn $
  *
  *
  ***************************************************************************/

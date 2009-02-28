@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_tail.php,v 1.27.2.4 2005/09/14 18:14:30 acydburn Exp $
+ *   $Id: page_tail.php 5204 2005-09-14 18:14:30Z acydburn $
  *
  *
  ***************************************************************************/

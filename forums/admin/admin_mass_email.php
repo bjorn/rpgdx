@@ -6,7 +6,7 @@
 *     copyright            : (C) 2001 The phpBB Group
 *     email                : support@phpbb.com
 *
-*     $Id: admin_mass_email.php,v 1.15.2.7 2003/05/03 23:24:01 acydburn Exp $
+*     $Id: admin_mass_email.php 3966 2003-05-03 23:24:04Z acydburn $
 *
 ****************************************************************************/
 

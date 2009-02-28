@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: functions_post.php,v 1.9.2.52 2006/05/06 13:38:55 grahamje Exp $
+ *   $Id: functions_post.php 5886 2006-05-06 13:38:55Z grahamje $
  *
  *
  ***************************************************************************/

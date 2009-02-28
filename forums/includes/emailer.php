@@ -6,7 +6,7 @@
     copyright            : (C) 2001 The phpBB Group
     email                : support@phpbb.com
 
-    $Id: emailer.php,v 1.15.2.35 2005/10/05 17:42:04 grahamje Exp $
+    $Id: emailer.php 5261 2005-10-05 17:42:04Z grahamje $
 
 ***************************************************************************/
 

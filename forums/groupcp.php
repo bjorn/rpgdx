@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: groupcp.php,v 1.58.2.25 2005/09/17 18:36:48 grahamje Exp $
+ *   $Id: groupcp.php 8357 2008-02-01 11:59:05Z Kellanved $
  *
  *
  ***************************************************************************/
@@ -146,8 +146,9 @@ else
 
 $confirm = ( isset($HTTP_POST_VARS['confirm']) ) ? TRUE : 0;
 $cancel = ( isset($HTTP_POST_VARS['cancel']) ) ? TRUE : 0;
-
+$sid = ( isset($HTTP_POST_VARS['sid']) ) ? $HTTP_POST_VARS['sid'] : '';
 $start = ( isset($HTTP_GET_VARS['start']) ) ? intval($HTTP_GET_VARS['start']) : 0;
+$start = ($start < 0) ? 0 : $start;
 
 //
 // Default var values
@@ -209,6 +210,10 @@ else if ( isset($HTTP_POST_VARS['joingroup']) && $group_id )
 	{
 		redirect(append_sid("login.$phpEx?redirect=groupcp.$phpEx&" . POST_GROUPS_URL . "=$group_id", true));
 	}
+	else if ( $sid !== $userdata['session_id'] )
+	{
+		message_die(GENERAL_ERROR, $lang['Session_invalid']);
+	}
 
 	$sql = "SELECT ug.user_id, g.group_type
 		FROM " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g 
@@ -220,7 +225,7 @@ else if ( isset($HTTP_POST_VARS['joingroup']) && $group_id )
 		message_die(GENERAL_ERROR, 'Could not obtain user and group information', '', __LINE__, __FILE__, $sql);
 	}
 
-	if (	$row = $db->sql_fetchrow($result) )
+	if ( $row = $db->sql_fetchrow($result))
 	{
 		if ( $row['group_type'] == GROUP_OPEN )
 		{
@@ -310,10 +315,15 @@ else if ( isset($HTTP_POST_VARS['unsub']) || isset($HTTP_POST_VARS['unsubpending
 	{
 		redirect(append_sid("groupcp.$phpEx", true));
 	}
-	elseif ( !$userdata['session_logged_in'] )
+	else if ( !$userdata['session_logged_in'] )
 	{
 		redirect(append_sid("login.$phpEx?redirect=groupcp.$phpEx&" . POST_GROUPS_URL . "=$group_id", true));
 	}
+	else if ( $sid !== $userdata['session_id'] )
+	{
+		message_die(GENERAL_ERROR, $lang['Session_invalid']);
+	}
+
 
 	if ( $confirm )
 	{
@@ -362,6 +372,7 @@ else if ( isset($HTTP_POST_VARS['unsub']) || isset($HTTP_POST_VARS['unsubpending
 		$unsub_msg = ( isset($HTTP_POST_VARS['unsub']) ) ? $lang['Confirm_unsub'] : $lang['Confirm_unsub_pending'];
 
 		$s_hidden_fields = '<input type="hidden" name="' . POST_GROUPS_URL . '" value="' . $group_id . '" /><input type="hidden" name="unsub" value="1" />';
+		$s_hidden_fields .= '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" />';
 
 		$page_title = $lang['Group_Control_Panel'];
 
@@ -428,21 +439,24 @@ else if ( $group_id )
 							FROM " . AUTH_ACCESS_TABLE . " aa 
 							WHERE aa.group_id = g.group_id  
 						)
-					)";
+					)
+				ORDER BY auth_mod DESC";
 			break;
 
 		case 'oracle':
 			$sql = "SELECT g.group_moderator, g.group_type, aa.auth_mod 
 				FROM " . GROUPS_TABLE . " g, " . AUTH_ACCESS_TABLE . " aa 
 				WHERE g.group_id = $group_id
-					AND aa.group_id (+) = g.group_id";
+					AND aa.group_id (+) = g.group_id
+				ORDER BY aa.auth_mod DESC";
 			break;
 
 		default:
 			$sql = "SELECT g.group_moderator, g.group_type, aa.auth_mod 
 				FROM ( " . GROUPS_TABLE . " g 
 				LEFT JOIN " . AUTH_ACCESS_TABLE . " aa ON aa.group_id = g.group_id )
-				WHERE g.group_id = $group_id";
+				WHERE g.group_id = $group_id
+				ORDER BY aa.auth_mod DESC";
 			break;
 	}
 	if ( !($result = $db->sql_query($sql)) )
@@ -467,6 +481,10 @@ else if ( $group_id )
 			if ( !$userdata['session_logged_in'] )
 			{
 				redirect(append_sid("login.$phpEx?redirect=groupcp.$phpEx&" . POST_GROUPS_URL . "=$group_id", true));
+			} 
+			else if ( $sid !== $userdata['session_id'] )
+			{
+				message_die(GENERAL_ERROR, $lang['Session_invalid']);
 			}
 
 			if ( !$is_moderator )
@@ -917,7 +935,7 @@ else if ( $group_id )
 
 	generate_user_info($group_moderator, $board_config['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
 
-	$s_hidden_fields .= '';
+	$s_hidden_fields .= '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" />';
 
 	$template->assign_vars(array(
 		'L_GROUP_INFORMATION' => $lang['Group_Information'],

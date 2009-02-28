@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_ranks.php,v 1.13.2.8 2006/04/13 09:56:48 grahamje Exp $
+ *   $Id: admin_ranks.php 8377 2008-02-10 12:52:05Z acydburn $
  *
  ***************************************************************************/
 
@@ -34,7 +34,7 @@ define('IN_PHPBB', 1);
 $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
 
-$cancel = ( isset($HTTP_POST_VARS['cancel']) ) ? true : false;
+$cancel = ( isset($HTTP_POST_VARS['cancel']) || isset($_POST['cancel']) ) ? true : false;
 $no_page_header = $cancel;
 
 require('./pagestart.' . $phpEx);

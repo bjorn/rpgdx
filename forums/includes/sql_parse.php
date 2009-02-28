@@ -6,7 +6,7 @@
 *     copyright            : (C) 2001 The phpBB Group
 *     email                : support@phpbb.com
 *
-*     $Id: sql_parse.php,v 1.8 2002/03/18 23:53:12 psotfx Exp $
+*     $Id: sql_parse.php 2328 2002-03-18 23:53:12Z psotfx $
 *
 ****************************************************************************/
 

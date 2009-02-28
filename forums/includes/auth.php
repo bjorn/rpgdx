@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group        
  *   email                : support@phpbb.com                           
  *                                                          
- *   $Id: auth.php,v 1.37.2.7 2006/03/06 17:28:51 grahamje Exp $                                                           
+ *   $Id: auth.php 5604 2006-03-06 17:28:51Z grahamje $                                                           
  *                                                            
  * 
  ***************************************************************************/ 

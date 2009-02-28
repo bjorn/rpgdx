@@ -6,7 +6,7 @@
 *     copyright            : (C) 2001 The phpBB Group
 *     email                : support@phpbb.com
 *
-*     $Id: admin_forum_prune.php,v 1.22.2.3 2002/12/18 14:14:07 psotfx Exp $
+*     $Id: admin_forum_prune.php 3207 2002-12-18 14:14:11Z psotfx $
 *
 ****************************************************************************/
 

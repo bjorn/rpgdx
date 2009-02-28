@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_disallow.php,v 1.9.2.4 2005/12/18 13:57:50 grahamje Exp $
+ *   $Id: admin_disallow.php 5352 2005-12-18 13:57:51Z grahamje $
  *
  *
  ***************************************************************************/

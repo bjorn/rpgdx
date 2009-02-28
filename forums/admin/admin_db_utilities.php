@@ -6,7 +6,7 @@
 *     copyright            : (C) 2001 The phpBB Group
 *     email                : support@phpbb.com
 *
-*     $Id: admin_db_utilities.php,v 1.42.2.14 2006/02/10 20:35:40 grahamje Exp $
+*     $Id: admin_db_utilities.php 5539 2006-02-10 20:35:40Z grahamje $
 *
 ****************************************************************************/
 

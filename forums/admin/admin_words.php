@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_words.php,v 1.10.2.6 2006/04/13 09:56:48 grahamje Exp $
+ *   $Id: admin_words.php 8377 2008-02-10 12:52:05Z acydburn $
  *
  *
  ***************************************************************************/
@@ -35,7 +35,7 @@ define('IN_PHPBB', 1);
 $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
 
-$cancel = ( isset($HTTP_POST_VARS['cancel']) ) ? true : false;
+$cancel = (isset($HTTP_POST_VARS['cancel']) || isset($_POST['cancel'])) ? true : false;
 $no_page_header = $cancel;
 
 require('./pagestart.' . $phpEx);
@@ -107,8 +107,8 @@ if( $mode != "" )
 		}
 
 		$template->assign_vars(array(
-			"WORD" => $word_info['word'],
-			"REPLACEMENT" => $word_info['replacement'],
+			"WORD" => htmlspecialchars($word_info['word']),
+			"REPLACEMENT" => htmlspecialchars($word_info['replacement']),
 
 			"L_WORDS_TITLE" => $lang['Words_title'],
 			"L_WORDS_TEXT" => $lang['Words_explain'],
@@ -257,8 +257,8 @@ else
 		$template->assign_block_vars("words", array(
 			"ROW_COLOR" => "#" . $row_color,
 			"ROW_CLASS" => $row_class,
-			"WORD" => $word,
-			"REPLACEMENT" => $replacement,
+			"WORD" => htmlspecialchars($word),
+			"REPLACEMENT" => htmlspecialchars($replacement),
 
 			"U_WORD_EDIT" => append_sid("admin_words.$phpEx?mode=edit&amp;id=$word_id"),
 			"U_WORD_DELETE" => append_sid("admin_words.$phpEx?mode=delete&amp;id=$word_id"))

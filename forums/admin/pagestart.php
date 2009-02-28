@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: pagestart.php,v 1.1.2.10 2006/01/22 17:11:09 grahamje Exp $
+ *   $Id: pagestart.php 5487 2006-01-22 17:11:09Z grahamje $
  *
  *
  ***************************************************************************/

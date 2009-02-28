@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: sessions.php,v 1.58.2.25 2006/05/18 19:23:07 grahamje Exp $
+ *   $Id: sessions.php 5930 2006-05-18 19:23:07Z grahamje $
  *
  *
  ***************************************************************************/

@@ -6,7 +6,7 @@
 *   copyright            : (C) 2001 The phpBB Group
 *   email                : support@phpbb.com
 *
-*   $Id: prune.php,v 1.19.2.7 2006/01/29 17:31:16 grahamje Exp $
+*   $Id: prune.php 5508 2006-01-29 17:31:16Z grahamje $
 *
 *
 ***************************************************************************/

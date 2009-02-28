@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: functions.php,v 1.133.2.47 2006/06/08 21:11:04 grahamje Exp $
+ *   $Id: functions.php 8377 2008-02-10 12:52:05Z acydburn $
  *
  *
  ***************************************************************************/
@@ -385,7 +385,7 @@ function init_userprefs($userdata)
 
 		$userdata['user_lang'] = $default_lang;
 	}
-	elseif ( $userdata['user_id'] === ANONYMOUS && $board_config['default_lang'] !== $default_lang )
+	elseif ( $userdata['user_id'] == ANONYMOUS && $board_config['default_lang'] !== $default_lang )
 	{
 		$sql = 'UPDATE ' . CONFIG_TABLE . "
 			SET config_value = '" . $default_lang . "'
@@ -941,7 +941,7 @@ function redirect($url)
 		$db->sql_close();
 	}
 
-	if (strstr(urldecode($url), "\n") || strstr(urldecode($url), "\r"))
+	if (strstr(urldecode($url), "\n") || strstr(urldecode($url), "\r") || strstr(urldecode($url), ';url'))
 	{
 		message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url.');
 	}

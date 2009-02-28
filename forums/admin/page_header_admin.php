@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header_admin.php,v 1.12.2.7 2006/01/29 21:19:02 grahamje Exp $
+ *   $Id: page_header_admin.php 5509 2006-01-29 21:19:02Z grahamje $
  *
  *
  ***************************************************************************/

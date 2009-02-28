@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_groups.php,v 1.25.2.13 2006/03/09 19:42:41 grahamje Exp $
+ *   $Id: admin_groups.php 5614 2006-03-09 19:42:41Z grahamje $
  *
  *
  ***************************************************************************/

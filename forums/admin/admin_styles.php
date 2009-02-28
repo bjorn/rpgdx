@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_styles.php,v 1.27.2.17 2006/04/20 13:34:15 grahamje Exp $
+ *   $Id: admin_styles.php 8377 2008-02-10 12:52:05Z acydburn $
  *
  *
  ***************************************************************************/
@@ -41,10 +41,10 @@ if( !empty($setmodules) )
 $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
 
-$confirm = ( isset($HTTP_POST_VARS['confirm']) ) ? TRUE : FALSE;
-$cancel = ( isset($HTTP_POST_VARS['cancel']) ) ? TRUE : FALSE;
+$confirm = (isset($HTTP_POST_VARS['confirm']) || isset($_POST['confirm'])) ? TRUE : FALSE;
+$cancel = (isset($HTTP_POST_VARS['cancel']) || isset($_POST['cancel'])) ? TRUE : FALSE;
 
-$no_page_header = (!empty($HTTP_POST_VARS['send_file']) || $cancel) ? TRUE : FALSE;
+$no_page_header = (!empty($HTTP_POST_VARS['send_file']) || !empty($_POST['send_file']) || $cancel) ? TRUE : FALSE;
 
 require('./pagestart.' . $phpEx);
 

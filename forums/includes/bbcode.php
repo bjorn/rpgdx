@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: bbcode.php,v 1.36.2.41 2006/02/26 17:34:50 grahamje Exp $
+ *   $Id: bbcode.php 5589 2006-02-26 17:35:17Z grahamje $
  *
  ***************************************************************************/
 

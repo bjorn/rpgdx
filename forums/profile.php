@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: profile.php,v 1.193.2.7 2006/04/09 16:17:27 grahamje Exp $
+ *   $Id: profile.php 5777 2006-04-09 16:17:28Z grahamje $
  *
  *
  ***************************************************************************/

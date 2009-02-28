@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_forumauth.php,v 1.23.2.5 2004/03/25 15:57:19 acydburn Exp $
+ *   $Id: admin_forumauth.php 4876 2004-03-25 15:57:20Z acydburn $
  *
  *
  ***************************************************************************/

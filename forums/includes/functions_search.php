@@ -6,7 +6,7 @@
 *     copyright            : (C) 2002 The phpBB Group
 *     email                : support@phpbb.com
 *
-*     $Id: functions_search.php,v 1.8.2.20 2005/09/14 18:14:30 acydburn Exp $
+*     $Id: functions_search.php 5204 2005-09-14 18:14:30Z acydburn $
 *
 ****************************************************************************/
 
