@@ -59,7 +59,13 @@
 	  <td class="row2"><input type="text" class="post" style="width: 200px" name="confirm_code" size="6" maxlength="6" value="" /></td>
 	</tr>
 	<!-- END switch_confirm -->
-        <!-- BEGIN switch_edit_profile -->
+	<tr>
+	  <td class="row1"><span class="gen">Please enter "iamnotabot" in this field:</span></td>
+	  <td class="row2">
+		<input type="text" name="notabot" class="post" style="width: 100px" size="10" maxlength="15" value="" />
+	  </td>
+	</tr>
+	<!-- BEGIN switch_edit_profile -->
 	<tr> 
 	  <td class="catSides" colspan="2" height="28">&nbsp;</td>
 	</tr>
@@ -126,7 +132,7 @@
 	<tr> 
 	  <td class="catSides" colspan="2" height="28">&nbsp;</td>
 	</tr>
-        <!-- END switch_edit_profile -->
+	<!-- END switch_edit_profile -->
 	<tr> 
 	  <th class="thSides" colspan="2" height="25" valign="middle">{L_PREFERENCES}</th>
 	</tr>

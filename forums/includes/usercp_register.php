@@ -116,12 +116,12 @@ if (
 		$current_email = trim(htmlspecialchars($HTTP_POST_VARS['current_email']));
 	}
 
-  // Begin hack to stop URL people registering
-  if ( $mode == 'register' && isset($HTTP_POST_VARS['website']))
-  {
-    message_die(GENERAL_ERROR, 'Setting website url on registering not allowed');
-  }
-  // End hack
+	// Begin hack to stop URL people registering
+	if ( $mode == 'register' && isset($HTTP_POST_VARS['website']))
+	{
+		message_die(GENERAL_ERROR, 'Setting website url on registering not allowed');
+	}
+	// End hack
 
 	$strip_var_list = array('email' => 'email', 'icq' => 'icq', 'aim' => 'aim', 'msn' => 'msn', 'yim' => 'yim', 'website' => 'website', 'location' => 'location', 'occupation' => 'occupation', 'interests' => 'interests', 'confirm_code' => 'confirm_code');
 
@@ -285,6 +285,14 @@ if ( isset($HTTP_POST_VARS['submit']) )
 			$error = TRUE;
 			$error_msg .= ( ( isset($error_msg) ) ? '<br />' : '' ) . $lang['Fields_empty'];
 		}
+
+		// Begin hack to stop bots registering
+		if ( $mode == 'register' && !isset($HTTP_POST_VARS['notabot']) || strcasecmp($HTTP_POST_VARS['notabot'], "iamnotabot") != 0)
+		{
+			$error = TRUE;
+			$error_msg .= ( ( isset($error_msg) ) ? '<br />' : '' ) . 'You failed to enter "iamnotabot" in the appropriate input field';
+		}
+		// End hack
 	}
 
 	if ($board_config['enable_confirm'] && $mode == 'register')
