@@ -282,7 +282,7 @@ for($i = 0; $i < count($previous_days); $i++)
 $select_topic_days .= '</select>';
 
 
-if ($userdata['session_logged_in']) {
+if ($userdata['session_logged_in'] && false) {
 	$extra_select = ', r.read_time';
 	$extra_from = ' LEFT JOIN '. READS_TABLE .' r ON t.topic_id = r.read_topic_id AND r.read_user_id = '. $userdata['user_id'];
 } else {
