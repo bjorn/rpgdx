@@ -282,7 +282,7 @@ for($i = 0; $i < count($previous_days); $i++)
 $select_topic_days .= '</select>';
 
 
-if ($userdata['session_logged_in'] && false) {
+if ($userdata['session_logged_in']) {
 	$extra_select = ', r.read_time';
 	$extra_from = ' LEFT JOIN '. READS_TABLE .' r ON t.topic_id = r.read_topic_id AND r.read_user_id = '. $userdata['user_id'];
 } else {
@@ -296,7 +296,7 @@ if ($userdata['session_logged_in'] && false) {
 // on each viewforum page ...
 //
 $sql = "SELECT t.*, u.username, u.user_id, u2.username as user2, u2.user_id as id2, p.post_time, p.post_username $extra_select
-	FROM " . TOPICS_TABLE . " t, " . USERS_TABLE . " u, " . POSTS_TABLE . " p, " . USERS_TABLE . " u2 $extra_from
+	FROM (" . TOPICS_TABLE . " t, " . USERS_TABLE . " u, " . POSTS_TABLE . " p, " . USERS_TABLE . " u2) $extra_from
 	WHERE t.forum_id = $forum_id 
 		AND t.topic_poster = u.user_id
 		AND p.post_id = t.topic_last_post_id
@@ -323,7 +323,7 @@ $db->sql_freeresult($result);
 // for this forum
 //
 $sql = "SELECT t.*, u.username, u.user_id, u2.username as user2, u2.user_id as id2, p.post_username, p2.post_username AS post_username2, p2.post_time $extra_select
-	FROM " . TOPICS_TABLE . " t, " . USERS_TABLE . " u, " . POSTS_TABLE . " p, " . POSTS_TABLE . " p2, " . USERS_TABLE . " u2 $extra_from
+	FROM (" . TOPICS_TABLE . " t, " . USERS_TABLE . " u, " . POSTS_TABLE . " p, " . POSTS_TABLE . " p2, " . USERS_TABLE . " u2) $extra_from
 	WHERE t.forum_id = $forum_id
 		AND t.topic_poster = u.user_id
 		AND p.post_id = t.topic_first_post_id

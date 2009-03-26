@@ -759,7 +759,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 			}
 
 			$sql = "SELECT t.*, f.forum_id, f.forum_name, u.username, u.user_id, u2.username as user2, u2.user_id as id2, p.post_username, p2.post_username AS post_username2, p2.post_time $extra_select
-				FROM " . TOPICS_TABLE . " t, " . FORUMS_TABLE . " f, " . USERS_TABLE . " u, " . POSTS_TABLE . " p, " . POSTS_TABLE . " p2, " . USERS_TABLE . " u2 $extra_from
+				FROM (" . TOPICS_TABLE . " t, " . FORUMS_TABLE . " f, " . USERS_TABLE . " u, " . POSTS_TABLE . " p, " . POSTS_TABLE . " p2, " . USERS_TABLE . " u2) $extra_from
 				WHERE t.topic_id IN ($search_results) 
 					AND t.topic_poster = u.user_id
 					AND f.forum_id = t.forum_id 
