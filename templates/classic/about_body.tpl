@@ -12,7 +12,7 @@
 <p align="justify">
 <b>IRC channel</b><br />
 <br />
-Our regular IRC channel is #rpgdx on irc.esper.net.<br /><a href="irc://irc.esper.net/rpgdx">irc://irc.esper.net/rpgdx</a>.
+Our regular IRC channel is #indie-rpg on irc.esper.net. This channel is shared by several sites geared towards independent RPGs. (<a href="irc://irc.esper.net/rpgdx">irc://irc.esper.net/indie-rpg</a>)
 </p>
 
 <p align="justify">
@@ -20,11 +20,11 @@ Our regular IRC channel is #rpgdx on irc.esper.net.<br /><a href="irc://irc.espe
 <br />
 You can help make this community grow larger by linking to our site. Here's a little bit of code you can add to your page to show our banner:<br />
 <pre>
-&lt;a href="http://www.rpgdx.net/"&gt;
-&lt;img src="http://www.rpgdx.net/images/rpgdx_banner.png" width="88" height="31" border="0"&gt;
+&lt;a href="http://rpgdx.net/"&gt;
+&lt;img src="http://rpgdx.net/images/rpgdx_banner.png" width="88" height="31" border="0"&gt;
 &lt;/a&gt;
 </pre>
-<a href="http://www.rpgdx.net/">
+<a href="http://rpgdx.net/">
 <img src="images/rpgdx_banner.png" width="88" height="31" border="0">
 </a>
 </p>
@@ -52,22 +52,22 @@ You can download RPGDX to any PDA (works on any PDA: Palm Pilot, Windows CE, Com
 
 <p align="justify">After some time RPGDX was already fully functional, members could join and put their games up and post news about them. There were some bugs though and a lot could still be done on the layout, but Mandrake got busy with his job. Weeks passed and members started to think RPGDX was dead again. At this point in time, Bjørn Lindeijer emailed Mandrake about the situation and offered his help.</p>
 
-<p align="justify">Bjørn fixed the bugs, improved how RPGDX used its database and enhanced the structure of the PHP code. Based upon the old layout and colors, he also created a new design (the current 'Classic' theme). After that, Mandrake has added the Articles section to RPGDX. The next important milestone of RPGDX was the ability to edit anything you post on RPGDX. After submitting you can still change your game info, your article, your reviews and even your news posts. And work continued. RPGDX now uses templates for its layout, seperating that from the PHP code behind the site. Also, MySQL based session management (<a href="http://php.dn2k.ch/">Sessionara</a>) was integrated, solving login problems and improving security and browser cache behaviour.</p>
+<p align="justify">Bjørn fixed the bugs, improved how RPGDX used its database and enhanced the structure of the PHP code. Based upon the old layout and colors, he also created a new design (the current 'Classic' theme). After that, Mandrake has added the Articles section to RPGDX. The next important milestone of RPGDX was the ability to edit anything you post on RPGDX. After submitting you can still change your game info, your article, your reviews and even your news posts. And work continued. RPGDX now uses templates for its layout, seperating that from the PHP code behind the site. Also, MySQL based session management (<a href="http://php.dn2k.ch/">Sessionara</a>) was integrated, solving login problems and improving security and browser cache behaviour. This was later replaced by phpBB's session management when the forum was more closely integrated with the website.</p>
 
 <br />
 <h4>Contributors</h4>
 
-<p align="justify"><b>Bjørn Lindeijer</b> [<a href="mailto:b.lindeijer@gmail.com">e-mail</a>]</p>
+<p align="justify"><b>Thorbjørn Lindeijer</b> [<a href="mailto:&#098;&#046;&#108;&#105;&#110;&#100;&#101;&#105;&#106;&#101;&#114;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">e-mail</a>]</p>
 
 <p align="justify">Programmer/webmaster of the current RPGDX, and owner of the rpgdx.net domain.</p>
 
-<p align="justify"><b>Mandrake</b> [<a href="mailto:mandrake@rpgdx.net">e-mail</a>]</p>
+<p align="justify"><b>Mandrake</b> [<a href="mailto:&#109;&#097;&#110;&#100;&#114;&#097;&#107;&#101;&#064;&#114;&#112;&#103;&#100;&#120;&#046;&#110;&#101;&#116;">e-mail</a>]</p>
 
 <p align="justify">The guy that started all this. You can visit Mandrake's homepage and play his nifty games <a href="http://mandrake.rpgdx.net/">here</a>.</p>
 
 <p align="justify"><b>Aral Balkan</b></p>
 
-<p align="justify">Supplying us with the hosting services we need.</p>
+<p align="justify">Supplying us with the hosting services we needed from 2003-2013.</p>
 
 <p align="justify"><b>The community</b></p>
 
