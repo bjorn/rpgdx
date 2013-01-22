@@ -1,0 +1,35 @@
+RewriteEngine On
+
+# Redirect from www/forums/wiki.rpgdx.net
+
+RewriteCond %{HTTP_HOST} ^www\.rpgdx\.net$ [NC]
+RewriteRule ^(.*)$ http://rpgdx.net/$1 [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^forums\.rpgdx\.net$ [NC]
+RewriteRule ^(.*)$ http://rpgdx.net/forums/$1 [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^wiki\.rpgdx\.net$ [NC]
+RewriteRule ^(.*)$ http://rpgdx.net/wiki/$1 [R=301,L]
+
+IndexIgnore .htaccess */.??* *~ *# */HEADER* */README*
+
+<Limit GET POST>
+    order deny,allow
+    deny from all
+    allow from all
+</Limit>
+<Limit PUT DELETE>
+    order deny,allow
+    deny from all
+</Limit>
+
+AuthName www.rpgdx.net
+
+<Files wiki>
+    SetHandler application/x-httpd-php
+</Files>
+
+AddType application/x-java-jnlp-file jnlp
+AddType text/plain dyne
+AddType text/vnd.sun.j2me.app-descriptor jad
+
