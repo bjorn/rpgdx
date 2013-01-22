@@ -5,7 +5,8 @@ $template->set_filenames(array(
 	'body' => 'showcategory_body.tpl')
 );
 
-if (isset($cat) && $cat > 0) {
+if (isset($cat) && intval($cat) > 0) {
+	$cat = intval($cat);
 	if ($result = doQuery("SELECT * FROM ". PROJECT_TYPES_TABLE ." WHERE type_id = $cat")) {
 		$genre = mysql_fetch_object($result);
 	}

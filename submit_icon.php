@@ -31,6 +31,8 @@ if (!isset($action) || !($action == 'upload' || $action == 'remove')) {
 	abort_with_error('No or invalid action specified.');
 }
 
+$project_id = intval($project_id);
+
 
 if ($action == 'upload')
 {
