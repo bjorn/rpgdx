@@ -27,7 +27,7 @@ if (isset($search)) {
 	// Modify search string
 	$search = trim($search);
 	$search = str_replace(array('(', ')', '<', '>', '\\', '/', '='), "", $search);
-	$search = str_replace(array('%', '_'), array('\%', '\_'), $search);
+	$search = str_replace(array('%', '_', '\''), array('\%', '\_', "\\'"), $search);
 
 	// Pick keywords
 	$candidate_keywords = explode(' ', $search, 5);
@@ -72,7 +72,7 @@ if (isset($search)) {
 	$keywords_implode = implode(' ', $keywords);
 
 	$template->assign_vars(array(
-		'SEARCH_QUERY'     => $keywords_implode,
+		'SEARCH_QUERY'     => str_replace(array('\%', '\_', "\\'"), array('%', '_', '\''), $keywords_implode),
 		'SEARCH_DOWNLOAD'  => (isset($search_download)) ? 'CHECKED' : '',
 		'SEARCH_REVIEWING' => (isset($search_reviewing)) ? 'CHECKED' : '',
 		'SEARCH_MYSQL'     => $query,
