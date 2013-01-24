@@ -30,7 +30,7 @@ $template->assign_vars(array(
 	'ICON_UPLOAD_TARGET'           => 'submit_icon.php?project_id='. $project_id,
 	'ICON_REMOVE_TARGET'           => 'submit_icon.php?project_id='. $project_id,
 	'PROJECT_PAGE_URL'             => append_sid('showgame.php?project_id='. $project_id),
-	
+
 	'PROJECT_ID_FIELD'             => 'project_id',
 	'SCREENSHOT_FILE_FIELD'        => 'uploaded_screenshot',
 	'SCREENSHOT_CAPTION_FIELD'     => 'screenshot_caption',
