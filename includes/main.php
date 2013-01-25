@@ -95,7 +95,7 @@ $template->assign_vars(array(
   'LOGINBAR_TEXT'   => $loginbar_text,
 
   'U_NEWS'          => append_sid('index.php'),
-  'U_FORUMS'        => append_sid('http://forums.rpgdx.net/'),
+  'U_FORUMS'        => append_sid('/forums'),
   'U_WIKI'          => append_sid('wiki/index.php/Main_Page'),
   'U_ABOUT'         => append_sid('about.php'),
   'U_CONTESTS'      => append_sid('showcontests.php'),
