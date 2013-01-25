@@ -29,9 +29,9 @@ H4 {
 
 /* Anchor classes */
 
-A:link    {color: rgb(128,  0,  0); text-decoration: none;}
-A:visited {color: rgb(128,  0,  0); text-decoration: none;}
-A:hover   {color: rgb(255,  0,  0); text-decoration: none;}
+A:link   {color: rgb(128,  0,  0); text-decoration: none;}
+A:visited{color: rgb(128,  0,  0); text-decoration: none;}
+A:hover  {color: rgb(255,  0,  0); text-decoration: none;}
 
 
 /* Form classes */

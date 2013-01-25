@@ -1,4 +1,4 @@
-<html dir="{S_CONTENT_DIRECTION}">
+<html>
 <head>
 <title>phpBB Administration</title>
 <meta http-equiv="Content-Type" content="text/html;">

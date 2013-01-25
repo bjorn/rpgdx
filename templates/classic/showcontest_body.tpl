@@ -36,6 +36,13 @@
           <td class="td">{subscriptions.subscription.WON}&nbsp;</td>
         </tr>
         <!-- END subscription -->
+        <!-- BEGIN removed_subscription -->
+        <tr>
+          <td class="td" colspan="2">Removed entry</td>
+          <td class="td">{subscriptions.removed_subscription.DATE}&nbsp;</td>
+          <td class="td">{subscriptions.removed_subscription.WON}&nbsp;</td>
+        </tr>
+        <!-- END removed_subscription -->
         <!-- END subscriptions -->
 
         <!-- BEGIN no_subscriptions -->

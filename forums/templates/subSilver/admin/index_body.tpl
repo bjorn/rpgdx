@@ -43,13 +43,6 @@
 	<td class="row2"><b>{GZIP_COMPRESSION}</b></td>
   </tr>
 </table>
-
-<h1>{L_VERSION_INFORMATION}</h1>
-
-{VERSION_INFO}
-
-<br />
-
 <h1>{L_WHO_IS_ONLINE}</h1>
 
 <table width="100%" cellpadding="4" cellspacing="1" border="0" class="forumline">
@@ -70,7 +63,7 @@
   </tr>
   <!-- END reg_user_row -->
   <tr> 
-	<td colspan="5" height="1" class="row3"><img src="../templates/RPGDX/images/spacer.gif" width="1" height="1" alt="."></td>
+	<td colspan="5" height="1" class="row3"><img src="../templates/subSilver/images/spacer.gif" width="1" height="1" alt="."></td>
   </tr>
   <!-- BEGIN guest_user_row -->
   <tr> 

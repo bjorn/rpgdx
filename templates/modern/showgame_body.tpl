@@ -107,34 +107,40 @@
     <td><img src="{TEMPL_DIR}images/pixel.gif" width="5" height="1" /></td>
     <td valign="top">
       <div class="thin_shadow">
-        <div class="lift_by_one">
-          <div class="sidebar">
-            <div class="sidebar_title">Project rating</div>
-            <div class="sidebar_item">
-              <div style="padding: 5px;">
-              <!-- BEGIN reviews -->
-              <div style="padding: 5px; border: 1px solid rgb(50,50,70); background-color: rgb(120,120,170); color: rgb(0,0,0);"><span style="font-size: 20px;">{reviews.AVERAGE}</span><div class="small_date">{reviews.CAPTION}</div></div>
-              <!-- END reviews -->
-              <!-- BEGIN review_allowed -->
-              <div align="center" style="padding: 5px;">[<a href="{GAME_REVIEW_URL}">review this game</a>]</div>
-              <!-- END review_allowed -->
-              <!-- BEGIN review_not_allowed -->
-              <div align="center" style="padding: 5px; font-size: 10px;">Reviewing disabled<br />for this project.</div>
-              <!-- END review_not_allowed -->
+      <div class="lift_by_one">
+      <table border="0" cellpadding="0" cellspacing="0" class="sidebar" width="165">
+        <tr>
+          <td>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr><td class="sidebar_title">Project rating</td></tr>
+              <tr><td class="sidebar_item">
+                <div style="margin: 5px;">
+                <!-- BEGIN reviews -->
+                <div style="padding: 5px; border: 1px solid rgb(50,50,70); background-color: rgb(120,120,170); color: rgb(0,0,0);"><span style="font-size: 20px;">{reviews.AVERAGE}</span><div class="small_date">{reviews.CAPTION}</div></div>
+                <!-- END reviews -->
+                <!-- BEGIN review_allowed -->
+                <div align="center" style="padding: 5px;">[<a href="{GAME_REVIEW_URL}">review this game</a>]</div>
+                <!-- END review_allowed -->
+                <!-- BEGIN review_not_allowed -->
+                <div align="center" style="padding: 5px; font-size: 10px;">Reviewing disabled<br />for this project.</div>
+                <!-- END review_not_allowed -->
+                </div>
+              </td></tr>
+              <!-- BEGIN screens -->
+              <tr><td class="sidebar_title">Screenshots</td></tr>
+              <tr><td class="sidebar_item">
+              <div class="screenshots">
+              <!-- BEGIN shot -->
+              <a href="{screens.shot.LINK}"><img src="{screens.shot.IMG}" alt="Screenshot" title="{screens.shot.TITLE}" class="screenshot" /></a><br />
+              <!-- END shot -->
               </div>
-            </div>
-            <!-- BEGIN screens -->
-            <div class="sidebar_title">Screenshots</div>
-            <div class="sidebar_item">
-            <div class="screenshots">
-            <!-- BEGIN shot -->
-            <a href="{screens.shot.LINK}"><img src="{screens.shot.IMG}" alt="Screenshot" title="{screens.shot.TITLE}" class="screenshot" /></a><br />
-            <!-- END shot -->
-            </div>
-            </div>
-            <!-- END screens -->
-          </div>
-        </div>
+              </td></tr>
+              <!-- END screens -->
+            </table>
+          </td>
+        </tr>
+      </table>
+      </div>
       </div>
     </td>
   </tr>
