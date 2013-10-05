@@ -27,7 +27,13 @@ if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "
 if (empty($news_bbcode_uid)) {$news_bbcode_uid = make_bbcode_uid();}
 
 
-if (($action == "edit" || $action == "add") && isset($submit) && empty($error))
+if ($action == "remove" && isset($confirmed) && $news_id > 0 && strlen($error) == 0)
+{
+	// DELETE news from database
+	doQuery("DELETE FROM ". NEWS_TABLE ." WHERE news_id=$news_id");
+	header("Location: userpage.php"); die();
+}
+else if (($action == "edit" || $action == "add") && isset($submit) && empty($error))
 {
   if (!isset($news_message)) $news_message = '';
   if (!isset($news_title))   $news_title = '';
@@ -84,6 +90,7 @@ else
 
 if     ($action == "add")  placeHeader(array(array("Posting news message")));
 elseif ($action == "edit") placeHeader(array(array("Editing news message")));
+elseif ($action == "remove") placeHeader(array(array("Removing news message")));
 else                       placeHeader(array(array("Invalid command")));
 
 $template->set_filenames(array(
