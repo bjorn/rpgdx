@@ -6,6 +6,8 @@ if (!isset($project_id)) {
 	abort_with_error('No project_id specified.');
 }
 
+$project_id = intval($project_id);
+
 /* Grab all the info from the database.
  */
 
@@ -24,7 +26,7 @@ $result = doQuery(
 	"  LEFT JOIN ". PROGRAMMING_LANGUAGES_TABLE ." ON ". PROJECTS_TABLE .".language_id = ". PROGRAMMING_LANGUAGES_TABLE .".language_id ".
 	"  LEFT JOIN ". PROJECT_STATUSSES_TABLE ." ON progress_id = status_id ".
 	"  LEFT JOIN ". PROJECT_TYPES_TABLE ." ON project_type = type_id ".
-	"WHERE project_id=". intval($project_id)
+	"WHERE project_id=". $project_id
 );
 
 if (!$game = mysql_fetch_object($result)) {
