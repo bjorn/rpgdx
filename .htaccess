@@ -13,15 +13,9 @@ RewriteRule ^(.*)$ http://rpgdx.net/wiki/$1 [R=301,L]
 
 IndexIgnore .htaccess */.??* *~ *# */HEADER* */README*
 
-<Limit GET POST>
-    order deny,allow
-    deny from all
-    allow from all
-</Limit>
-<Limit PUT DELETE>
-    order deny,allow
-    deny from all
-</Limit>
+<LimitExcept POST GET>
+    Require all denied
+</LimitExcept>
 
 AuthName www.rpgdx.net
 
