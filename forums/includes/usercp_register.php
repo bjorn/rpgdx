@@ -79,7 +79,7 @@ $page_title = ( $mode == 'editprofile' ) ? $lang['Edit_profile'] : $lang['Regist
 if ( $mode == 'register' && !isset($HTTP_POST_VARS['agreed']) && !isset($HTTP_GET_VARS['agreed']) )
 {
 	// Start of RPGDX hack
-	// (this one is for consistent breadcrumps)
+	// (this one is for consistent breadcrumbs)
 
 	$page_subtitles = array(
 		array($page_title, '')
@@ -867,7 +867,7 @@ else if ( $mode == 'editprofile' && !isset($HTTP_POST_VARS['avatargallery']) && 
 // Default pages
 //
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 $page_subtitles = array(
 	array($page_title, '')

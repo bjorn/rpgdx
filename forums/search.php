@@ -817,7 +817,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		$page_title = $lang['Search'];
 
 		// Start of RPGDX hack
-		// (this one is for consistent breadcrumps)
+		// (this one is for consistent breadcrumbs)
 
 		$page_subtitles = array(
 			array($page_title, '')
@@ -1354,7 +1354,7 @@ for($i = 0; $i < count($previous_days); $i++)
 $page_title = $lang['Search'];
 
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 $page_subtitles = array(
 	array($page_title, '')

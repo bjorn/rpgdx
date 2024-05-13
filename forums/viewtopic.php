@@ -655,7 +655,7 @@ $template->set_filenames(array(
 make_jumpbox('viewforum.'.$phpEx, $forum_id);
 
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 //
 // Output page header

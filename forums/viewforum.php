@@ -394,7 +394,7 @@ $nav_links['up'] = array(
 );
 
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 //
 // Dump out the page header and load viewforum template

@@ -97,7 +97,7 @@ for($i = 0; $i < count($faq); $i++)
 $page_title = $l_title;
 
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 $page_subtitles = array(
 	array($page_title, '')

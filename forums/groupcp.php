@@ -377,7 +377,7 @@ else if ( isset($HTTP_POST_VARS['unsub']) || isset($HTTP_POST_VARS['unsubpending
 		$page_title = $lang['Group_Control_Panel'];
 
 		// Start of RPGDX hack
-		// (this one is for consistent breadcrumps)
+		// (this one is for consistent breadcrumbs)
 
 		$page_subtitles = array(
 			array($page_title, '')
@@ -908,7 +908,7 @@ else if ( $group_id )
 	$page_title = $lang['Group_Control_Panel'];
 
 	// Start of RPGDX hack
-	// (this one is for consistent breadcrumps)
+	// (this one is for consistent breadcrumbs)
 
 	$page_subtitles = array(
 		array($page_title, '')
@@ -1259,7 +1259,7 @@ else
 		$page_title = $lang['Group_Control_Panel'];
 
 		// Start of RPGDX hack
-		// (this one is for consistent breadcrumps)
+		// (this one is for consistent breadcrumbs)
 
 		$page_subtitles = array(
 			array($page_title, '')
