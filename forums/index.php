@@ -198,6 +198,14 @@ if( ( $total_categories = count($category_rows) ) )
 	//
 	if ($userdata['session_logged_in'])
 	{
+		// 60 days limit
+		/*
+		if ($userdata['user_lastvisit'] < (time() - 5184000))
+		{
+			$userdata['user_lastvisit'] = time() - 5184000;
+		}
+		*/
+
 		$sql =
 			"SELECT t.forum_id, t.topic_id, p.post_time ".
 			"FROM ". TOPICS_TABLE . " t ".

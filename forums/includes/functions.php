@@ -47,7 +47,6 @@ function get_db_stat($mode)
 				"FROM ". USERS_TABLE ." ".
 				"WHERE FROM_UNIXTIME(user_lastvisit) > NOW() - INTERVAL 7 DAY";
 			break;
-
 		case 'postcount':
 		case 'topiccount':
 			$sql = "SELECT SUM(forum_topics) AS topic_total, SUM(forum_posts) AS post_total
@@ -74,13 +73,21 @@ function get_db_stat($mode)
 
 	$row = $db->sql_fetchrow($result);
 
-	switch ($mode)
+	switch ( $mode )
 	{
-		case 'usercount':       return $row['total']; break;
+		case 'usercount':
+			return $row['total'];
+			break;
 		case 'activeusercount': return $row['active_total']; break;
-		case 'newestuser':      return $row; break;
-		case 'postcount':       return $row['post_total']; break;
-		case 'topiccount':      return $row['topic_total']; break;
+		case 'newestuser':
+			return $row;
+			break;
+		case 'postcount':
+			return $row['post_total'];
+			break;
+		case 'topiccount':
+			return $row['topic_total'];
+			break;
 		case 'projectcount':    return $row['project_total']; break;
 		case 'reviewcount':     return $row['review_total']; break;
 		case 'articlecount':    return $row['article_total']; break;

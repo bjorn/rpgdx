@@ -71,7 +71,7 @@ if ( isset($HTTP_GET_VARS['view']) && empty($HTTP_GET_VARS[POST_POST_URL]) )
 
 		if ( $userdata['session_logged_in'] )
 		{
-			// Optain the first unread post id
+			// Obtain the first unread post id
 			$sql =
 				"SELECT p.post_id ".
 				"FROM ". POSTS_TABLE . " p ".
@@ -154,7 +154,8 @@ if ( isset($HTTP_GET_VARS['view']) && empty($HTTP_GET_VARS[POST_POST_URL]) )
 
 		$sql = "SELECT t.topic_id
 			FROM " . TOPICS_TABLE . " t, " . TOPICS_TABLE . " t2, " . POSTS_TABLE . " p, " . POSTS_TABLE . " p2
-			WHERE t2.topic_id = $topic_id
+			WHERE
+				t2.topic_id = $topic_id
 				AND p2.post_id = t2.topic_last_post_id
 				AND t.forum_id = t2.forum_id
 				AND t.topic_moved_id = 0
@@ -592,7 +593,7 @@ if ( $userdata['session_logged_in'] )
   set_last_read($topic_id, $current_time);
 
   // Clean up any reads that have become unneccesary now
-  // Optain the first (oldest) unread post of all forums that is not older than
+  // Obtain the first (oldest) unread post of all forums that is not older than
   // one month (31*24*60*60 seconds)
   $sql = "
     SELECT p.post_time 
