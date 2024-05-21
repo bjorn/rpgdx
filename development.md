@@ -8,8 +8,7 @@ This debug setup process uses the insecure default username and password for *lo
 If using this as a troubleshooting guide, replace username, password, and database name with secure values...
 - and do not push the values (config.php) to the repo.
 
-You must use MySQL (as opposed to MariaDB) to get features such as are provided by the `ENGINE=MyISAM` (formerly `TYPE=MyISAM`) suffix in `CREATE` queries in "sql/database.sql".
-
+Using old versions of MySQL: Note `ENGINE=MyISAM` was formerly `TYPE=MyISAM` in "sql/database.sql". Only old versions of mysql use the `TYPE` keyword for this.
 
 ```bash
 sudo su -
