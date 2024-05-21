@@ -79,3 +79,29 @@ tail /var/log/httpd/error_log
 And diagnose and fix errors manually.
 
 If no errors appear, try adding the error reporting lines mentioned earlier to each of your index.php files.
+
+
+### Troubleshooting database structure
+The database structure can be dumped without data as follows:
+```
+mysqldump --no-data -u username -p -h localhost indierp_main
+```
+- except change username, localhost (may be something else on shared hosting), and indierp_main.
+- ensure the --no-data option is used, or it will output all data!
+  - to backup both structure and data, leave out `--no-data` but redirect to a file: `> backup-2024.sql`
+
+### Troubleshooting mysqldump
+If you don't get the structure, but only get something like:
+```
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+```
+Ensure the table name such as `indierp_main` in the example is correct in the dump commmand.

@@ -44,7 +44,7 @@ git clone https://github.com/ChristiaanBye/polyfill-each.git
 ```
 - May require the fork of mysql-shim too at <https://gitlab.com/poikilos/mysql-shim/-/tree/php8> if the site crashes when there is no database connection.
 
-These shims can be prepended to every php file automatically. This is necessary so that all php files in phpBB 2 (and other PHP files with old calls) have access to the old functions. To do so, follow either the VPS or managed hosting instructions below.
+These shims can be prepended to every php file automatically. This is necessary so that all php files in phpBB 2 (and other PHP files with old calls) have access to the old functions. To do so, follow either the VPS or managed hosting instructions below. Then do the "Install phpBB" section and anything below that.
 
 ### VPS instructions
 If your are using a VPS (or similar setup such as a dedicated server), run these two commands (again, only works/necessary if using PHP 8.0 or higher):
@@ -78,12 +78,38 @@ User-space http daemon instructions:
 - Remove `sudo` if using shared hosting (or have configured a user-space http daemon) which would already provide your user with priveleges to edit a php.ini or php.d for your specific website (Use the path for that instead of `/etc/` in that case, otherwise these configuration files may never get loaded).
 
 ### Managed Web Hosting Instructions
-If using managed web hosting (not a VPS), first use the alternate path for cloning as instructed above then enter the following using the php ini editor in the host's control panel (still only works/necessary if using PHP 8.0 or higher):
+If using managed web hosting (not a VPS)
+- Use the alternate path for cloning as instructed above
+- Manually create a php8-shims.php file and upload it.
+- Enter the following using the php ini editor in the host's control panel (still only works/necessary if using PHP 8.0 or higher):
 ```bash
-auto_prepend_file=/home/USER/mysql-shim/mysql-shim.php
-auto_prepend_file=/home/USER/php-ereg-shim-procedural/php-ereg-shim-procedural.php
+auto_prepend_file=/home/USER/php8-shims.php
 ```
-- You *must* manually change USER to your web user's username in the text above. You can avoid this if you are in a shell where you have write access to a user-space ini (In that case see "User-space http daemon instructions" further up instead).
+- You *must* manually change USER to your web user's username in the text above, or specify the exact path in any case.
+
+
+### Install phpBB
+*Only* if installing on a fresh server, you will have to install phpBB and in config.php, so *only* in that case you would set the following to false:
+```
+define('PHPBB_INSTALLED', false);
+```
+
+Set up the custom tables for rpgdx (reminder: This is a fork of phpBB, so both new custom code and customized files in forums folder may require these tables):
+```bash
+mysql -u username -p indierp_main < sql/database.sql
+```
+
+In a general sense, the steps below work on a typical setup, but reading the official install documentation is advisable: [forums/docs/INSTALL.html](forums/docs/INSTALL.html) (If you've completed all steps above on a local offline instance, try <http://localhost/forums/docs/INSTALL.html>).
+
+Go to your server web address, followed by the install file, such as: http://localhost/forums/install/install.php
+
+The install process will create database tables (or fail if any of them exist), so again, this should only be done on a fresh install.
+
+If you are not on a fresh server, the "install" folder will have to be removed when instructed by the forum software at the http://localhost/forums address or web address (it will tell you to remove the install folder *if* you have completed setup installed a config.php where `PHPBB_INSTALLED` is true into the forums folder).
+
+See also:
+- [Document whether the "contrib" folder from phpBB is necessary](https://github.com/bjorn/rpgdx/issues/8)
+
 
 ### Debug setup
 For an insecure local configuration for debugging (may help with setup details in general especially on rpm-based distros) see [development.md](development.md)
