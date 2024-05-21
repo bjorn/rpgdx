@@ -150,6 +150,10 @@ define('AUTH_ATTACH', 11);
 
 
 // Table names
+if (!isset($table_prefix)) {
+	error_log("Warning: table_prefix is not set. Not necessary during install (?)");
+	$table_prefix = 'phpbb_';
+}
 define('CONFIRM_TABLE', $table_prefix.'confirm');
 define('AUTH_ACCESS_TABLE', $table_prefix.'auth_access');
 define('BANLIST_TABLE', $table_prefix.'banlist');
@@ -168,10 +172,10 @@ define('RANKS_TABLE', $table_prefix.'ranks');
 define('SEARCH_TABLE', $table_prefix.'search_results');
 define('SEARCH_WORD_TABLE', $table_prefix.'search_wordlist');
 define('SEARCH_MATCH_TABLE', $table_prefix.'search_wordmatch');
-define('SESSIONS_TABLE', $table_prefix.'sessions');
+define('SESSIONS_TABLE', $table_prefix.'sessions'); // FIXME: redefined further down, so commented 2024-05-20
 define('SESSIONS_KEYS_TABLE', $table_prefix.'sessions_keys');
 define('SMILIES_TABLE', $table_prefix.'smilies');
-define('THEMES_TABLE', $table_prefix.'themes');
+define('THEMES_TABLE', $table_prefix.'themes'); // FIXME: redefined further down, so commented 2024-05-20
 define('THEMES_NAME_TABLE', $table_prefix.'themes_name');
 define('TOPICS_TABLE', $table_prefix.'topics');
 define('TOPICS_WATCH_TABLE', $table_prefix.'topics_watch');
@@ -197,8 +201,9 @@ define('PROJECT_STATUSSES_TABLE',     'rpgdx_project_statusses');
 define('PROJECT_TYPES_TABLE',         'rpgdx_project_types');
 define('PROJECTS_TABLE',              'rpgdx_projects');
 define('REVIEWS_TABLE',               'rpgdx_reviews');
-define('SESSIONS_TABLE',              'rpgdx_sessions');
-define('THEMES_TABLE',                'rpgdx_themes');
+// define('SESSIONS_TABLE',              'rpgdx_sessions');  // FIXME: redefinition is ignored!
+// define('THEMES_TABLE',                'rpgdx_themes');  // FIXME: redefinition is ignored!
+// See the comment in the PHP documentation: <https://www.php.net/manual/en/function.define.php#121201>
 define('LOG_TABLE',                   'rpgdx_log');
 define('UPLOADS_TABLE',               'rpgdx_uploads');
 define('CONTESTS_TABLE',              'rpgdx_contests');
