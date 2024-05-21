@@ -7,6 +7,46 @@
 	"settings": {
 		"files.trimFinalNewlines": false,
 		"files.trimTrailingWhitespace": false,
-		"tws.trimOnSave": false
+		"tws.trimOnSave": false,
+		"regexrobin.rules": [
+			// This requires the Regex Robin extension.
+			// The last matching rule takes precedence.
+			// This doesn't work in the DEBUG CONSOLE,
+			//   so paste debug console output into
+			//   a comment in a temporary PHP file
+			//   to be able to jump to errors :(.
+			{
+				"regex": "#(\\d+)\\s+(\\S+)\\.php\\((\\d+)",
+				"editor": [{
+					"group": 2,
+					"link": "file://$2.php#$3",
+					"color": "#66EFD9",
+					"hoverMessage": "file://$2.php#$3"
+				}]
+			},
+			{
+				"regex": "thrown in\\s+(\\S+) on line (\\d+)",
+				"editor": [{
+					"group": 1,
+					"link": "file://$1#$2",
+					"color": "#66EFD9",
+					"hoverMessage": "file://$1#$2"
+				}]
+			},
+			{
+				"regex": "\\[.*\\].* in (.*)\\.php:(\\d+)",
+				"editor": [{
+					"group": 1,
+					"link": "file://$1.php#$2",
+					"color": "#66EFD9",
+					"hoverMessage": "file://$1.php#$2"
+				}]
+			}
+		]
+	},
+	"extensions": {
+		"recommendations": [
+			"danlevett.regex-robin"
+		]
 	}
 }
