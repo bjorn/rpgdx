@@ -28,10 +28,19 @@ if ( !defined('IN_PHPBB') )
 switch($dbms)
 {
 	case 'mysql':
+		// mariadb has same $dbms string.
+		// but requires php-mysql-shim on PHP 8
 		include($phpbb_root_path . 'db/mysql.'.$phpEx);
 		break;
 
+	case 'mariadb':
+		// requires php-mysql-shim on PHP 8
+		// mariadb has same $dbms string.
+		include($phpbb_root_path . 'db/mariadb.'.$phpEx);
+		break;
+
 	case 'mysql4':
+		// requires php-mysql-shim on PHP 8
 		include($phpbb_root_path . 'db/mysql4.'.$phpEx);
 		break;
 
@@ -53,6 +62,10 @@ switch($dbms)
 
 	case 'mssql-odbc':
 		include($phpbb_root_path . 'db/mssql-odbc.'.$phpEx);
+		break;
+
+	default:
+		die("Unknown database type \"$dbms\"");
 		break;
 }
 

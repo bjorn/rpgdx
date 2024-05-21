@@ -14,7 +14,7 @@ function add_log($string)
 {
   doQuery("INSERT INTO rpgdx_log (log_text, log_time) VALUES ('". addslashes($string) ."', NOW())");
 }
-
+/*
 function array_stripslashes(&$array) {
   while (list($key) = each($array)) {
     if (is_array($array[$key])) {
@@ -34,7 +34,7 @@ function array_addslashes(&$array) {
     }
   }
 }
-
+*/
 
 
 //===============================

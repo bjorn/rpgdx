@@ -149,6 +149,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = "ALTER TABLE " . USERS_TABLE . " DROP
 					COLUMN user_autologin_key";
@@ -368,6 +369,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = "ALTER TABLE " . USERS_TABLE . "
 					MODIFY COLUMN user_id  mediumint(8) NOT NULL,
@@ -390,6 +392,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = "ALTER TABLE " . GROUPS_TABLE . "
 					MODIFY COLUMN group_id mediumint(8) NOT NULL auto_increment";
@@ -427,6 +430,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				// Add indexes to post_id in search match table (+ word_id for MS Access)
 				$sql[] = "ALTER TABLE " . SEARCH_MATCH_TABLE . " 
@@ -494,6 +498,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = 'CREATE TABLE ' . $table_prefix . 'confirm (confirm_id char(32) DEFAULT \'\' NOT NULL, session_id char(32) DEFAULT \'\' NOT NULL, code char(6) DEFAULT \'\' NOT NULL, PRIMARY KEY (session_id, confirm_id))';
 				break;
@@ -529,6 +534,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = "ALTER TABLE " . SESSIONS_TABLE . "
 					ADD COLUMN session_admin tinyint(2) DEFAULT '0' NOT NULL";
@@ -561,6 +567,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = 'CREATE TABLE ' . $table_prefix . 'sessions_keys (key_id varchar(32) DEFAULT \'0\' NOT NULL, user_id mediumint(8) DEFAULT \'0\' NOT NULL, last_ip varchar(8) DEFAULT \'0\' NOT NULL, last_login int(11) DEFAULT \'0\' NOT NULL, PRIMARY KEY (key_id, user_id), KEY last_login (last_login))';
 				break;
@@ -590,6 +597,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = "ALTER TABLE " . USERS_TABLE . "
 					ADD COLUMN user_login_tries smallint(5) UNSIGNED DEFAULT '0' NOT NULL";
@@ -632,6 +640,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = "ALTER TABLE " . SEARCH_TABLE . "
 					ADD COLUMN search_time int(11) DEFAULT '0' NOT NULL";
@@ -665,6 +674,7 @@ switch ($row['config_value'])
 		switch (SQL_LAYER)
 		{
 			case 'mysql':
+			case 'mariadb':
 			case 'mysql4':
 				$sql[] = 'ALTER TABLE ' . SEARCH_TABLE . '
 					MODIFY COLUMN search_array MEDIUMTEXT NOT NULL';
@@ -1142,6 +1152,7 @@ _sql($sql, $errored, $error_ary);
 switch (SQL_LAYER)
 {
 	case 'mysql':
+	case 'mariadb':
 	case 'mysql4':
 		$sql = 'OPTIMIZE TABLE ' . $table_prefix . 'auth_access, ' . $table_prefix . 'banlist, ' . $table_prefix . 'categories, ' . $table_prefix . 'config, ' . $table_prefix . 'disallow, ' . $table_prefix . 'forum_prune, ' . $table_prefix . 'forums, ' . $table_prefix . 'groups, ' . $table_prefix . 'posts, ' . $table_prefix . 'posts_text, ' . $table_prefix . 'privmsgs, ' . $table_prefix . 'privmsgs_text, ' . $table_prefix . 'ranks, ' . $table_prefix . 'search_results, ' . $table_prefix . 'search_wordlist, ' . $table_prefix . 'search_wordmatch, ' . $table_prefix . 'sessions_keys, ' . $table_prefix . 'smilies, ' . $table_prefix . 'themes, ' . $table_prefix . 'themes_name, ' . $table_prefix . 'topics, ' . $table_prefix . 'topics_watch, ' . $table_prefix . 'user_group, ' . $table_prefix . 'users, ' . $table_prefix . 'vote_desc, ' . $table_prefix . 'vote_results, ' . $table_prefix . 'vote_voters, ' . $table_prefix . 'words';
 		_sql($sql, $errored, $error_ary);

@@ -92,8 +92,9 @@ function clean_words($mode, &$entry, &$stopword_list, &$synonym_list)
 function split_words($entry, $mode = 'post')
 {
 	// If you experience problems with the new method, uncomment this block.
+	// 2024 Note from Poikilos: The commented text below was mangled due to UTF-8 being the standard (for basically every software project) now.
 /*	
-	$rex = ( $mode == 'post' ) ? "/\b([\w±µ-ÿ][\w±µ-ÿ']*[\w±µ-ÿ]+|[\w±µ-ÿ]+?)\b/" : '/(\*?[a-z0-9±µ-ÿ]+\*?)|\b([a-z0-9±µ-ÿ]+)\b/';
+	$rex = ( $mode == 'post' ) ? "/\b([\wï¿½ï¿½-ï¿½][\wï¿½ï¿½-ï¿½']*[\wï¿½ï¿½-ï¿½]+|[\wï¿½ï¿½-ï¿½]+?)\b/" : '/(\*?[a-z0-9ï¿½ï¿½-ï¿½]+\*?)|\b([a-z0-9ï¿½ï¿½-ï¿½]+)\b/';
 	preg_match_all($rex, $entry, $split_entries);
 
 	return $split_entries[1];
@@ -194,6 +195,7 @@ function add_search_words($mode, $post_id, $post_text, $post_title = '')
 				switch( SQL_LAYER )
 				{
 					case 'mysql':
+					case 'mariadb':
 					case 'mysql4':
 						$value_sql .= ( ( $value_sql != '' ) ? ', ' : '' ) . '(\'' . $word[$i] . '\', 0)';
 						break;
@@ -218,6 +220,7 @@ function add_search_words($mode, $post_id, $post_text, $post_title = '')
 			switch ( SQL_LAYER )
 			{
 				case 'mysql':
+				case 'mariadb':
 				case 'mysql4':
 					$sql = "INSERT IGNORE INTO " . SEARCH_WORD_TABLE . " (word_text, word_common) 
 						VALUES $value_sql"; 
@@ -347,6 +350,7 @@ function remove_search_post($post_id_sql)
 	switch ( SQL_LAYER )
 	{
 		case 'mysql':
+		case 'mariadb':
 		case 'mysql4':
 			$sql = "SELECT word_id 
 				FROM " . SEARCH_MATCH_TABLE . " 

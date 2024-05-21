@@ -1,13 +1,14 @@
 <?php
 /***************************************************************************
- *                                 mysql4.php
+ *                                 mariadb.php
  *                            -------------------
  *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
+ *   copyright            : (C) 2001 The phpBB Group, 2024 Jake "Poikilos" Gustafson
  *   email                : supportphpbb.com
  *
+ *   based on:
  *   $Id: mysql4.php 5211 2005-09-18 16:17:21Z acydburn $
- *
+ *    
  ***************************************************************************/
 
 /***************************************************************************
@@ -22,7 +23,7 @@
 if(!defined("SQL_LAYER"))
 {
 
-define("SQL_LAYER","mysql4");
+define("SQL_LAYER","mariadb");
 
 class sql_db
 {
@@ -54,6 +55,10 @@ class sql_db
 		$this->dbname = $database;
 
 		$this->db_connect_id = ($this->persistency) ? mysql_pconnect($this->server, $this->user, $this->password) : mysql_connect($this->server, $this->user, $this->password);
+		// * mysql_connect: MySQL link identifier on success or false on failure.
+		// * mysqli_connect: OBJECT on success or false on failure.
+		// Other differences: See mysql_query and mysqli_query comments later.
+        // TODO: Add those fixes to mysql.php
 
 		if( $this->db_connect_id )
 		{
@@ -135,8 +140,20 @@ class sql_db
 
 		if( $this->query_result )
 		{
-			unset($this->row[$this->query_result]);
-			unset($this->rowset[$this->query_result]);
+			// mysql_query: "returns true on success or false on error"
+			// mysqli_query: "Returns false on failure.
+			//   For successful queries which produce a result set, such as SELECT, SHOW, DESCRIBE or EXPLAIN, mysqli_query()
+			//     will return a mysqli_result object.
+			//   For other successful queries, mysqli_query()
+			//     will return true."
+			//   Therefore:
+			$query_key = $this->query_result;
+			if ($query_key !== true) {
+				$query_key = spl_object_hash($this->query_result);
+			}
+
+			unset($this->row[$query_key]);
+			unset($this->rowset[$query_key]);
 
 			if( $transaction == END_TRANSACTION && $this->in_transaction )
 			{
@@ -219,8 +236,12 @@ class sql_db
 
 		if( $query_id )
 		{
-			$this->row[$query_id] = mysql_fetch_array($query_id, MYSQL_ASSOC);
-			return $this->row[$query_id];
+			$query_key = $query_id;
+			if ($query_key !== true) {
+				$query_key = spl_object_hash($query_id);
+			}
+			$this->row[$query_key] = mysql_fetch_array($query_id, MYSQL_ASSOC);
+			return $this->row[$query_key];
 		}
 		else
 		{
@@ -237,12 +258,16 @@ class sql_db
 
 		if( $query_id )
 		{
-			unset($this->rowset[$query_id]);
-			unset($this->row[$query_id]);
+			$query_key = $query_id;
+			if ($query_key !== true) {
+				$query_key = spl_object_hash($query_id);
+			}			
+			unset($this->rowset[$query_key]);
+			unset($this->row[$query_key]);
 
-			while($this->rowset[$query_id] = mysql_fetch_array($query_id, MYSQL_ASSOC))
+			while($this->rowset[$query_key] = mysql_fetch_array($query_id, MYSQL_ASSOC))
 			{
-				$result[] = $this->rowset[$query_id];
+				$result[] = $this->rowset[$query_key];
 			}
 
 			return $result;
@@ -262,28 +287,32 @@ class sql_db
 
 		if( $query_id )
 		{
+			$query_key = $query_id;
+			if ($query_key !== true) {
+				$query_key = spl_object_hash($query_id);
+			}
 			if( $rownum > -1 )
 			{
 				$result = mysql_result($query_id, $rownum, $field);
 			}
 			else
 			{
-				if( empty($this->row[$query_id]) && empty($this->rowset[$query_id]) )
+				if( empty($this->row[$query_key]) && empty($this->rowset[$query_key]) )
 				{
 					if( $this->sql_fetchrow() )
 					{
-						$result = $this->row[$query_id][$field];
+						$result = $this->row[$query_key][$field];
 					}
 				}
 				else
 				{
-					if( $this->rowset[$query_id] )
+					if( $this->rowset[$query_key] )
 					{
-						$result = $this->rowset[$query_id][0][$field];
+						$result = $this->rowset[$query_key][0][$field];
 					}
-					else if( $this->row[$query_id] )
+					else if( $this->row[$query_key] )
 					{
-						$result = $this->row[$query_id][$field];
+						$result = $this->row[$query_key][$field];
 					}
 				}
 			}
@@ -320,8 +349,12 @@ class sql_db
 
 		if ( $query_id )
 		{
-			unset($this->row[$query_id]);
-			unset($this->rowset[$query_id]);
+			$query_key = $query_id;
+			if ($query_key !== true) {
+				$query_key = spl_object_hash($query_id);
+			}
+			unset($this->row[$query_key]);
+			unset($this->rowset[$query_key]);
 
 			mysql_free_result($query_id);
 

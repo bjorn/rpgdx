@@ -223,7 +223,7 @@ function guess_lang()
 
 // Begin
 error_reporting  (E_ERROR | E_WARNING | E_PARSE); // This will NOT report uninitialized variables
-set_magic_quotes_runtime(0); // Disable magic_quotes_runtime
+// set_magic_quotes_runtime(0); // Disable magic_quotes_runtime
 
 // PHP5 with register_long_arrays off?
 if (!isset($HTTP_POST_VARS) && isset($_POST))
@@ -243,8 +243,9 @@ if (!isset($HTTP_POST_VARS) && isset($_POST))
 }
 
 // Slash data if it isn't slashed
-if (!get_magic_quotes_gpc())
+if (!false) //if (!get_magic_quotes_gpc())
 {
+// get_magic_quotes_gpc() always returns false where was only a warned deprecation, but is deleted from php 8
 	if (is_array($HTTP_GET_VARS))
 	{
 		while (list($k, $v) = each($HTTP_GET_VARS))
@@ -327,7 +328,7 @@ include($phpbb_root_path.'includes/sessions.'.$phpEx);
 $available_dbms = array(
 	'mysql'=> array(
 		'LABEL'			=> 'MySQL 3.x',
-		'SCHEMA'		=> 'mysql', 
+		'SCHEMA'		=> 'mysql',
 		'DELIM'			=> ';',
 		'DELIM_BASIC'	=> ';',
 		'COMMENTS'		=> 'remove_remarks'
@@ -335,6 +336,13 @@ $available_dbms = array(
 	'mysql4' => array(
 		'LABEL'			=> 'MySQL 4.x/5.x',
 		'SCHEMA'		=> 'mysql', 
+		'DELIM'			=> ';', 
+		'DELIM_BASIC'	=> ';',
+		'COMMENTS'		=> 'remove_remarks'
+	), 
+	'mariadb' => array(
+		'LABEL'			=> 'mariadb 15.1 dist 10.5.21',
+		'SCHEMA'		=> 'mysql', // prefix of schema filename in schemas/
 		'DELIM'			=> ';', 
 		'DELIM_BASIC'	=> ';',
 		'COMMENTS'		=> 'remove_remarks'
@@ -786,10 +794,14 @@ else
 
 			case 'mysql':
 			case 'mysql4':
-				$check_exts = 'mysql';
-				$check_other = 'mysql';
+				$check_exts = 'mysqli';
+				$check_other = 'mysqli';
 				break;
-
+			case 'mariadb':
+				$check_exts = 'mysqli';
+				$check_other = 'mysqli';
+				break;
+	
 			case 'postgres':
 				$check_exts = 'pgsql';
 				$check_other = 'pgsql';
