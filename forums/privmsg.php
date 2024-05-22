@@ -150,7 +150,7 @@ if ( $mode == 'newpm' )
 	$page_title = $lang['Private_Messaging'];
 
 	// Start of RPGDX hack
-	// (this one is for consistent breadcrumps)
+	// (this one is for consistent breadcrumbs)
 
 	$page_subtitles = array(
 		array($page_title, '')
@@ -456,7 +456,7 @@ else if ( $mode == 'read' )
 	$page_title = $lang['Read_pm'];
 
 	// Start of RPGDX hack
-	// (this one is for consistent breadcrumps)
+	// (this one is for consistent breadcrumbs)
 
 	$page_subtitles = array(
 		array($page_title, '')
@@ -1548,7 +1548,7 @@ else if ( $submit || $refresh || $mode != '' )
 	$page_title = $lang['Send_private_message'];
 
 	// Start of RPGDX hack
-	// (this one is for consistent breadcrumps)
+	// (this one is for consistent breadcrumbs)
 
 	$page_subtitles = array(
 		array($page_title, '')
@@ -1883,7 +1883,7 @@ $userdata['user_unread_privmsg'] = ( $userdata['user_new_privmsg'] + $userdata['
 $page_title = $lang['Private_Messaging'];
 
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 $page_subtitles = array(
 	array($page_title, '')

@@ -484,37 +484,37 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				{
 					$where_sql = '';
 
-				if ( $search_time )
-				{
-					$where_sql .= ( $search_author == '' && $auth_sql == ''  ) ? " AND post_time >= $search_time " : " AND p.post_time >= $search_time ";
-				}
-
-				if ( $search_author == '' && $auth_sql == '' )
-				{
-					$sql = "SELECT topic_id 
-						FROM " . POSTS_TABLE . "
+					if ( $search_time )
+					{
+						$where_sql .= ( $search_author == '' && $auth_sql == ''  ) ? " AND post_time >= $search_time " : " AND p.post_time >= $search_time ";
+					}
+	
+					if ( $search_author == '' && $auth_sql == '' )
+					{
+						$sql = "SELECT topic_id 
+							FROM " . POSTS_TABLE . "
 							WHERE post_id IN (" . implode(", ", $search_id_chunks[$i]) . ") 
 							$where_sql 
-						GROUP BY topic_id";
-				}
-				else
-				{
-					$from_sql = POSTS_TABLE . " p"; 
-
-					if ( $search_author != '' )
-					{
-						$from_sql .= ", " . USERS_TABLE . " u";
-						$where_sql .= " AND u.user_id = p.poster_id AND u.username LIKE '$search_author' ";
+							GROUP BY topic_id";
 					}
-
-					if ( $auth_sql != '' )
+					else
 					{
-						$from_sql .= ", " . FORUMS_TABLE . " f";
-						$where_sql .= " AND f.forum_id = p.forum_id AND $auth_sql";
-					}
+						$from_sql = POSTS_TABLE . " p"; 
 
-					$sql = "SELECT p.topic_id 
-						FROM $from_sql 
+						if ( $search_author != '' )
+						{
+							$from_sql .= ", " . USERS_TABLE . " u";
+							$where_sql .= " AND u.user_id = p.poster_id AND u.username LIKE '$search_author' ";
+						}
+
+						if ( $auth_sql != '' )
+						{
+							$from_sql .= ", " . FORUMS_TABLE . " f";
+							$where_sql .= " AND f.forum_id = p.forum_id AND $auth_sql";
+						}
+
+						$sql = "SELECT p.topic_id 
+							FROM $from_sql 
 							WHERE p.post_id IN (" . implode(", ", $search_id_chunks[$i]) . ") 
 								$where_sql 
 							GROUP BY p.topic_id";
@@ -817,7 +817,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		$page_title = $lang['Search'];
 
 		// Start of RPGDX hack
-		// (this one is for consistent breadcrumps)
+		// (this one is for consistent breadcrumbs)
 
 		$page_subtitles = array(
 			array($page_title, '')
@@ -1173,7 +1173,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 					if ( $userdata['session_logged_in'] )
 					{
-						if( $searchset[$i]['post_time'] >= $userdata['user_lastread'] &&
+						if ( $searchset[$i]['post_time'] >= $userdata['user_lastread'] &&
 								$searchset[$i]['post_time'] >= $searchset[$i]['read_time']) 
 						{
 							$folder_image = $folder_new;
@@ -1354,7 +1354,7 @@ for($i = 0; $i < count($previous_days); $i++)
 $page_title = $lang['Search'];
 
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 $page_subtitles = array(
 	array($page_title, '')

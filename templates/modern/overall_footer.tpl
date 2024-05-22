@@ -7,7 +7,7 @@
 </table>
 
 <div class="copyright">
-RPGDX &copy; 2002-2009 by Thorbjørn Lindeijer<br />
+RPGDX &copy; 2002-2009 by Thorbj&oslash;rn Lindeijer<br />
 Powered by <a href="http://www.php.net/">PHP</a> and <a href="http://www.mysql.com/">MySQL</a>
 </div>
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">

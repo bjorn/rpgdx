@@ -47,7 +47,6 @@ function get_db_stat($mode)
 				"FROM ". USERS_TABLE ." ".
 				"WHERE FROM_UNIXTIME(user_lastvisit) > NOW() - INTERVAL 7 DAY";
 			break;
-
 		case 'postcount':
 		case 'topiccount':
 			$sql = "SELECT SUM(forum_topics) AS topic_total, SUM(forum_posts) AS post_total
@@ -74,13 +73,21 @@ function get_db_stat($mode)
 
 	$row = $db->sql_fetchrow($result);
 
-	switch ($mode)
+	switch ( $mode )
 	{
-		case 'usercount':       return $row['total']; break;
+		case 'usercount':
+			return $row['total'];
+			break;
 		case 'activeusercount': return $row['active_total']; break;
-		case 'newestuser':      return $row; break;
-		case 'postcount':       return $row['post_total']; break;
-		case 'topiccount':      return $row['topic_total']; break;
+		case 'newestuser':
+			return $row;
+			break;
+		case 'postcount':
+			return $row['post_total'];
+			break;
+		case 'topiccount':
+			return $row['topic_total'];
+			break;
 		case 'projectcount':    return $row['project_total']; break;
 		case 'reviewcount':     return $row['review_total']; break;
 		case 'articlecount':    return $row['article_total']; break;
@@ -115,7 +122,7 @@ function phpbb_ltrim($str, $charlist = false)
 	// php version < 4.1.0
 	if ((int) $php_version[0] < 4 || ((int) $php_version[0] == 4 && (int) $php_version[1] < 1))
 	{
-		while ($str{0} == $charlist)
+		while ($str[0] == $charlist)
 		{
 			$str = substr($str, 1);
 		}
@@ -141,7 +148,7 @@ function phpbb_rtrim($str, $charlist = false)
 	// php version < 4.1.0
 	if ((int) $php_version[0] < 4 || ((int) $php_version[0] == 4 && (int) $php_version[1] < 1))
 	{
-		while ($str{strlen($str)-1} == $charlist)
+		while ($str[strlen($str)-1] == $charlist)
 		{
 			$str = substr($str, 0, strlen($str)-1);
 		}
@@ -800,7 +807,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 		if ( !defined('IN_ADMIN') )
 		{
 			// Start of RPGDX hack
-			// (this one is for consistent breadcrumps)
+			// (this one is for consistent breadcrumbs)
 
 			$page_title = "Message";
 			$page_subtitles = array(

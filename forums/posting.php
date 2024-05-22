@@ -442,7 +442,7 @@ if ( ( $delete || $poll_delete || $mode == 'delete' ) && !$confirm )
 	$page_title = "Confirmation";
 
 	// Start of RPGDX hack
-	// (this one is for consistent breadcrumps)
+	// (this one is for consistent breadcrumbs)
 
 	$page_subtitles = array(
 		array($page_title, '')
@@ -977,7 +977,7 @@ switch( $mode )
 generate_smilies('inline', PAGE_POSTING);
 
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 $page_subtitles = array(
 	array($forum_name, append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id")),

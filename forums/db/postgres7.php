@@ -38,6 +38,14 @@ class sql_db
 	//
 	// Constructor
 	//
+	function __construct($sqlserver, $sqluser, $sqlpassword, $database, $persistency = true)
+	{
+		return $this->sql_db($sqlserver, $sqluser, $sqlpassword, $database, $persistency);
+	}
+
+	//
+	// Old-style Constructor
+	//
 	function sql_db($sqlserver, $sqluser, $sqlpassword, $database, $persistency = true)
 	{
 		$this->connect_string = "";

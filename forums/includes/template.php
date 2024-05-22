@@ -51,6 +51,17 @@ class Template {
 	// This will hold the uncompiled code for that handle.
 	var $uncompiled_code = array();
 
+	//
+	// Constructor
+	//
+	function __construct($root = ".")
+	{
+		return $this->Template($root);
+	}
+
+	//
+	// Old-style Constructor
+	//
 	/**
 	 * Constructor. Simply sets the root dir.
 	 *

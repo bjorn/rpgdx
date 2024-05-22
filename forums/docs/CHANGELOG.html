@@ -32,6 +32,11 @@ p,ul,td {font-size:10pt;}
 <ol>
 <li><a href="#changelog">Changelog</a></li>
 <ol type="i">
+	<li><a href="#2022">Changes since 2.0.22</a></li>
+	<li><a href="#2021">Changes since 2.0.21</a></li>
+	<li><a href="#2020">Changes since 2.0.20</a></li>
+	<li><a href="#2019">Changes since 2.0.19</a></li>
+	<li><a href="#2018">Changes since 2.0.18</a></li>
 	<li><a href="#2017">Changes since 2.0.17</a></li>
 	<li><a href="#2016">Changes since 2.0.16</a></li>
 	<li><a href="#2015">Changes since 2.0.15</a></li>
@@ -63,12 +68,114 @@ p,ul,td {font-size:10pt;}
 
 <p>This is a non-exhaustive (but still near complete) changelog for phpBB 2.0.x including beta and release candidate versions. Our thanks to all those people who've contributed bug reports and code fixes.</p>
 
-<a name="2017"></a><h3 class="h3">l.i. Changes since 2.0.17</h3>
+<a name="2022"></a><h3 class="h3">l.i. Changes since 2.0.22</h3>
+
+<ul>
+<li>[Fix] Correctly re-assign group moderator on user deletion (Bug #280)</li>
+<li>[Fix] Deleting a forum with multiple polls included (Bug #6740)</li>
+<li>[Fix] Fixed postgresql query for obtaining group moderator in groupcp.php (Bug #6550)</li>
+<li>[Fix] Selected field on first entry by default for font size within posting_body.tpl (Bug #7124)</li>
+<li>[Fix] Adjusted maxlength parameters in admin/styles_edit_body.tpl (Bug #81)</li>
+<li>[Fix] Fixed html output in make_forum_select if no forums present (Bug #436)</li>
+<li>[Fix] Fixed spelling error(s) in lang_admin.php (Bug #7172, #6978)</li>
+<li>[Fix] Correctly display censored words in admin panel (Bug #12271)</li>
+<li>[Fix] Do not allow soft hyphen \xAD in usernames (reported by Bander00)</li>
+<li>[Fix] Fixed the group permission system's use of array access</li>
+<li>[Fix] Simple group permissions now work properly</li>
+<li>[Sec] Fix possible XSRF Vulnerability in private messaging and groups handling</li>
+<li>[Fix] Fix inability to export smilies (Bug #2265)</li>
+<li>[Fix] Fixing some problems with PHP5 and register_long_arrays off</li>
+</ul>
+
+<a name="2021"></a><h3 class="h3">l.ii. Changes since 2.0.21</h3>
+
+<ul>
+<li>[Fix] Check for user's existence prior to showing email form</li>
+<li>[Fix] New members of moderator groups should always become moderators (Bug #382)</li>
+<li>[Fix] Proper message when replying to non-existant topics (Bug #459)</li>
+<li>[Fix] Changed column type of search_array to store more ids (Bug #4058)</li>
+<li>[Fix] Fixed annoyance with font-size selector (Bug #4612)</li>
+<li>[Fix] Fix optimize line in database updater (Bug #6186)</li>
+<li>[Sec] Check for the avatar upload directory reinforced</li>
+<li>[Sec] Changes to the criteria for "bad" redirection targets - kellanved</li>
+<li>[Sec] Fixed a non-persistent XSS issue in private messaging</li>
+<li>[Sec] Fixing possible negative start parameter - SpiderZ.</li>
+<li>[Sec] Added session checks to various forms - kellanved</li>
+</ul>
+
+<a name="2020"></a><h3 class="h3">l.iii. Changes since 2.0.20</h3>
+
+<ul>
+<li>[Fix] Changes to random number generator code to explicitly truncate the length of the string</li>
+<li>[Fix] Quoting on boards with HTML enabled</li>
+<li>[Fix] Special characters on boards with HTML enabled</li>
+<li>[Fix] Redirect to list if cancelling deletion of ranks, smilies or word censors</li>
+<li>[Fix] Missing error message if an inactive user tried to login (Bug #1598)</li>
+<li>[Fix] Do not alter post counts when just removing a poll (Bug #1602)</li>
+<li>[Fix] Correct error in removal of old session keys</li>
+<li>[Fix] Changed filtering of short search terms</li>
+<li>[Sec] Improved filtering on language selection (also addresses a number of bug reports related to missing languages)</li>
+<li>[Change] Backported more efficient highlighting code from Olympus</li>
+<li>[Change] Backported zlib emulation code so that there is only a single confirmation image even if zlib is not available</li>
+</ul>
+
+
+<a name="2019"></a><h3 class="h3">l.iv. Changes since 2.0.19</h3>
+
+<ul>
+<li>[Fix] Prevent login attempts from incrementing for inactive users</li>
+<li>[Fix] Do not check maximum login attempts on re-authentication to the admin panel - tomknight</li>
+<li>[Fix] Regenerate session keys on password change</li>
+<li>[Fix] retrieving category rows in index.php (Bug #90)</li>
+<li>[Fix] improved index performance by determining the permissions before iterating through all forums (Bug #91)</li>
+<li>[Fix] Better handling of short usernames within the search (bug #105)</li>
+<li>[Fix] Send a no-cache header on admin pages as well as normal board pages (Bug #149)</li>
+<li>[Fix] Apply word censors to the message when quoting it (Bug #405)</li>
+<li>[Fix] Improved performance of query in admin_groups (Bug #753)</li>
+<li>[Fix] Workaround for an issue in either PHP or MSSQL resulting in a space being returned instead of an empty string (bug #830)</li>
+<li>[Fix] Correct use of default_style config value (Bug #861)</li>
+<li>[Fix] Replace unneeded unset calls in admin_db_utilities.php - vanderaj</li>
+<li>[Fix] Improved error handling in modcp.php</li>
+<li>[Fix] Improved handling of forums to which the user does not have any explicit permissions - vanderaj</li>
+<li>[Fix] Assorted fixes and cleanup of admin_ranks.php, now requires confirmation of deletions</li>
+<li>[Fix] Assorted fixes and cleanup of admin_words.php, now requires confirmation of deletions</li>
+<li>[Fix] Addition and editing of smilies can no longer be performed via GET, now requires confirmation of deletions</li>
+<li>[Fix] Escape group names in admin_groups.php</li>
+<li>[Sec] Replace strip_tags with htmlspecialchars in private message subject</li>
+<li>[Sec] Some changes to HTML handling if enabled</li>
+<li>[Sec] Escape any special characters in reverse dns - Anthrax101</li>
+<li>[Sec] Typecast poll id values - Anthrax101</li>
+<li>[Sec] Added configurable search flood control to reduce the effect of DoS style attacks</li>
+<li>[Sec] Changed the way we create "random" values for use as keys - chinchilla/Anthrax101</li>
+<li>[Change] Changed handling of the case where a selected style doesn't exist in the database</li>
+<li>[Change] Changed handling of topic pruning to improve performance</li>
+<li>[Change] Changed default forum permissions to only allow registered users to post in new forums</li>
+</ul>
+
+
+<a name="2018"></a><h3 class="h3">l.v. Changes since 2.0.18</h3>
+
+<ul>
+<li>[Fix] corrected index on session keys table under MS SQL</li>
+<li>[Fix] added session keys table to backup</li>
+<li>[Fix] delete session keys entries when deleting user</li>
+<li>[Fix] changes to support MySQL 5.0</li>
+<li>[Fix] changes to some of the admin files to improve efficiency and remove a potential error condition when building the menu</li>
+<li>[Fix] change truncation of username length in usercp_register.php - BFUK</li>
+<li>[Fix] incorrect path to avatars in admin_users.php (Bug #667)</li>
+<li>[Fix] fixed get_userdata to support correct sql escaping (non-mysql dbs) - jarnaez</li>
+<li>[Fix] fixed captcha for those not having the zlib extension enabled</li>
+<li>[Change] Placed version information above who is online in admin panel for better visual presence</li>
+<li>[Sec] fixed XSS issue (only valid for Internet Explorer) within the url bbcode</li>
+<li>[Sec] fixed XSS issue if html tags are allowed and enabled</li>
+<li>[Sec] added configurable maximum login attempts to prevent dictionary attacks</li>
+</ul>
+
+
+<a name="2017"></a><h3 class="h3">l.vi. Changes since 2.0.17</h3>
 
 <ul>
 <li>[Fix] incorrect handling of password resets if admin activation is enabled (Bug #88)</li>
-<li>[Fix] retrieving category rows in index.php (Bug #90)</li>
-<li>[Fix] improved index performance by determining the permissions before iterating through all forums (Bug #91)</li>
 <li>[Fix] wrong topic redirection after login redirect (Bug #94)</li>
 <li>[Fix] improved handling of username lists in admin_ug_auth.php (Bug #98)</li>
 <li>[Fix] incorrect removal of bbcode_uid values if bbcode has been turned off (Bug #100)</li>
@@ -113,7 +220,7 @@ p,ul,td {font-size:10pt;}
 <li>[Sec] compare imagetype on avatar uploading to match the file extension from uploaded file</li>
 </ul>
 
-<a name="2016"></a><h3 class="h3">l.ii. Changes since 2.0.16</h3>
+<a name="2016"></a><h3 class="h3">l.vii. Changes since 2.0.16</h3>
 
 <ul>
 <li>Added extra checks to the deletion code in privmsg.php - reported by party_fan</li>
@@ -129,7 +236,7 @@ p,ul,td {font-size:10pt;}
 <li>Correctly set username on posts when deleting a user from the admin panel</li>
 </ul>
 
-<a name="2015"></a><h3 class="h3">l.iii. Changes since 2.0.15</h3>
+<a name="2015"></a><h3 class="h3">l.viii. Changes since 2.0.15</h3>
 
 <ul>
 <li>Fixed critical issue with highlighting - <b>Discovered and fix provided by Ron van Daal</b></li>
@@ -141,7 +248,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed bug in admin re-authentication redirect for servers not having index.php as one of their default files set</li>
 </ul>
 
-<a name="2014"></a><h3 class="h3">l.iv. Changes since 2.0.14</h3>
+<a name="2014"></a><h3 class="h3">l.ix. Changes since 2.0.14</h3>
 
 <ul>
 <li>Fixed moderator status removal in groupcp.php</li>
@@ -163,7 +270,7 @@ p,ul,td {font-size:10pt;}
 <li>Empty url/img bbcodes no longer get parsed</li>
 </ul>
 
-<a name="2013"></a><h3 class="h3">l.v. Changes since 2.0.13</h3>
+<a name="2013"></a><h3 class="h3">l.x. Changes since 2.0.13</h3>
 
 <ul>
 <li>Hardened author and keyword search a bit to not allow very server intensive searches</li>
@@ -180,7 +287,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed case-sensitivity issues in postgres7.php - <b>R45</b></li>
 </ul>
 
-<a name="2012"></a><h3 class="h3">l.vi. Changes since 2.0.12</h3>
+<a name="2012"></a><h3 class="h3">l.xi. Changes since 2.0.12</h3>
 
 <ul>
 <li>Ommitted preg_replace warning in viewtopic due to improper working of preg_quote in PHP - originally reported by matrix_killer, fix submitted by another party</li>
@@ -188,7 +295,7 @@ p,ul,td {font-size:10pt;}
 <li>Minimum requirements raised to PHP 4.0.3 or above due to fixing vulnerability issues breaking PHP3 compatibility.</li>
 </ul>
 
-<a name="2011"></a><h3 class="h3">l.vii. Changes since 2.0.11</h3>
+<a name="2011"></a><h3 class="h3">l.xii. Changes since 2.0.11</h3>
 
 <ul>
 <li>Added confirm table to admin_db_utilities.php</li>
@@ -203,7 +310,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed path disclosure bug in viewtopic.php caused by a PHP 4.3.10 bug - <b>matrix_killer</b></li>
 </ul>
 
-<a name="2010"></a><h3 class="h3">l.viii. Changes since 2.0.10</h3>
+<a name="2010"></a><h3 class="h3">l.xiii. Changes since 2.0.10</h3>
 
 <ul>
 <li>Fixed vulnerability in highlighting code (<b>very high severity, please update your installation as soon as possible</b>)</li>
@@ -214,7 +321,7 @@ p,ul,td {font-size:10pt;}
 <li>Added visual confirmation mod to code base</li>
 </ul>
 
-<a name="209"></a><h3 class="h3">l.ix. Changes since 2.0.9</h3>
+<a name="209"></a><h3 class="h3">l.xiv. Changes since 2.0.9</h3>
 
 <ul>
 <li>Fixed deleting of styles in admin_styles.php</li>
@@ -227,7 +334,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed visual confirmation code. The image was not created due to a wrong regular expression.</li>
 </ul>
 
-<a name="208"></a><h3 class="h3">l.x. Changes since 2.0.8</h3>
+<a name="208"></a><h3 class="h3">l.xv. Changes since 2.0.8</h3>
 
 <ul>
 <li>Fixed one vulnerability in admin_board.php - <b>Xore</b></li>
@@ -246,7 +353,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed problem with SID not delivered to next page in groupcp.php</li>
 </ul>
 
-<a name="207"></a><h3 class="h3">l.xi. Changes since 2.0.7</h3>
+<a name="207"></a><h3 class="h3">l.xvi. Changes since 2.0.7</h3>
 
 <ul>
 <li>Fixed several vulnerabilities in admin pages</li>
@@ -258,7 +365,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed sql injection vulnerability in privmsg - 2.0.8a</li>
 </ul>
 
-<a name="206"></a><h3 class="h3">1.xii. Changes since 2.0.6</h3>
+<a name="206"></a><h3 class="h3">1.xvii. Changes since 2.0.6</h3>
 
 <ul>
 <li>Fixed several vulnerabilities in modcp - <b>Robert Lavierck</b></li>
@@ -272,7 +379,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed potential vulnerability in avatar gallery</li>
 </ul>
 
-<a name="205"></a><h3 class="h3">1.xiii. Changes since 2.0.5</h3>
+<a name="205"></a><h3 class="h3">1.xviii. Changes since 2.0.5</h3>
 
 <ul>
 <li>Fixed various email issues</li>
@@ -288,7 +395,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed sql injection with reset date format field in profile - <b>tendor</b></li>
 </ul>
 
-<a name="204"></a><h3 class="h3">1.xiv. Changes since 2.0.4</h3>
+<a name="204"></a><h3 class="h3">1.xix. Changes since 2.0.4</h3>
 
 <ul>
 <li>Removed user facing session_id checks</li>
@@ -360,7 +467,7 @@ p,ul,td {font-size:10pt;}
 <li>Default English support for visual confirmation - translators are encouraged to support this</li>
 </ul>
 
-<a name="203"></a><h3 class="h3">1.xv. Changes since 2.0.3</h3>
+<a name="203"></a><h3 class="h3">1.xx. Changes since 2.0.3</h3>
 
 <ul>
 <li>Fixed cross-browser scripting issue with highlight param</li>
@@ -487,7 +594,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed potential SQL vulnerability with marking of private messages - <b>Ulf Harnhammar</b></li>
 </ul>
 
-<a name="202"></a><h3 class="h3">1.xvi. Changes since 2.0.2</h3>
+<a name="202"></a><h3 class="h3">1.xxi. Changes since 2.0.2</h3>
 
 <ul>
 <li>Fixed potential cross-site scripting vulnerability with avatars - <b>Showscout</b></li>
@@ -496,7 +603,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed (hopefully) issue with MS Access and multiple pages</li>
 </ul>
 
-<a name="201"></a><h3 class="h3">1.xvii. Changes since 2.0.1</h3>
+<a name="201"></a><h3 class="h3">1.xxii. Changes since 2.0.1</h3>
 
 <ul>
 <li>Fixed missing "username" lang variable in user admin template</li>
@@ -531,7 +638,7 @@ p,ul,td {font-size:10pt;}
 <li>Fix emailer to allow sending emails with language-specific character sets</li>
 </ul>
 
-<a name="200"></a><h3 class="h3">1.xviii. Changes since 2.0.0</h3>
+<a name="200"></a><h3 class="h3">1.xxiii. Changes since 2.0.0</h3>
 
 <ul>
 <li>Fixed delete image bug for normal users</li>
@@ -588,7 +695,7 @@ p,ul,td {font-size:10pt;}
 <li>Added database closure to admin frameset page</li>
 </ul>
 
-<a name="final"></a><h3 class="h3">1.xix. Changes since RC-4</h3>
+<a name="final"></a><h3 class="h3">1.xxiv. Changes since RC-4</h3>
 
 <ul>
 <li>Fixed improper report of general error when posting messages containing errors</li>
@@ -618,7 +725,7 @@ p,ul,td {font-size:10pt;}
 <li>Fixed various remaining usergroup display issues</li>
 </ul>
 
-<a name="rc4"></a><h3 class="h3">1.xx. Changes since RC-3</h3>
+<a name="rc4"></a><h3 class="h3">1.xxv. Changes since RC-3</h3>
 
 <ul>
 <li>Addressed serious security issue with included files</li>
@@ -649,7 +756,7 @@ p,ul,td {font-size:10pt;}
 <li>Fix (hopefully) remaining ICQ overlay issue with view profile in subSilver</li>
 </ul>
 
-<a name="rc3"></a><h3 class="h3">1.xxi. Changes since RC-2</h3>
+<a name="rc3"></a><h3 class="h3">1.xxvi. Changes since RC-2</h3>
 
 <ul>
 <li>Fixed infamous install parse error</li>
@@ -682,7 +789,7 @@ p,ul,td {font-size:10pt;}
 <li>Hidden usergroups are now completely hidden from view</li>
 </ul>
 
-<a name="rc2"></a><h3 class="h3">1.xxii. Changes since RC-1</h3>
+<a name="rc2"></a><h3 class="h3">1.xxvii. Changes since RC-1</h3>
 
 <ul>
 <li>Fixed numerous PostgreSQL related issues</li>
@@ -702,7 +809,7 @@ p,ul,td {font-size:10pt;}
 <li>Various other fixes and updates</li>
 </ul>
 
-<a name="rc1"></a><h3 class="h3">1.xxiii. Changes since RC-1 (pre)</h3>
+<a name="rc1"></a><h3 class="h3">1.xxviii. Changes since RC-1 (pre)</h3>
 
 <ul>
 <li>Upgrade script completed for initial fully functional release</li>

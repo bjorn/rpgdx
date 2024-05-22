@@ -89,7 +89,7 @@ $select_sort_order .= '</select>';
 $page_title = $lang['Memberlist'];
 
 // Start of RPGDX hack
-// (this one is for consistent breadcrumps)
+// (this one is for consistent breadcrumbs)
 
 $page_subtitles = array(
 	array($page_title, '')

@@ -70,6 +70,7 @@ define("VERBOSE", 0);
 //
 function gzip_PrintFourChars($Val)
 {
+	$return = "";
 	for ($i = 0; $i < 4; $i ++)
 	{
 		$return .= chr($Val % 256);
@@ -136,7 +137,7 @@ function pg_get_sequences($crlf, $backup_type)
 
 	} // End else...
 
-	return $returnval;
+	return $return_val;
 
 } // End function...
 
@@ -447,14 +448,7 @@ function get_table_def_mysql($table, $crlf)
 
 	$schema_create .= "$crlf);";
 
-	if(get_magic_quotes_runtime())
-	{
-		return(stripslashes($schema_create));
-	}
-	else
-	{
-		return($schema_create);
-	}
+	return($schema_create);
 
 } // End get_table_def_mysql
 
@@ -827,6 +821,7 @@ if( isset($HTTP_GET_VARS['perform']) || isset($HTTP_POST_VARS['perform']) )
 						break;
 
 					case 'mysql':
+					case 'mariadb':
 					case 'mysql4':
 						$table_def_function = "get_table_def_mysql";
 						$table_content_function = "get_table_content_mysql";

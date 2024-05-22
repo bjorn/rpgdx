@@ -20,7 +20,7 @@ CREATE TABLE `phpbb_reads` (
   `read_topic_id` mediumint(8) NOT NULL default '0',
   `read_user_id` mediumint(8) NOT NULL default '0',
   `read_time` int(11) NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -33,7 +33,7 @@ CREATE TABLE `rpgdx_article_types` (
   `type_title` text NOT NULL,
   `type_long_title` text NOT NULL,
   PRIMARY KEY  (`type_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -51,7 +51,7 @@ CREATE TABLE `rpgdx_articles` (
   `article_title` text,
   `article_bbcode_uid` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`article_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -66,7 +66,7 @@ CREATE TABLE `rpgdx_contest_categories` (
   `category_value` int(11) default NULL,
   `category_image` varchar(32) default NULL,
   PRIMARY KEY  (`category_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -81,7 +81,7 @@ CREATE TABLE `rpgdx_contest_entries` (
   `entry_date` datetime default NULL,
   `entry_disqualified` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`entry_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -95,7 +95,7 @@ CREATE TABLE `rpgdx_contest_votes` (
   `vote_user` int(11) NOT NULL default '0',
   `vote_category` int(11) NOT NULL default '0',
   PRIMARY KEY  (`vote_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -111,7 +111,7 @@ CREATE TABLE `rpgdx_contests` (
   `contest_description` text NOT NULL,
   `contest_status` int(11) NOT NULL default '0',
   PRIMARY KEY  (`contest_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -124,7 +124,7 @@ CREATE TABLE `rpgdx_log` (
   `log_text` text NOT NULL,
   `log_time` datetime default NULL,
   PRIMARY KEY  (`log_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE `rpgdx_news` (
   `news_message` text NOT NULL,
   `news_bbcode_uid` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`news_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -152,7 +152,7 @@ CREATE TABLE `rpgdx_operating_systems` (
   `system_id` int(11) NOT NULL auto_increment,
   `system_name` text NOT NULL,
   PRIMARY KEY  (`system_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -164,7 +164,7 @@ CREATE TABLE `rpgdx_programming_languages` (
   `language_id` int(11) NOT NULL auto_increment,
   `language_name` text NOT NULL,
   PRIMARY KEY  (`language_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -178,7 +178,7 @@ CREATE TABLE `rpgdx_project_downloads` (
   `download_title` text NOT NULL,
   `project_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`download_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -192,7 +192,7 @@ CREATE TABLE `rpgdx_project_screenshots` (
   `screenshot_title` text NOT NULL,
   `project_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`screenshot_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -205,7 +205,7 @@ CREATE TABLE `rpgdx_project_statusses` (
   `status_title` text NOT NULL,
   `status_perc` int(11) default NULL,
   PRIMARY KEY  (`status_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -219,7 +219,7 @@ CREATE TABLE `rpgdx_project_types` (
   `type_title_plural` text NOT NULL,
   `type_description` text,
   PRIMARY KEY  (`type_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -245,7 +245,7 @@ CREATE TABLE `rpgdx_projects` (
   `progress_id` int(11) NOT NULL default '0',
   `project_allow_review` int(1) NOT NULL default '1',
   PRIMARY KEY  (`project_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -262,7 +262,7 @@ CREATE TABLE `rpgdx_reviews` (
   `review_text` mediumtext,
   `review_bbcode_uid` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`review_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -279,7 +279,7 @@ CREATE TABLE `rpgdx_sessions` (
   `expire` int(14) default NULL,
   PRIMARY KEY  (`autoid`),
   UNIQUE KEY `autoid` (`autoid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -292,7 +292,7 @@ CREATE TABLE `rpgdx_themes` (
   `theme_name` varchar(32) default NULL,
   `theme_dir` varchar(32) default NULL,
   PRIMARY KEY  (`theme_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -305,4 +305,4 @@ CREATE TABLE `rpgdx_uploads` (
   `upload_ext` varchar(8) NOT NULL default '',
   `upload_type` varchar(16) NOT NULL default '',
   PRIMARY KEY  (`upload_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

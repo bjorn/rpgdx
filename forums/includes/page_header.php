@@ -545,7 +545,7 @@ else
 
 
 // Start of RPGDX hack
-// (this one adds consistent breadcrumps)
+// (this one adds consistent breadcrumbs)
 
 if (isset($page_subtitles)) {
 	foreach ($page_subtitles as $subtitle)
