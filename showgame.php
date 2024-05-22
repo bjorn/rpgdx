@@ -200,7 +200,7 @@ while ($row = mysql_fetch_object($result))
  */
 
 $winnings = get_contest_results($game->project_id);
-if (sizeof($winnings) > 0) {
+if (isset($winnings) && sizeof($winnings) > 0) {
 	foreach ($winnings as $key => $won) {
 		$template->assign_block_vars('contest_award', array(
 			'IMAGE_URL'     => 'images/'. $won->category_image,
