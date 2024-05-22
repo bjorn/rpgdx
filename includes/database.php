@@ -3,10 +3,6 @@ if (!defined('IN_RPGDX')) {
 	die("Hacking attempt?");
 }
 
-// Connect to the MySQL server
-include_once('database_connect.php');
-
-
 // Extended database query functions
 
 function doQuery($query, $die = 2)
