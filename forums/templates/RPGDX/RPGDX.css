@@ -212,8 +212,6 @@ input.button {
 	border-right: 1px solid rgb(0,0,0);
 	border-bottom: 1px solid rgb(0,0,0);
 	color: rgb(165,167,191);
-	background-color: #FAFAFA;
-	font-weight: bold;
 }
 
 /* The main submit button option */
