@@ -3,13 +3,13 @@ RewriteEngine On
 # Redirect from www/forums/wiki.rpgdx.net
 
 RewriteCond %{HTTP_HOST} ^www\.rpgdx\.net$ [NC]
-RewriteRule ^(.*)$ http://rpgdx.net/$1 [R=301,L]
+RewriteRule ^(.*)$ https://rpgdx.net/$1 [R=301,L]
 
 RewriteCond %{HTTP_HOST} ^forums\.rpgdx\.net$ [NC]
-RewriteRule ^(.*)$ http://rpgdx.net/forums/$1 [R=301,L]
+RewriteRule ^(.*)$ https://rpgdx.net/forums/$1 [R=301,L]
 
 RewriteCond %{HTTP_HOST} ^wiki\.rpgdx\.net$ [NC]
-RewriteRule ^(.*)$ http://rpgdx.net/wiki/$1 [R=301,L]
+RewriteRule ^(.*)$ https://rpgdx.net/wiki/$1 [R=301,L]
 
 IndexIgnore .htaccess */.??* *~ *# */HEADER* */README*
 
