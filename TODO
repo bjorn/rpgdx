@@ -51,10 +51,6 @@ TODO IN NO PARTICULAR ORDER
 - Add featured project
   * Shows screenshot in sidebar on news page
 
-- Don't use phpBB templates, but rather XSLT for laying out pages
-  * Allows better seperation of logic/layout
-  * A lot of simple decisions can be made with XSLT
-
 - Some changes to new post indication
   * Fix new post indication in search.php (maybe only searching for author)
   * Add new post count for forums/forum/thread indication
