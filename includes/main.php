@@ -59,6 +59,7 @@ $template = new Template("templates/$template_dir");
 // Below here lots of variables are added to the template class
 // ============================================================
 
+$loginbar_text = "";
 
 // Determine the login text in the user bar
 if ($userdata['session_logged_in']) {
@@ -79,7 +80,7 @@ if ($userdata['session_logged_in']) {
 
 	$loginbar_text .= "Welcome ". (($userdata['user_level'] == ADMIN) ? 'admin.' : '') ." ". $userdata['username'];
 	$loginbar_text .= " [<a href=\"". append_sid("login.php?logout=true") ."\">log out</a>]";
-} 
+}
 else
 {
 	$loginbar_text .= "Not logged in.";

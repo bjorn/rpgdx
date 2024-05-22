@@ -56,7 +56,6 @@ function placeHeader($subtitles)
 	);
 
 	$temp_subtitle = "";
-	$loginbar_text = "";
 
 	if (isset($subtitles)) {
 		foreach ($subtitles as $subtitle)
@@ -70,7 +69,7 @@ function placeHeader($subtitles)
 	}
 
 	$page_title = $temp_subtitle;
-	
+
 	$template->assign_vars(array(
 		'PAGE_TITLE' => $page_title)
 	);
