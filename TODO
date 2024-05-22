@@ -56,3 +56,4 @@ TODO IN NO PARTICULAR ORDER
   * Add new post count for forums/forum/thread indication
   * Take pages into account when updating last read date
   * Remove entries older than 1 month
+  * Fix entries getting added with user ID set to -1
