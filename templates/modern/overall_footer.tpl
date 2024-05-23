@@ -10,11 +10,5 @@
 RPGDX &copy; 2002-2009 by Thorbj&oslash;rn Lindeijer<br />
 Powered by <a href="http://www.php.net/">PHP</a> and <a href="http://www.mysql.com/">MySQL</a>
 </div>
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-</script>
-<script type="text/javascript">
-_uacct = "UA-380618-2";
-urchinTracker();
-</script>
 </body>
 </html>

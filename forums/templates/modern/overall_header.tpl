@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="templates/modern/{T_HEAD_STYLESHEET}" type="text/css">
 <link rel="stylesheet" href="templates/modern/stylesheet.css" type="text/css">
+<script defer data-domain="rpgdx.net" src="https://plausible.io/js/script.js"></script>
 {META}
 {NAV_LINKS}
 <title>{SITENAME} &gt; Forums
