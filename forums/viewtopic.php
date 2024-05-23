@@ -1210,6 +1210,7 @@ for($i = 0; $i < $total_posts; $i++)
 	//
 	// Replace naughty words
 	//
+	/* TODO: This appears to filter out the entire post on recent versions of PHP, hence disabled for now
 	if (count($orig_word))
 	{
 		$post_subject = preg_replace($orig_word, $replacement_word, $post_subject);
@@ -1221,6 +1222,7 @@ for($i = 0; $i < $total_posts; $i++)
 
 		$message = str_replace('\"', '"', substr(@preg_replace('#(\>(((?>([^><]+|(?R)))*)\<))#se', "@preg_replace(\$orig_word, \$replacement_word, '\\0')", '>' . $message . '<'), 1, -1));
 	}
+	*/
 
 	//
 	// Replace newlines (we use this rather than nl2br because
