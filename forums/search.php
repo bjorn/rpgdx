@@ -150,6 +150,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 {
 	$store_vars = array('search_results', 'total_match_count', 'split_search', 'sort_by', 'sort_dir', 'show_results', 'return_chars');
 	$search_results = '';
+	$split_search = array();
 
 	//
 	// Search ID Limiter, decrease this value if you experience further timeout problems with searching forums
@@ -276,7 +277,6 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 			$stopword_array = @file($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/search_stopwords.txt'); 
 			$synonym_array = @file($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/search_synonyms.txt'); 
 
-			$split_search = array();
 			$stripped_keywords = stripslashes($search_keywords);
 			$split_search = ( !strstr($multibyte_charset, $lang['ENCODING']) ) ?  split_words(clean_words('search', $stripped_keywords, $stopword_array, $synonym_array), 'search') : split(' ', $search_keywords);	
 			unset($stripped_keywords);
@@ -684,9 +684,9 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		}
 		*/
 
-		for($i = 0; $i < count($store_vars); $i++)
+		foreach ($store_vars as $var)
 		{
-			$store_search_data[$store_vars[$i]] = $$store_vars[$i];
+			$store_search_data[$var] = $$var;
 		}
 
 		$result_array = serialize($store_search_data);
@@ -725,9 +725,9 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 			if ( $row = $db->sql_fetchrow($result) )
 			{
 				$search_data = unserialize($row['search_array']);
-				for($i = 0; $i < count($store_vars); $i++)
+				foreach ($store_vars as $var)
 				{
-					$$store_vars[$i] = $search_data[$store_vars[$i]];
+					$$var = $search_data[$var];
 				}
 			}
 		}
