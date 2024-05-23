@@ -39,8 +39,8 @@
   </tr>
   <tr><td colspan="4" height="10">&nbsp;</td></tr>
   <tr><td colspan="4" class="copyright">
-    RPGDX &copy; 2003-2009 by Bjørn Lindeijer<br />
-    Powered by <a href="http://www.php.net/">PHP</a> and <a href="http://www.mysql.com/">MySQL</a>
+    RPGDX &copy; 2003-2009 by Bj&oslash;rn Lindeijer<br />
+    Powered by <a href="https://www.php.net/">PHP</a> and <a href="https://mariadb.org/">MariaDB</a>
   </td></tr>
   <tr><td colspan="4" height="10">&nbsp;</td></tr>
 </table>
