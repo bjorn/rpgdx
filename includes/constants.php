@@ -30,26 +30,23 @@ rpgdx_projects_awards       (praw_id, praw_project, praw_award)
 
 */
 
-$table_prefix = 'rpgdx_';
-
-define('ARTICLE_TYPES_TABLE',         $table_prefix.'article_types');
-define('ARTICLES_TABLE',              $table_prefix.'articles');
-define('NEWS_TABLE',                  $table_prefix.'news');
-define('OPERATING_SYSTEMS_TABLE',     $table_prefix.'operating_systems');
-define('PROGRAMMING_LANGUAGES_TABLE', $table_prefix.'programming_languages');
-define('PROJECT_SCREENSHOTS_TABLE',   $table_prefix.'project_screenshots');
-define('PROJECT_STATUSSES_TABLE',     $table_prefix.'project_statusses');
-define('PROJECT_TYPES_TABLE',         $table_prefix.'project_types');
-define('PROJECTS_TABLE',              $table_prefix.'projects');
-define('REVIEWS_TABLE',               $table_prefix.'reviews');
-define('SESSIONS_TABLE',              $table_prefix.'sessions');
-define('RPGDX_THEMES_TABLE',          $table_prefix.'themes');
-define('LOG_TABLE',                   $table_prefix.'log');
-define('UPLOADS_TABLE',               $table_prefix.'uploads');
-define('CONTESTS_TABLE',              $table_prefix.'contests');
-define('CONTEST_ENTRIES_TABLE',       $table_prefix.'contest_entries');
-define('CONTEST_VOTES_TABLE',         $table_prefix.'contest_votes');
-define('CONTEST_CATEGORIES_TABLE',    $table_prefix.'contest_categories');
+define('ARTICLE_TYPES_TABLE',         'rpgdx_article_types');
+define('ARTICLES_TABLE',              'rpgdx_articles');
+define('NEWS_TABLE',                  'rpgdx_news');
+define('OPERATING_SYSTEMS_TABLE',     'rpgdx_operating_systems');
+define('PROGRAMMING_LANGUAGES_TABLE', 'rpgdx_programming_languages');
+define('PROJECT_SCREENSHOTS_TABLE',   'rpgdx_project_screenshots');
+define('PROJECT_STATUSSES_TABLE',     'rpgdx_project_statusses');
+define('PROJECT_TYPES_TABLE',         'rpgdx_project_types');
+define('PROJECTS_TABLE',              'rpgdx_projects');
+define('REVIEWS_TABLE',               'rpgdx_reviews');
+define('RPGDX_THEMES_TABLE',          'rpgdx_themes');
+define('LOG_TABLE',                   'rpgdx_log');
+define('UPLOADS_TABLE',               'rpgdx_uploads');
+define('CONTESTS_TABLE',              'rpgdx_contests');
+define('CONTEST_ENTRIES_TABLE',       'rpgdx_contest_entries');
+define('CONTEST_VOTES_TABLE',         'rpgdx_contest_votes');
+define('CONTEST_CATEGORIES_TABLE',    'rpgdx_contest_categories');
 
 
 // Contest statusses

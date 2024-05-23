@@ -191,25 +191,6 @@ define('VOTE_USERS_TABLE', $table_prefix.'vote_voters');
 */
 
 define('READS_TABLE',                 $table_prefix.'reads');
-define('ARTICLE_TYPES_TABLE',         'rpgdx_article_types');
-define('ARTICLES_TABLE',              'rpgdx_articles');
-define('NEWS_TABLE',                  'rpgdx_news');
-define('OPERATING_SYSTEMS_TABLE',     'rpgdx_operating_systems');
-define('PROGRAMMING_LANGUAGES_TABLE', 'rpgdx_programming_languages');
-define('PROJECT_SCREENSHOTS_TABLE',   'rpgdx_project_screenshots');
-define('PROJECT_STATUSSES_TABLE',     'rpgdx_project_statusses');
-define('PROJECT_TYPES_TABLE',         'rpgdx_project_types');
-define('PROJECTS_TABLE',              'rpgdx_projects');
-define('REVIEWS_TABLE',               'rpgdx_reviews');
-// define('SESSIONS_TABLE',              'rpgdx_sessions');  // FIXME: redefinition is ignored!
-// define('THEMES_TABLE',                'rpgdx_themes');  // FIXME: redefinition is ignored!
-// See the comment in the PHP documentation: <https://www.php.net/manual/en/function.define.php#121201>
-define('LOG_TABLE',                   'rpgdx_log');
-define('UPLOADS_TABLE',               'rpgdx_uploads');
-define('CONTESTS_TABLE',              'rpgdx_contests');
-define('CONTEST_ENTRIES_TABLE',       'rpgdx_contest_entries');
-define('CONTEST_VOTES_TABLE',         'rpgdx_contest_votes');
-define('CONTEST_CATEGORIES_TABLE',    'rpgdx_contest_categories');
 
 /*
  END OF RPGDX HACKERY!!
