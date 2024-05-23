@@ -99,12 +99,12 @@ if (isset($action) && ($action == "edit" || $action == "remove") && $project_id 
 else
 {
 	// Strip slashes from the posted information and prepare for HTML printing.
-	foreach ($HTTP_POST_VARS as $key => $value) {
+	foreach ($_POST as $key => $value) {
 		//$$key = htmlentities(stripslashes($value));
     $form[$key] = htmlentities(stripslashes($value));
 	}
 
-	if (!isset($HTTP_POST_VARS['project_allow_review']))
+	if (!isset($_POST['project_allow_review']))
 	{
 		if (isset($submit)) {$form['project_allow_review'] = false;}
 		else {$form['project_allow_review'] = true;}

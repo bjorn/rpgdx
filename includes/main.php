@@ -31,12 +31,12 @@ $time_start	= getmicrotime();
  */
 /*
 if (!get_cfg_var("magic_quotes_gpc")) {
-  array_addslashes($HTTP_POST_VARS);
-  array_addslashes($HTTP_GET_VARS);
+  array_addslashes($_POST);
+  array_addslashes($_GET);
 }
 */
-extract($HTTP_POST_VARS, EXTR_OVERWRITE);
-extract($HTTP_GET_VARS, EXTR_OVERWRITE);
+extract($_POST, EXTR_OVERWRITE);
+extract($_GET, EXTR_OVERWRITE);
 
 
 /*

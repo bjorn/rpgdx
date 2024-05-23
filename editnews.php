@@ -82,7 +82,7 @@ if (($action == "edit" || $action == "remove") && !isset($submit) && empty($erro
 else
 {
 	// Strip slashes from the posted information and prepare for HTML printing.
-	foreach ($HTTP_POST_VARS as $key => $value) {
+	foreach ($_POST as $key => $value) {
     $form[$key] = htmlentities(stripslashes($value));
 	}
 }

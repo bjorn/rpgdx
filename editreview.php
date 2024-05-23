@@ -108,7 +108,7 @@ if (($action == "edit" || $action == "remove") && $review_id > 0 && !isset($subm
 else
 {
 	// Strip slashes from the posted information and prepare for HTML printing.
-	foreach ($HTTP_POST_VARS as $key => $value) {
+	foreach ($_POST as $key => $value) {
 		//$$key = htmlentities(stripslashes($value));
     $form[$key] = htmlentities(stripslashes($value));
 	}

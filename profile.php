@@ -1,7 +1,7 @@
 <?php
 include("includes/main.php");
 
-if (empty($HTTP_GET_VARS['user_id']) || $HTTP_GET_VARS['user_id'] == ANONYMOUS) {
+if (empty($_GET['user_id']) || $_GET['user_id'] == ANONYMOUS) {
 	die('<b>Error</b>: No user ID specified');
 }
 

@@ -17,7 +17,7 @@ function placeHeader($subtitles)
 	global $template;
 	global $rpgdx_config;
 	global $do_gzip_compress, $gzip_enabled;
-	global $HTTP_USER_AGENT, $HTTP_SERVER_VARS;
+	global $HTTP_USER_AGENT, $_SERVER;
 	global $s;
 	global $header_placed;
 
@@ -36,7 +36,7 @@ function placeHeader($subtitles)
     }
     else if ( $phpver > '4.0' )
     {
-      if ( strstr($HTTP_SERVER_VARS['HTTP_ACCEPT_ENCODING'], 'gzip') )
+      if ( strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') )
       {
         if ( extension_loaded('zlib') )
         {

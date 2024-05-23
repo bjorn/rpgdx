@@ -52,9 +52,9 @@ $forum_auth_ary = array(
 //
 // Mode setting
 //
-if( isset($HTTP_POST_VARS['mode']) || isset($HTTP_GET_VARS['mode']) )
+if( isset($_POST['mode']) || isset($_GET['mode']) )
 {
-	$mode = ( isset($HTTP_POST_VARS['mode']) ) ? $HTTP_POST_VARS['mode'] : $HTTP_GET_VARS['mode'];
+	$mode = ( isset($_POST['mode']) ) ? $_POST['mode'] : $_GET['mode'];
 	$mode = htmlspecialchars($mode);
 }
 else
@@ -226,18 +226,18 @@ function renumber_order($mode, $cat = 0)
 //
 // Begin program proper
 //
-if( isset($HTTP_POST_VARS['addforum']) || isset($HTTP_POST_VARS['addcategory']) )
+if( isset($_POST['addforum']) || isset($_POST['addcategory']) )
 {
-	$mode = ( isset($HTTP_POST_VARS['addforum']) ) ? "addforum" : "addcat";
+	$mode = ( isset($_POST['addforum']) ) ? "addforum" : "addcat";
 
 	if( $mode == "addforum" )
 	{
-		list($cat_id) = each($HTTP_POST_VARS['addforum']);
+		list($cat_id) = each($_POST['addforum']);
 		$cat_id = intval($cat_id);
 		// 
 		// stripslashes needs to be run on this because slashes are added when the forum name is posted
 		//
-		$forumname = stripslashes($HTTP_POST_VARS['forumname'][$cat_id]);
+		$forumname = stripslashes($_POST['forumname'][$cat_id]);
 	}
 }
 
@@ -258,7 +258,7 @@ if( !empty($mode) )
 				$newmode = 'modforum';
 				$buttonvalue = $lang['Update'];
 
-				$forum_id = intval($HTTP_GET_VARS[POST_FORUM_URL]);
+				$forum_id = intval($_GET[POST_FORUM_URL]);
 
 				$row = get_info('forum', $forum_id);
 
@@ -351,14 +351,14 @@ if( !empty($mode) )
 			//
 			// Create a forum in the DB
 			//
-			if( trim($HTTP_POST_VARS['forumname']) == "" )
+			if( trim($_POST['forumname']) == "" )
 			{
 				message_die(GENERAL_ERROR, "Can't create a forum without a name");
 			}
 
 			$sql = "SELECT MAX(forum_order) AS max_order
 				FROM " . FORUMS_TABLE . "
-				WHERE cat_id = " . intval($HTTP_POST_VARS[POST_CAT_URL]);
+				WHERE cat_id = " . intval($_POST[POST_CAT_URL]);
 			if( !$result = $db->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't get order number from forums table", "", __LINE__, __FILE__, $sql);
@@ -393,22 +393,22 @@ if( !empty($mode) )
 
 			// There is no problem having duplicate forum names so we won't check for it.
 			$sql = "INSERT INTO " . FORUMS_TABLE . " (forum_id, forum_name, cat_id, forum_desc, forum_order, forum_status, prune_enable" . $field_sql . ")
-				VALUES ('" . $next_id . "', '" . str_replace("\'", "''", $HTTP_POST_VARS['forumname']) . "', " . intval($HTTP_POST_VARS[POST_CAT_URL]) . ", '" . str_replace("\'", "''", $HTTP_POST_VARS['forumdesc']) . "', $next_order, " . intval($HTTP_POST_VARS['forumstatus']) . ", " . intval($HTTP_POST_VARS['prune_enable']) . $value_sql . ")";
+				VALUES ('" . $next_id . "', '" . str_replace("\'", "''", $_POST['forumname']) . "', " . intval($_POST[POST_CAT_URL]) . ", '" . str_replace("\'", "''", $_POST['forumdesc']) . "', $next_order, " . intval($_POST['forumstatus']) . ", " . intval($_POST['prune_enable']) . $value_sql . ")";
 			if( !$result = $db->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't insert row in forums table", "", __LINE__, __FILE__, $sql);
 			}
 
-			if( $HTTP_POST_VARS['prune_enable'] )
+			if( $_POST['prune_enable'] )
 			{
 
-				if( $HTTP_POST_VARS['prune_days'] == "" || $HTTP_POST_VARS['prune_freq'] == "")
+				if( $_POST['prune_days'] == "" || $_POST['prune_freq'] == "")
 				{
 					message_die(GENERAL_MESSAGE, $lang['Set_prune_data']);
 				}
 
 				$sql = "INSERT INTO " . PRUNE_TABLE . " (forum_id, prune_days, prune_freq)
-					VALUES('" . $next_id . "', " . intval($HTTP_POST_VARS['prune_days']) . ", " . intval($HTTP_POST_VARS['prune_freq']) . ")";
+					VALUES('" . $next_id . "', " . intval($_POST['prune_days']) . ", " . intval($_POST['prune_freq']) . ")";
 				if( !$result = $db->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, "Couldn't insert row in prune table", "", __LINE__, __FILE__, $sql);
@@ -423,32 +423,32 @@ if( !empty($mode) )
 
 		case 'modforum':
 			// Modify a forum in the DB
-			if( isset($HTTP_POST_VARS['prune_enable']))
+			if( isset($_POST['prune_enable']))
 			{
-				if( $HTTP_POST_VARS['prune_enable'] != 1 )
+				if( $_POST['prune_enable'] != 1 )
 				{
-					$HTTP_POST_VARS['prune_enable'] = 0;
+					$_POST['prune_enable'] = 0;
 				}
 			}
 
 			$sql = "UPDATE " . FORUMS_TABLE . "
-				SET forum_name = '" . str_replace("\'", "''", $HTTP_POST_VARS['forumname']) . "', cat_id = " . intval($HTTP_POST_VARS[POST_CAT_URL]) . ", forum_desc = '" . str_replace("\'", "''", $HTTP_POST_VARS['forumdesc']) . "', forum_status = " . intval($HTTP_POST_VARS['forumstatus']) . ", prune_enable = " . intval($HTTP_POST_VARS['prune_enable']) . "
-				WHERE forum_id = " . intval($HTTP_POST_VARS[POST_FORUM_URL]);
+				SET forum_name = '" . str_replace("\'", "''", $_POST['forumname']) . "', cat_id = " . intval($_POST[POST_CAT_URL]) . ", forum_desc = '" . str_replace("\'", "''", $_POST['forumdesc']) . "', forum_status = " . intval($_POST['forumstatus']) . ", prune_enable = " . intval($_POST['prune_enable']) . "
+				WHERE forum_id = " . intval($_POST[POST_FORUM_URL]);
 			if( !$result = $db->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't update forum information", "", __LINE__, __FILE__, $sql);
 			}
 
-			if( $HTTP_POST_VARS['prune_enable'] == 1 )
+			if( $_POST['prune_enable'] == 1 )
 			{
-				if( $HTTP_POST_VARS['prune_days'] == "" || $HTTP_POST_VARS['prune_freq'] == "" )
+				if( $_POST['prune_days'] == "" || $_POST['prune_freq'] == "" )
 				{
 					message_die(GENERAL_MESSAGE, $lang['Set_prune_data']);
 				}
 
 				$sql = "SELECT *
 					FROM " . PRUNE_TABLE . "
-					WHERE forum_id = " . intval($HTTP_POST_VARS[POST_FORUM_URL]);
+					WHERE forum_id = " . intval($_POST[POST_FORUM_URL]);
 				if( !$result = $db->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, "Couldn't get forum Prune Information","",__LINE__, __FILE__, $sql);
@@ -457,13 +457,13 @@ if( !empty($mode) )
 				if( $db->sql_numrows($result) > 0 )
 				{
 					$sql = "UPDATE " . PRUNE_TABLE . "
-						SET	prune_days = " . intval($HTTP_POST_VARS['prune_days']) . ",	prune_freq = " . intval($HTTP_POST_VARS['prune_freq']) . "
-				 		WHERE forum_id = " . intval($HTTP_POST_VARS[POST_FORUM_URL]);
+						SET	prune_days = " . intval($_POST['prune_days']) . ",	prune_freq = " . intval($_POST['prune_freq']) . "
+				 		WHERE forum_id = " . intval($_POST[POST_FORUM_URL]);
 				}
 				else
 				{
 					$sql = "INSERT INTO " . PRUNE_TABLE . " (forum_id, prune_days, prune_freq)
-						VALUES(" . intval($HTTP_POST_VARS[POST_FORUM_URL]) . ", " . intval($HTTP_POST_VARS['prune_days']) . ", " . intval($HTTP_POST_VARS['prune_freq']) . ")";
+						VALUES(" . intval($_POST[POST_FORUM_URL]) . ", " . intval($_POST['prune_days']) . ", " . intval($_POST['prune_freq']) . ")";
 				}
 
 				if( !$result = $db->sql_query($sql) )
@@ -480,7 +480,7 @@ if( !empty($mode) )
 			
 		case 'addcat':
 			// Create a category in the DB
-			if( trim($HTTP_POST_VARS['categoryname']) == '')
+			if( trim($_POST['categoryname']) == '')
 			{
 				message_die(GENERAL_ERROR, "Can't create a category without a name");
 			}
@@ -500,7 +500,7 @@ if( !empty($mode) )
 			// There is no problem having duplicate forum names so we won't check for it.
 			//
 			$sql = "INSERT INTO " . CATEGORIES_TABLE . " (cat_title, cat_order)
-				VALUES ('" . str_replace("\'", "''", $HTTP_POST_VARS['categoryname']) . "', $next_order)";
+				VALUES ('" . str_replace("\'", "''", $_POST['categoryname']) . "', $next_order)";
 			if( !$result = $db->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't insert row in categories table", "", __LINE__, __FILE__, $sql);
@@ -519,7 +519,7 @@ if( !empty($mode) )
 			$newmode = 'modcat';
 			$buttonvalue = $lang['Update'];
 
-			$cat_id = intval($HTTP_GET_VARS[POST_CAT_URL]);
+			$cat_id = intval($_GET[POST_CAT_URL]);
 
 			$row = get_info('category', $cat_id);
 			$cat_title = $row['cat_title'];
@@ -548,8 +548,8 @@ if( !empty($mode) )
 		case 'modcat':
 			// Modify a category in the DB
 			$sql = "UPDATE " . CATEGORIES_TABLE . "
-				SET cat_title = '" . str_replace("\'", "''", $HTTP_POST_VARS['cat_title']) . "'
-				WHERE cat_id = " . intval($HTTP_POST_VARS[POST_CAT_URL]);
+				SET cat_title = '" . str_replace("\'", "''", $_POST['cat_title']) . "'
+				WHERE cat_id = " . intval($_POST[POST_CAT_URL]);
 			if( !$result = $db->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't update forum information", "", __LINE__, __FILE__, $sql);
@@ -563,7 +563,7 @@ if( !empty($mode) )
 			
 		case 'deleteforum':
 			// Show form to delete a forum
-			$forum_id = intval($HTTP_GET_VARS[POST_FORUM_URL]);
+			$forum_id = intval($_GET[POST_FORUM_URL]);
 
 			$select_to = '<select name="to_id">';
 			$select_to .= "<option value=\"-1\"$s>" . $lang['Delete_all_posts'] . "</option>\n";
@@ -604,9 +604,9 @@ if( !empty($mode) )
 			//
 			// Move or delete a forum in the DB
 			//
-			$from_id = intval($HTTP_POST_VARS['from_id']);
-			$to_id = intval($HTTP_POST_VARS['to_id']);
-			$delete_old = intval($HTTP_POST_VARS['delete_old']);
+			$from_id = intval($_POST['from_id']);
+			$to_id = intval($_POST['to_id']);
+			$delete_old = intval($_POST['delete_old']);
 
 			// Either delete or move all posts in a forum
 			if($to_id == -1)
@@ -760,7 +760,7 @@ if( !empty($mode) )
 			//
 			// Show form to delete a category
 			//
-			$cat_id = intval($HTTP_GET_VARS[POST_CAT_URL]);
+			$cat_id = intval($_GET[POST_CAT_URL]);
 
 			$buttonvalue = $lang['Move_and_Delete'];
 			$newmode = 'movedelcat';
@@ -821,8 +821,8 @@ if( !empty($mode) )
 			//
 			// Move or delete a category in the DB
 			//
-			$from_id = intval($HTTP_POST_VARS['from_id']);
-			$to_id = intval($HTTP_POST_VARS['to_id']);
+			$from_id = intval($_POST['from_id']);
+			$to_id = intval($_POST['to_id']);
 
 			if (!empty($to_id))
 			{
@@ -865,8 +865,8 @@ if( !empty($mode) )
 			//
 			// Change order of forums in the DB
 			//
-			$move = intval($HTTP_GET_VARS['move']);
-			$forum_id = intval($HTTP_GET_VARS[POST_FORUM_URL]);
+			$move = intval($_GET['move']);
+			$forum_id = intval($_GET[POST_FORUM_URL]);
 
 			$forum_info = get_info('forum', $forum_id);
 
@@ -889,8 +889,8 @@ if( !empty($mode) )
 			//
 			// Change order of categories in the DB
 			//
-			$move = intval($HTTP_GET_VARS['move']);
-			$cat_id = intval($HTTP_GET_VARS[POST_CAT_URL]);
+			$move = intval($_GET['move']);
+			$cat_id = intval($_GET[POST_CAT_URL]);
 
 			$sql = "UPDATE " . CATEGORIES_TABLE . "
 				SET cat_order = cat_order + $move
@@ -906,7 +906,7 @@ if( !empty($mode) )
 			break;
 
 		case 'forum_sync':
-			sync('forum', intval($HTTP_GET_VARS[POST_FORUM_URL]));
+			sync('forum', intval($_GET[POST_FORUM_URL]));
 			$show_index = TRUE;
 
 			break;

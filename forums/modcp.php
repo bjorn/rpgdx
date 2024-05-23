@@ -38,49 +38,49 @@ include($phpbb_root_path . 'includes/functions_admin.'.$phpEx);
 //
 // Obtain initial var settings
 //
-if ( isset($HTTP_GET_VARS[POST_FORUM_URL]) || isset($HTTP_POST_VARS[POST_FORUM_URL]) )
+if ( isset($_GET[POST_FORUM_URL]) || isset($_POST[POST_FORUM_URL]) )
 {
-	$forum_id = (isset($HTTP_POST_VARS[POST_FORUM_URL])) ? intval($HTTP_POST_VARS[POST_FORUM_URL]) : intval($HTTP_GET_VARS[POST_FORUM_URL]);
+	$forum_id = (isset($_POST[POST_FORUM_URL])) ? intval($_POST[POST_FORUM_URL]) : intval($_GET[POST_FORUM_URL]);
 }
 else
 {
 	$forum_id = '';
 }
 
-if ( isset($HTTP_GET_VARS[POST_POST_URL]) || isset($HTTP_POST_VARS[POST_POST_URL]) )
+if ( isset($_GET[POST_POST_URL]) || isset($_POST[POST_POST_URL]) )
 {
-	$post_id = (isset($HTTP_POST_VARS[POST_POST_URL])) ? intval($HTTP_POST_VARS[POST_POST_URL]) : intval($HTTP_GET_VARS[POST_POST_URL]);
+	$post_id = (isset($_POST[POST_POST_URL])) ? intval($_POST[POST_POST_URL]) : intval($_GET[POST_POST_URL]);
 }
 else
 {
 	$post_id = '';
 }
 
-if ( isset($HTTP_GET_VARS[POST_TOPIC_URL]) || isset($HTTP_POST_VARS[POST_TOPIC_URL]) )
+if ( isset($_GET[POST_TOPIC_URL]) || isset($_POST[POST_TOPIC_URL]) )
 {
-	$topic_id = (isset($HTTP_POST_VARS[POST_TOPIC_URL])) ? intval($HTTP_POST_VARS[POST_TOPIC_URL]) : intval($HTTP_GET_VARS[POST_TOPIC_URL]);
+	$topic_id = (isset($_POST[POST_TOPIC_URL])) ? intval($_POST[POST_TOPIC_URL]) : intval($_GET[POST_TOPIC_URL]);
 }
 else
 {
 	$topic_id = '';
 }
 
-$confirm = ( $HTTP_POST_VARS['confirm'] ) ? TRUE : 0;
+$confirm = ( $_POST['confirm'] ) ? TRUE : 0;
 
 //
 // Continue var definitions
 //
-$start = ( isset($HTTP_GET_VARS['start']) ) ? intval($HTTP_GET_VARS['start']) : 0;
+$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 $start = ($start < 0) ? 0 : $start;
 
-$delete = ( isset($HTTP_POST_VARS['delete']) ) ? TRUE : FALSE;
-$move = ( isset($HTTP_POST_VARS['move']) ) ? TRUE : FALSE;
-$lock = ( isset($HTTP_POST_VARS['lock']) ) ? TRUE : FALSE;
-$unlock = ( isset($HTTP_POST_VARS['unlock']) ) ? TRUE : FALSE;
+$delete = ( isset($_POST['delete']) ) ? TRUE : FALSE;
+$move = ( isset($_POST['move']) ) ? TRUE : FALSE;
+$lock = ( isset($_POST['lock']) ) ? TRUE : FALSE;
+$unlock = ( isset($_POST['unlock']) ) ? TRUE : FALSE;
 
-if ( isset($HTTP_POST_VARS['mode']) || isset($HTTP_GET_VARS['mode']) )
+if ( isset($_POST['mode']) || isset($_GET['mode']) )
 {
-	$mode = ( isset($HTTP_POST_VARS['mode']) ) ? $HTTP_POST_VARS['mode'] : $HTTP_GET_VARS['mode'];
+	$mode = ( isset($_POST['mode']) ) ? $_POST['mode'] : $_GET['mode'];
 	$mode = htmlspecialchars($mode);
 }
 else
@@ -108,9 +108,9 @@ else
 }
 
 // session id check
-if (!empty($HTTP_POST_VARS['sid']) || !empty($HTTP_GET_VARS['sid']))
+if (!empty($_POST['sid']) || !empty($_GET['sid']))
 {
-	$sid = (!empty($HTTP_POST_VARS['sid'])) ? $HTTP_POST_VARS['sid'] : $HTTP_GET_VARS['sid'];
+	$sid = (!empty($_POST['sid'])) ? $_POST['sid'] : $_GET['sid'];
 }
 else
 {
@@ -184,7 +184,7 @@ if ($sid == '' || $sid != $userdata['session_id'])
 // Check if user did or did not confirm
 // If they did not, forward them to the last page they were on
 //
-if ( isset($HTTP_POST_VARS['cancel']) )
+if ( isset($_POST['cancel']) )
 {
 	if ( $topic_id )
 	{
@@ -231,14 +231,14 @@ switch( $mode )
 
 		if ( $confirm )
 		{
-  			if ( empty($HTTP_POST_VARS['topic_id_list']) && empty($topic_id) )
+  			if ( empty($_POST['topic_id_list']) && empty($topic_id) )
 			{
 				message_die(GENERAL_MESSAGE, $lang['None_selected']);
 			}
 
 			include($phpbb_root_path . 'includes/functions_search.'.$phpEx);
 
-			$topics = ( isset($HTTP_POST_VARS['topic_id_list']) ) ? $HTTP_POST_VARS['topic_id_list'] : array($topic_id);
+			$topics = ( isset($_POST['topic_id_list']) ) ? $_POST['topic_id_list'] : array($topic_id);
 
 			$topic_id_sql = '';
 			for($i = 0; $i < count($topics); $i++)
@@ -416,16 +416,16 @@ switch( $mode )
 		else
 		{
 			// Not confirmed, show confirmation message
-			if ( empty($HTTP_POST_VARS['topic_id_list']) && empty($topic_id) )
+			if ( empty($_POST['topic_id_list']) && empty($topic_id) )
 			{
 				message_die(GENERAL_MESSAGE, $lang['None_selected']);
 			}
 
 			$hidden_fields = '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" /><input type="hidden" name="mode" value="' . $mode . '" /><input type="hidden" name="' . POST_FORUM_URL . '" value="' . $forum_id . '" />';
 
-			if ( isset($HTTP_POST_VARS['topic_id_list']) )
+			if ( isset($_POST['topic_id_list']) )
 			{
-				$topics = $HTTP_POST_VARS['topic_id_list'];
+				$topics = $_POST['topic_id_list'];
 				for($i = 0; $i < count($topics); $i++)
 				{
 					$hidden_fields .= '<input type="hidden" name="topic_id_list[]" value="' . intval($topics[$i]) . '" />';
@@ -466,12 +466,12 @@ switch( $mode )
 
 		if ( $confirm )
 		{
-			if ( empty($HTTP_POST_VARS['topic_id_list']) && empty($topic_id) )
+			if ( empty($_POST['topic_id_list']) && empty($topic_id) )
 			{
 				message_die(GENERAL_MESSAGE, $lang['None_selected']);
 			}
 
-			$new_forum_id = intval($HTTP_POST_VARS['new_forum']);
+			$new_forum_id = intval($_POST['new_forum']);
 			$old_forum_id = $forum_id;
 
 			$sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . '
@@ -490,7 +490,7 @@ switch( $mode )
 
 			if ( $new_forum_id != $old_forum_id )
 			{
-				$topics = ( isset($HTTP_POST_VARS['topic_id_list']) ) ?  $HTTP_POST_VARS['topic_id_list'] : array($topic_id);
+				$topics = ( isset($_POST['topic_id_list']) ) ?  $_POST['topic_id_list'] : array($topic_id);
 
 				$topic_list = '';
 				for($i = 0; $i < count($topics); $i++)
@@ -515,7 +515,7 @@ switch( $mode )
 				{
 					$topic_id = $row[$i]['topic_id'];
 					
-					if ( isset($HTTP_POST_VARS['move_leave_shadow']) )
+					if ( isset($_POST['move_leave_shadow']) )
 					{
 						// Insert topic in the old forum that indicates that the forum has moved.
 						$sql = "INSERT INTO " . TOPICS_TABLE . " (forum_id, topic_title, topic_poster, topic_time, topic_status, topic_type, topic_vote, topic_views, topic_replies, topic_first_post_id, topic_last_post_id, topic_moved_id)
@@ -576,16 +576,16 @@ switch( $mode )
 		}
 		else
 		{
-			if ( empty($HTTP_POST_VARS['topic_id_list']) && empty($topic_id) )
+			if ( empty($_POST['topic_id_list']) && empty($topic_id) )
 			{
 				message_die(GENERAL_MESSAGE, $lang['None_selected']);
 			}
 
 			$hidden_fields = '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" /><input type="hidden" name="mode" value="' . $mode . '" /><input type="hidden" name="' . POST_FORUM_URL . '" value="' . $forum_id . '" />';
 
-			if ( isset($HTTP_POST_VARS['topic_id_list']) )
+			if ( isset($_POST['topic_id_list']) )
 			{
-				$topics = $HTTP_POST_VARS['topic_id_list'];
+				$topics = $_POST['topic_id_list'];
 
 				for($i = 0; $i < count($topics); $i++)
 				{
@@ -625,12 +625,12 @@ switch( $mode )
 		break;
 
 	case 'lock':
-		if ( empty($HTTP_POST_VARS['topic_id_list']) && empty($topic_id) )
+		if ( empty($_POST['topic_id_list']) && empty($topic_id) )
 		{
 			message_die(GENERAL_MESSAGE, $lang['None_selected']);
 		}
 
-		$topics = ( isset($HTTP_POST_VARS['topic_id_list']) ) ?  $HTTP_POST_VARS['topic_id_list'] : array($topic_id);
+		$topics = ( isset($_POST['topic_id_list']) ) ?  $_POST['topic_id_list'] : array($topic_id);
 
 		$topic_id_sql = '';
 		for($i = 0; $i < count($topics); $i++)
@@ -670,12 +670,12 @@ switch( $mode )
 		break;
 
 	case 'unlock':
-		if ( empty($HTTP_POST_VARS['topic_id_list']) && empty($topic_id) )
+		if ( empty($_POST['topic_id_list']) && empty($topic_id) )
 		{
 			message_die(GENERAL_MESSAGE, $lang['None_selected']);
 		}
 
-		$topics = ( isset($HTTP_POST_VARS['topic_id_list']) ) ?  $HTTP_POST_VARS['topic_id_list'] : array($topic_id);
+		$topics = ( isset($_POST['topic_id_list']) ) ?  $_POST['topic_id_list'] : array($topic_id);
 
 		$topic_id_sql = '';
 		for($i = 0; $i < count($topics); $i++)
@@ -720,9 +720,9 @@ switch( $mode )
 
 		$post_id_sql = '';
 
-		if (isset($HTTP_POST_VARS['split_type_all']) || isset($HTTP_POST_VARS['split_type_beyond']))
+		if (isset($_POST['split_type_all']) || isset($_POST['split_type_beyond']))
 		{
-			$posts = $HTTP_POST_VARS['post_id_list'];
+			$posts = $_POST['post_id_list'];
 
 			for ($i = 0; $i < count($posts); $i++)
 			{
@@ -777,13 +777,13 @@ switch( $mode )
 				}
 				while ($row = $db->sql_fetchrow($result));
 
-				$post_subject = trim(htmlspecialchars($HTTP_POST_VARS['subject']));
+				$post_subject = trim(htmlspecialchars($_POST['subject']));
 				if (empty($post_subject))
 				{
 					message_die(GENERAL_MESSAGE, $lang['Empty_subject']);
 				}
 
-				$new_forum_id = intval($HTTP_POST_VARS['new_forum_id']);
+				$new_forum_id = intval($_POST['new_forum_id']);
 				$topic_time = time();
 				
 				$sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . '
@@ -820,7 +820,7 @@ switch( $mode )
 					message_die(GENERAL_ERROR, 'Could not update topics watch table', '', __LINE__, __FILE__, $sql);
 				}
 
-				$sql_where = (!empty($HTTP_POST_VARS['split_type_beyond'])) ? " post_time >= $post_time AND topic_id = $topic_id" : "post_id IN ($post_id_sql)";
+				$sql_where = (!empty($_POST['split_type_beyond'])) ? " post_time >= $post_time AND topic_id = $topic_id" : "post_id IN ($post_id_sql)";
 
 				$sql = 	"UPDATE " . POSTS_TABLE . "
 					SET topic_id = $new_topic_id, forum_id = $new_forum_id 
@@ -973,7 +973,7 @@ switch( $mode )
 		$page_title = $lang['Mod_CP'];
 		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
 
-		$rdns_ip_num = ( isset($HTTP_GET_VARS['rdns']) ) ? $HTTP_GET_VARS['rdns'] : "";
+		$rdns_ip_num = ( isset($_GET['rdns']) ) ? $_GET['rdns'] : "";
 
 		if ( !$post_id )
 		{
