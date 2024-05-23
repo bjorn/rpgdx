@@ -21,6 +21,8 @@ function placeHeader($subtitles)
 	global $s;
 	global $header_placed;
 
+	header('Content-Type: text/html; charset=iso-8859-1');
+
 	/* Do GZip compression if PHP as well as the browser supports it.
 	 * Borrowed from phpBB
 	 */

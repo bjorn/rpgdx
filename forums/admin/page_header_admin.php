@@ -144,6 +144,7 @@ else
 }
 header ('Expires: 0');
 header ('Pragma: no-cache');
+header ('Content-Type: text/html; charset=iso-8859-1');
 
 $template->pparse('header');
 

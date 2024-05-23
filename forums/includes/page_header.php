@@ -27,6 +27,8 @@ if ( !defined('IN_PHPBB') )
 
 define('HEADER_INC', TRUE);
 
+header('Content-Type: text/html; charset=iso-8859-1');
+
 //
 // gzip_compression
 //
