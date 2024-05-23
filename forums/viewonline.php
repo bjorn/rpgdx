@@ -119,6 +119,7 @@ while ( $row = $db->sql_fetchrow($result) )
 		if ( $user_id != $prev_user )
 		{
 			$username = $row['username'];
+			$profile_url = viewprofile_url($user_id);
 
 			$style_color = '';
 			if ( $row['user_level'] == ADMIN )
@@ -153,6 +154,7 @@ while ( $row = $db->sql_fetchrow($result) )
 		if ( $row['session_ip'] != $prev_ip )
 		{
 			$username = $lang['Guest'];
+			$profile_url = '';
 			$view_online = true;
 			$guest_users++;
 	
@@ -230,7 +232,7 @@ while ( $row = $db->sql_fetchrow($result) )
 			'LASTUPDATE' => create_date($board_config['default_dateformat'], $row['session_time'], $board_config['board_timezone']),
 			'FORUM_LOCATION' => $location,
 
-			'U_USER_PROFILE' => viewprofile_url($user_id),
+			'U_USER_PROFILE' => $profile_url,
 			'U_FORUM_LOCATION' => append_sid($location_url))
 		);
 
