@@ -53,7 +53,11 @@ class emailer
 	// Resets all the data (address, template file, etc etc to default
 	function reset()
 	{
-		$this->addresses = array();
+		$this->addresses = array(
+			'to' => '',
+			'cc' => array(),
+			'bcc' => array()
+		);
 		$this->vars = $this->msg = $this->extra_headers = '';
 	}
 

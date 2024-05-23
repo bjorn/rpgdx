@@ -615,11 +615,6 @@ else if ( $mode == 'read' )
 	$template->assign_vars(array(
 		'MESSAGE_TO' => $username_to,
 		'MESSAGE_FROM' => $username_from,
-		'RANK_IMAGE' => $rank_image,
-		'POSTER_JOINED' => $poster_joined,
-		'POSTER_POSTS' => $poster_posts,
-		'POSTER_FROM' => $poster_from,
-		'POSTER_AVATAR' => $poster_avatar,
 		'POST_SUBJECT' => $post_subject,
 		'POST_DATE' => $post_date, 
 		'MESSAGE' => $private_message,
