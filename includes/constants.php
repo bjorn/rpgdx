@@ -9,7 +9,7 @@ if (!defined('IN_RPGDX')) {
 
 $rpgdx_config['use_bbcode']              = true;
 $rpgdx_config['screenshots_limit']       = 5;
-$rpgdx_config['enable_gzip_compression'] = true;
+$rpgdx_config['enable_gzip_compression'] = false;
 
 
 /*
