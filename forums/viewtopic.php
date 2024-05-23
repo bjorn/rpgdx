@@ -700,6 +700,7 @@ if ( $is_auth['auth_mod'] )
 // Topic watch information
 //
 $s_watching_topic = '';
+$s_watching_topic_img = '';
 if ( $can_watch_topic )
 {
 	if ( $is_watching_topic )
