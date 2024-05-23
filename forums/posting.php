@@ -43,7 +43,7 @@ while( list($var, $param) = @each($params) )
 	}
 }
 
-$confirm = isset($_POST['confirm']) ? true : false;
+$confirm = isset($_POST['confirm']);
 $sid = (isset($_POST['sid'])) ? $_POST['sid'] : 0;
 
 $params = array('forum_id' => POST_FORUM_URL, 'topic_id' => POST_TOPIC_URL, 'post_id' => POST_POST_URL);

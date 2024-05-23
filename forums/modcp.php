@@ -65,7 +65,7 @@ else
 	$topic_id = '';
 }
 
-$confirm = ( $_POST['confirm'] ) ? TRUE : 0;
+$confirm = isset($_POST['confirm']);
 
 //
 // Continue var definitions

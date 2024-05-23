@@ -361,8 +361,8 @@ $available_dbms = array(
 );
 
 // Obtain various vars
-$confirm = (isset($_POST['confirm'])) ? true : false;
-$cancel = (isset($_POST['cancel'])) ? true : false;
+$confirm = isset($_POST['confirm']);
+$cancel = isset($_POST['cancel']);
 
 if (isset($_POST['install_step']) || isset($_GET['install_step']))
 {

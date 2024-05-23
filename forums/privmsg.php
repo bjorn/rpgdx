@@ -41,15 +41,15 @@ $html_entities_replace = array('&amp;', '&lt;', '&gt;', '&quot;');
 //
 // Parameters
 //
-$submit = ( isset($_POST['post']) ) ? TRUE : 0;
-$submit_search = ( isset($_POST['usersubmit']) ) ? TRUE : 0; 
-$submit_msgdays = ( isset($_POST['submit_msgdays']) ) ? TRUE : 0;
-$cancel = ( isset($_POST['cancel']) ) ? TRUE : 0;
-$preview = ( isset($_POST['preview']) ) ? TRUE : 0;
-$confirm = ( isset($_POST['confirm']) ) ? TRUE : 0;
-$delete = ( isset($_POST['delete']) ) ? TRUE : 0;
-$delete_all = ( isset($_POST['deleteall']) ) ? TRUE : 0;
-$save = ( isset($_POST['save']) ) ? TRUE : 0;
+$submit = isset($_POST['post']);
+$submit_search = isset($_POST['usersubmit']);
+$submit_msgdays = isset($_POST['submit_msgdays']);
+$cancel = isset($_POST['cancel']);
+$preview = isset($_POST['preview']);
+$confirm = isset($_POST['confirm']);
+$delete = isset($_POST['delete']);
+$delete_all = isset($_POST['deleteall']);
+$save = isset($_POST['save']);
 $sid = (isset($_POST['sid'])) ? $_POST['sid'] : 0;
 
 $refresh = $preview || $submit_search;

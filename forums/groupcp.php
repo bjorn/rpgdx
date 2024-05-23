@@ -144,8 +144,8 @@ else
 	$mode = '';
 }
 
-$confirm = ( isset($_POST['confirm']) ) ? TRUE : 0;
-$cancel = ( isset($_POST['cancel']) ) ? TRUE : 0;
+$confirm = isset($_POST['confirm']);
+$cancel = isset($_POST['cancel']);
 $sid = ( isset($_POST['sid']) ) ? $_POST['sid'] : '';
 $start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 $start = ($start < 0) ? 0 : $start;

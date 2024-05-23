@@ -41,15 +41,15 @@ if( !empty($setmodules) )
 $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
 
-$confirm = (isset($_POST['confirm']) || isset($_POST['confirm'])) ? TRUE : FALSE;
-$cancel = (isset($_POST['cancel']) || isset($_POST['cancel'])) ? TRUE : FALSE;
+$confirm = isset($_POST['confirm']);
+$cancel = isset($_POST['cancel']);
 
-$no_page_header = (!empty($_POST['send_file']) || !empty($_POST['send_file']) || $cancel) ? TRUE : FALSE;
+$no_page_header = !empty($_POST['send_file']) || $cancel;
 
 require('./pagestart.' . $phpEx);
 
-$confirm = ( isset($_POST['confirm']) ) ? TRUE : FALSE;
-$cancel = ( isset($_POST['cancel']) ) ? TRUE : FALSE;
+$confirm = isset($_POST['confirm']);
+$cancel = isset($_POST['cancel']);
 
 if ($cancel)
 {
