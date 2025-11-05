@@ -881,11 +881,9 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		{
 			$forum_url = append_sid("viewforum.$phpEx?" . POST_FORUM_URL . '=' . $searchset[$i]['forum_id']);
 			$topic_url = append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . '=' . $searchset[$i]['topic_id'] . "&amp;highlight=$highlight_active");
-			$post_url = append_sid("viewtopic.$phpEx?" . POST_POST_URL . '=' . $searchset[$i]['post_id'] . "&amp;highlight=$highlight_active") . '#' . $searchset[$i]['post_id'];
 
 			$post_date = create_date($board_config['default_dateformat'], $searchset[$i]['post_time'], $board_config['board_timezone']);
 
-			$message = $searchset[$i]['post_text'];
 			$topic_title = $searchset[$i]['topic_title'];
 
 			$forum_id = $searchset[$i]['forum_id'];
@@ -893,9 +891,12 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 			if ( $show_results == 'posts' )
 			{
+				$post_id = isset($searchset[$i]['post_id']) ? (int)$searchset[$i]['post_id'] : 0;
+				$post_url = $post_id ? append_sid("viewtopic.$phpEx?" . POST_POST_URL . '=' . $post_id . "&amp;highlight=$highlight_active") . '#' . $post_id : '';
+				$message = isset($searchset[$i]['post_text']) ? $searchset[$i]['post_text'] : '';
 				if ( isset($return_chars) )
 				{
-					$bbcode_uid = $searchset[$i]['bbcode_uid'];
+					$bbcode_uid = isset($searchset[$i]['bbcode_uid']) ? $searchset[$i]['bbcode_uid'] : '';
 
 					//
 					// If the board has HTML off but the post has HTML
@@ -1001,19 +1002,20 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 						}
 					}
 
+					$raw_post_subject = isset($searchset[$i]['post_subject']) ? $searchset[$i]['post_subject'] : '';
 					if ( count($orig_word) )
 					{
 						$topic_title = preg_replace($orig_word, $replacement_word, $topic_title);
-						$post_subject = ( $searchset[$i]['post_subject'] != "" ) ? preg_replace($orig_word, $replacement_word, $searchset[$i]['post_subject']) : $topic_title;
+						$post_subject = ($raw_post_subject !== '') ? preg_replace($orig_word, $replacement_word, $raw_post_subject) : $topic_title;
 
 						$message = preg_replace($orig_word, $replacement_word, $message);
 					}
 					else
 					{
-						$post_subject = ( $searchset[$i]['post_subject'] != '' ) ? $searchset[$i]['post_subject'] : $topic_title;
+						$post_subject = ($raw_post_subject !== '') ? $raw_post_subject : $topic_title;
 					}
 
-					if ($board_config['allow_smilies'] && $searchset[$i]['enable_smilies'])
+					if ($board_config['allow_smilies'] && !empty($searchset[$i]['enable_smilies']))
 					{
 						$message = smilies_pass($message);
 					}
@@ -1074,8 +1076,6 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 			}
 			else
 			{
-				$message = '';
-
 				if ( count($orig_word) )
 				{
 					$topic_title = preg_replace($orig_word, $replacement_word, $searchset[$i]['topic_title']);
