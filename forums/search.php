@@ -151,6 +151,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 	$store_vars = array('search_results', 'total_match_count', 'split_search', 'sort_by', 'sort_dir', 'show_results', 'return_chars');
 	$search_results = '';
 	$split_search = array();
+	$total_match_count = 0;
 
 	//
 	// Search ID Limiter, decrease this value if you experience further timeout problems with searching forums
