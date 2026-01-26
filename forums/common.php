@@ -207,7 +207,8 @@ while ( $row = $db->sql_fetchrow($result) )
 	$board_config[$row['config_name']] = $row['config_value'];
 }
 
-if (file_exists('install') || file_exists('contrib'))
+$allow_install_dirs = getenv('PHPBB_ALLOW_INSTALL_DIRS');
+if ( ($allow_install_dirs !== '1') && (file_exists('install') || file_exists('contrib')) )
 {
 	message_die(GENERAL_MESSAGE, 'Please_remove_install_contrib');
 }

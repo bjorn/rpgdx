@@ -2,6 +2,33 @@
 "rpgdx" is a fork of phpBB.
 This document describes issues with installation or debugging, including fork-specific or phpBB 2.x specific info that therefore may be difficult.
 
+### Local Docker development (LAMP)
+This repo includes a Docker-based dev setup with Apache 2.4, PHP 8.4, and MariaDB 11.7. The image also installs the PHP 8 shims needed for phpBB 2.
+
+Bring it up:
+```bash
+docker compose up -d --build
+```
+
+Open: http://localhost:8080/
+
+Database import (custom RPGDX tables):
+```bash
+docker compose exec -T db mariadb -u root -prpgdx_root indierp_main < sql/database.sql
+```
+
+If you want to import as the regular user:
+```bash
+docker compose exec -T db mariadb -u root -prpgdx_root -e \
+"CREATE DATABASE IF NOT EXISTS \`indierp_main\`; GRANT ALL ON \`indierp_main\`.* TO 'username'@'%'; FLUSH PRIVILEGES;"
+docker compose exec -T db mariadb -u username -ppassword indierp_main < sql/database.sql
+```
+
+Notes:
+- Docker config lives in `docker-compose.yml` and `docker/apache/Dockerfile`.
+- phpBB connects to the DB host `db` inside Docker; see `forums/config.php`.
+- The compose file sets `PHPBB_ALLOW_INSTALL_DIRS=1` so phpBB will not error if `forums/install/` and `forums/contrib/` exist.
+
 ### Debug setup
 This debug setup process uses the insecure default username and password for *local debugging only* not on a live server!
 
