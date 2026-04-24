@@ -20,6 +20,11 @@ If anyone wants to port RPGDX to phpBB 3.3, feel free!
   [rpgdx-forums-vs-2.0.23.patch.zip](https://github.com/bjorn/rpgdx/files/15300854/rpgdx-forums-vs-2.0.23.patch.zip) (posted here: <https://github.com/bjorn/rpgdx/issues/4#issuecomment-2108980533>)
 
 
+### Local development with Docker Compose
+
+For local development, the included Docker Compose setup bundles Apache, PHP 8 (with shims), and MariaDB so you can skip the manual setup below. See [development.md](development.md#local-docker-development-lamp).
+
+
 ### System Requirements
 
 #### Shims for phpBB 2 on PHP 8.x
