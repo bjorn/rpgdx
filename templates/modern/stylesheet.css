@@ -2,6 +2,8 @@ BODY {
 	background-color: rgb(66,66,115);
 	margin: 0px;
 	padding: 0px;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 }
 
 BODY, TD, TH, TEXTAREA, INPUT {
@@ -125,11 +127,15 @@ TD.body_footer {
 .news_header {
 	background-color: rgb(80,80,130);
 	padding: 2px 5px 2px 5px;
-	white-space: nowrap;
 }
 
 .news_main {
 	padding: 2px 5px 2px 5px;
+}
+
+.news_main img {
+	max-width: 100%;
+	height: auto;
 }
 
 .news_footer {

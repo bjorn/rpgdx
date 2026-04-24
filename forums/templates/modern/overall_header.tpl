@@ -3,6 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={S_CONTENT_ENCODING}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="Keywords" content="forums, forum, rpg, rpgs, rpgdx, indie, indierpg, community, game, games, free, independant, programmers, community, graphics, sound, music, development, projects, resources, graphics, sound, music, qbasic, qb, quickbasic, c, c++">
 <meta name="Description" content="A community site for independent RPG programmers, allowing project pages, discussion on forums and resource sharing.">
 <meta http-equiv="Content-Style-Type" content="text/css">

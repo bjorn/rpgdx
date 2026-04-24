@@ -8,6 +8,7 @@
 <!-- END subtitle -->
 </title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="Keywords" content="rpg, rpgs, rpgdx, indie, indierpg, mandrake, community, game, games, free, independant, programmers, community, graphics, sound, music, development, projects, resources, graphics, sound, music, qbasic, qb, quickbasic, c, c++">
 <meta name="Description" content="A community site for independent RPG programmers, allowing project pages, discussion on forums and resource sharing.">
 <script defer data-domain="rpgdx.net" src="https://plausible.io/js/script.js"></script>

@@ -2,6 +2,8 @@ BODY {
 	background-color: rgb(66,66,115);
 	margin: 0px;
 	padding: 0px;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 }
 
 BODY, TD, TH, TEXTAREA, INPUT {

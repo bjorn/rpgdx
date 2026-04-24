@@ -8,6 +8,8 @@
 /* General page style. The scroll bar colours only visible in IE5.5+ */
 body {
 	background-color: rgb(66,66,115);
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 /*
 	scrollbar-face-color: #DEE3E7;
 	scrollbar-highlight-color: #FFFFFF;
