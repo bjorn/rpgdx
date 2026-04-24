@@ -45,24 +45,14 @@
       </div>
 
       <!-- BEGIN contest_award -->
-      <div class="award_block">
-      <table cellspacing="0" cellpadding="0" border="0" width="100%">
-        <tr>
-          <td><img class="award_image" src="{contest_award.IMAGE_URL}"></td>
-          <td align="center" valign="middle">
-            {GAME_NAME} won {contest_award.CATEGORY_NAME} in the <a href="{contest_award.CONTEST_URL}">{contest_award.CONTEST_NAME}</a>.
-          </td>
-          <td align="right"><img class="award_image" src="{contest_award.IMAGE_URL}"></td>
-        </tr>
-      </table>
+      <div class="award_block award-row">
+        <img class="award_image" src="{contest_award.IMAGE_URL}">
+        <span>{GAME_NAME} won {contest_award.CATEGORY_NAME} in the <a href="{contest_award.CONTEST_URL}">{contest_award.CONTEST_NAME}</a>.</span>
+        <img class="award_image" src="{contest_award.IMAGE_URL}">
       </div>
       <!-- END contest_award -->
 
-      <table cellpadding="0" cellspacing="0" width="100%">
-        <tr>
-          <td class="th">Reviews</td>
-        </tr>
-      </table>
+      <div class="th">Reviews</div>
       <div class="description">
       <!-- BEGIN noreviews -->
       <i>No reviews have been written yet.</i>

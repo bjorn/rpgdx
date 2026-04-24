@@ -1,8 +1,5 @@
 
-<table cellspacing="0" cellpadding="0" width="100%">
-  <tr>
-    <td valign="top" width="100%">
-      <table width="100%" cellspacing="2" cellpadding="0" border="0">
+<table width="100%" cellspacing="2" cellpadding="0" border="0">
         <tr>
           <td class="th" width="0">Start time</td>
           <td class="td" width="100%">{CONTEST_START}&nbsp;</td>
@@ -128,6 +125,3 @@
       <!-- BEGIN no_voting -->
       <p><i>{no_voting.TEXT}</i></p>
       <!-- END no_voting -->
-    </td>
-  </tr>
-</table>

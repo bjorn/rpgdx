@@ -222,12 +222,12 @@ DIV.small_date {
 
 
 
-TD.td {
+.td {
 	background-color: rgb(66,66,115);
 	padding: 1px 4px 1px 4px;
 	border-bottom: 1px solid rgb(80,80,130);
 }
-TD.th {
+.th {
 	background-color: rgb(80,80,130);
 	padding: 2px 4px 2px 4px;
 	white-space: nowrap;
@@ -305,6 +305,29 @@ TD.formNameCell {
 /*	border: 1px solid rgb(50,50,70);*/
 	padding: 0px;
 	margin: 5px;
+}
+
+.award-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.award-row > span {
+	flex: 1;
+	text-align: center;
+}
+
+.menu-item-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+/* Counts were plain <td>s before and picked up the page-wide TD color;
+ * restore that now that they're <span>s inheriting from .menu_item. */
+.menu-item-row > span {
+	color: rgb(180,180,200);
 }
 
 .award_image {

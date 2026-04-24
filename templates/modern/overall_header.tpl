@@ -73,27 +73,21 @@
           <div class="menu_item"><a href="{U_SEARCH}">search projects</a></div>
           <div class="menu_item"><a href="{U_ABOUT}">about rpgdx</a></div>
 
-          <table border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr><td class="menu_title">Projects</td></tr>
-            <!-- BEGIN rpgtype -->
-            <tr><td class="menu_item">
-              <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%"><tr>
-                <td><a href="{rpgtype.URL}">{rpgtype.NAME}</a></td>
-                <td align="right">{rpgtype.COUNT}</td>
-              </tr></table>
-            </td></tr>
-            <!-- END rpgtype -->
+          <div class="menu_title">Projects</div>
+          <!-- BEGIN rpgtype -->
+          <div class="menu_item menu-item-row">
+            <a href="{rpgtype.URL}">{rpgtype.NAME}</a>
+            <span>{rpgtype.COUNT}</span>
+          </div>
+          <!-- END rpgtype -->
 
-            <tr><td class="menu_title">Articles</td></tr>
-            <!-- BEGIN artcat -->
-            <tr><td class="menu_item">
-              <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%"><tr>
-                <td><a href="{artcat.URL}">{artcat.NAME}</a></td>
-                <td align="right">{artcat.COUNT}</td>
-              </tr></table>
-            </td></tr>
-            <!-- END arttype -->
-          </table>
+          <div class="menu_title">Articles</div>
+          <!-- BEGIN artcat -->
+          <div class="menu_item menu-item-row">
+            <a href="{artcat.URL}">{artcat.NAME}</a>
+            <span>{artcat.COUNT}</span>
+          </div>
+          <!-- END arttype -->
         </div>
       </div>
       <div align="center">
