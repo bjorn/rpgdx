@@ -124,9 +124,29 @@ TD.body_footer {
 
 
 
+.news-post {
+	margin-bottom: 20px;
+}
+
 .news_header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1em;
 	background-color: rgb(80,80,130);
 	padding: 2px 5px 2px 5px;
+}
+
+.news-post-title {
+	font-size: inherit;
+	font-weight: bold;
+	margin: 0;
+}
+
+.news-post-meta {
+	background-color: rgb(66,66,115);
+	padding: 1px 4px 1px 4px;
+	border-bottom: 1px solid rgb(80,80,130);
 }
 
 .news_main {

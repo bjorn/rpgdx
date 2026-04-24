@@ -2,25 +2,15 @@
   <tr>
     <td valign="top">
       <!-- BEGIN newspost -->
-      <table border="0" cellspacing="1" cellpadding="0" width="100%">
-        <tr>
-        <td width="100%">
-          <table cellspacing="0" cellpadding="0" width="100%">
-          <!-- post_id = {newspost.POST_ID} -->
-          <tr>
-            <td class="news_header"><b>{newspost.TITLE}&nbsp;</b></td>
-            <td class="news_header" align="right">{newspost.EDIT_LINK}</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="td"><a href="{newspost.POSTER_PROFILE_URL}">{newspost.POSTER_NAME}</a> - {newspost.POST_DATE}</td>
-          </tr>
-          </table>
-        </td>
-        </tr>
-        <tr>
-        <td class="news_main" colspan="2" style="padding-bottom: 20px;">{newspost.MESSAGE}</td>
-        </tr>
-      </table>
+      <article class="news-post">
+        <!-- post_id = {newspost.POST_ID} -->
+        <header class="news_header">
+          <h3 class="news-post-title">{newspost.TITLE}</h3>
+          <span class="news-post-edit">{newspost.EDIT_LINK}</span>
+        </header>
+        <div class="news-post-meta"><a href="{newspost.POSTER_PROFILE_URL}">{newspost.POSTER_NAME}</a> - {newspost.POST_DATE}</div>
+        <div class="news_main">{newspost.MESSAGE}</div>
+      </article>
       <!-- END newspost -->
     </td>
     <td><img src="{TEMPL_DIR}images/pixel.gif" width="5" height="1" alt="" /></td>
