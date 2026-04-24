@@ -74,6 +74,12 @@ class sql_db
 				}
 			}
 
+			// phpBB 2 stores strings in latin1_swedish_ci columns. Modern
+			// MariaDB defaults the connection to utf8mb4_uca1400_ai_ci,
+			// which throws "Illegal mix of collations" on any non-ASCII
+			// string comparison. Match the connection to the columns.
+			mysql_query("SET NAMES 'latin1'", $this->db_connect_id);
+
 			return $this->db_connect_id;
 		}
 		else
