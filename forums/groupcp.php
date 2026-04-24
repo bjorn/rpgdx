@@ -36,9 +36,10 @@ function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$
 	$posts = ( $row['user_posts'] ) ? $row['user_posts'] : 0;
 
 	$poster_avatar = '';
-	if ( $row['user_avatar_type'] && $row['user_id'] != ANONYMOUS && $row['user_allowavatar'] )
+	$avatar_type = $row['user_avatar_type'] ?? 0;
+	if ( $avatar_type && $row['user_id'] != ANONYMOUS && $row['user_allowavatar'] )
 	{
-		switch( $row['user_avatar_type'] )
+		switch( $avatar_type )
 		{
 			case USER_AVATAR_UPLOAD:
 				$poster_avatar = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
@@ -936,6 +937,11 @@ else if ( $group_id )
 	generate_user_info($group_moderator, $board_config['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
 
 	$s_hidden_fields .= '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" />';
+
+	// Sort controls are not currently wired up; default to empty so the
+	// template vars below don't emit "Undefined variable" warnings.
+	$select_sort_mode = '';
+	$select_sort_order = '';
 
 	$template->assign_vars(array(
 		'L_GROUP_INFORMATION' => $lang['Group_Information'],
