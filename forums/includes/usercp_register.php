@@ -215,10 +215,13 @@ if (
 	$user_avatar_category = ( isset($_POST['avatarcatname']) && $board_config['allow_avatar_local'] ) ? htmlspecialchars($_POST['avatarcatname']) : '' ;
 
 	$user_avatar_remoteurl = ( !empty($_POST['avatarremoteurl']) ) ? trim(htmlspecialchars($_POST['avatarremoteurl'])) : '';
-	$user_avatar_upload = ( !empty($_POST['avatarurl']) ) ? trim($_POST['avatarurl']) : ( ( $_FILES['avatar']['tmp_name'] != "none") ? $_FILES['avatar']['tmp_name'] : '' );
-	$user_avatar_name = ( !empty($_FILES['avatar']['name']) ) ? $_FILES['avatar']['name'] : '';
-	$user_avatar_size = ( !empty($_FILES['avatar']['size']) ) ? $_FILES['avatar']['size'] : 0;
-	$user_avatar_filetype = ( !empty($_FILES['avatar']['type']) ) ? $_FILES['avatar']['type'] : '';
+	$avatar_file = $_FILES['avatar'] ?? [];
+	$avatar_tmp_name = $avatar_file['tmp_name'] ?? '';
+	$avatar_upload_ok = $avatar_tmp_name !== '' && $avatar_tmp_name !== 'none' && (($avatar_file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK);
+	$user_avatar_upload = !empty($_POST['avatarurl']) ? trim($_POST['avatarurl']) : ($avatar_upload_ok ? $avatar_tmp_name : '');
+	$user_avatar_name = $avatar_file['name'] ?? '';
+	$user_avatar_size = $avatar_file['size'] ?? 0;
+	$user_avatar_filetype = $avatar_file['type'] ?? '';
 
 	$user_avatar = ( empty($user_avatar_local) && $mode == 'editprofile' ) ? $userdata['user_avatar'] : '';
 	$user_avatar_type = ( empty($user_avatar_local) && $mode == 'editprofile' ) ? $userdata['user_avatar_type'] : '';
