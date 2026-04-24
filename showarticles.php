@@ -1,6 +1,8 @@
 <?php
 include("includes/main.php");
 
+$cat = isset($_GET['cat']) ? (int) $_GET['cat'] : 0;
+
 if ($cat > 0) {
 	if ($result = doQuery("SELECT * FROM ". ARTICLE_TYPES_TABLE ." WHERE type_id = $cat")) {
 		$category = mysql_fetch_object($result);
