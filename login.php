@@ -8,7 +8,7 @@
  *
  *   $Id: login.php,v 1.47.2.13 2003/06/20 07:40:27 acydburn Exp $
  *
- *   Modifications made by Bjørn to play nice with RPGDX.
+ *   Modifications made by Bjï¿½rn to play nice with RPGDX.
  *
  ***************************************************************************/
 
@@ -28,7 +28,12 @@
 define("IN_LOGIN", true);
 
 include("includes/main.php");
-$board_config['server_name'] = 'www.rpgdx.net';
+// Force the canonical host on production so login cookies and redirects
+// don't get split between apex and www. Leave localhost/other hosts alone.
+if (!empty($_SERVER['HTTP_HOST']) && str_ends_with($_SERVER['HTTP_HOST'], 'rpgdx.net'))
+{
+	$board_config['server_name'] = 'www.rpgdx.net';
+}
 
 // session id check
 if (!empty($_POST['sid']) || !empty($_GET['sid']))
