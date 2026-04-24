@@ -258,6 +258,7 @@ class sql_db
 
 		if( $query_id )
 		{
+			$result = array();
 			$query_key = $query_id;
 			if ($query_key !== true) {
 				$query_key = spl_object_hash($query_id);
