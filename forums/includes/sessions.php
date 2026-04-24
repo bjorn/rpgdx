@@ -122,7 +122,7 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 	// * User does not exist
 	// * User is inactive
 	//
-	if (!sizeof($userdata) || !is_array($userdata) || !$userdata)
+	if (!is_array($userdata) || !sizeof($userdata))
 	{
 		$sessiondata['autologinid'] = '';
 		$sessiondata['userid'] = $user_id = ANONYMOUS;
