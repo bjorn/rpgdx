@@ -91,7 +91,7 @@ else
 
 $template->assign_vars(array(
   'TEMPL_DIR'       => "templates/$template_dir/",
-  'STYLE_VERSION'   => @filemtime("templates/$template_dir/stylesheet.css") ?: 0,
+  'STYLE_VERSION'   => @filemtime(__DIR__ . "/../templates/$template_dir/stylesheet.css") ?: 0,
 
   'TITLE'           => 'RPGDX',
   'LOGINBAR_TEXT'   => $loginbar_text,
