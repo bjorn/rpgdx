@@ -1,0 +1,25 @@
+#!/bin/bash
+# Installed at /home/private/rpgdx/.git/hooks/post-receive on the NFS host.
+# Runs after `git push live master`; rsyncs the worktree to /home/public.
+
+REPO="/home/private/rpgdx"
+WWW_DATA="/home/public"
+
+cd "$REPO" || exit 1
+
+echo "Synchronizing website at $WWW_DATA"
+
+rsync -rtv \
+	--exclude=".*" \
+	--exclude "*.md" \
+	--exclude "HOSTED" \
+	--exclude "TODO" \
+	--exclude "rpgdx.code-workspace" \
+	--exclude "sql" \
+	--exclude "install" \
+	--exclude "docker" \
+	--exclude "docker-compose.yml" \
+	--exclude "deploy" \
+	./ "$WWW_DATA"
+
+echo "Website deployed!"
