@@ -88,8 +88,8 @@
               <tr>
                 <td nowrap align="right" style="padding: 5px; border: 1px solid rgb(80,80,130);">
                   <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                    <tr><td align="right" valign="top" nowrap class="th">
-                      <b><span style="font-size: 15px;">{review.SCORE}</span></b>&nbsp;
+                    <tr><td align="center" valign="top" nowrap class="th">
+                      <b><span style="font-size: 15px;">{review.SCORE}</span></b>
                     </td></tr>
                   </table>
                 </td>
