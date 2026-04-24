@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,6 +13,7 @@
 <meta name="Description" content="A community site for independent RPG programmers, allowing project pages, discussion on forums and resource sharing.">
 <script defer data-domain="rpgdx.net" src="https://plausible.io/js/script.js"></script>
 <link rel="stylesheet" href="{TEMPL_DIR}stylesheet.css" type="text/css">
+<link rel="icon" href="data:,">
 </head>
 
 <body>
