@@ -95,7 +95,6 @@
             <!-- END arttype -->
           </table>
         </div>
-        <div style="text-align: right;"><img src="{TEMPL_DIR}images/menu_bottom_corner.png" alt="" /></div>
       </div>
       <div align="center">
       <br />

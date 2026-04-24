@@ -39,6 +39,13 @@ A:hover  {color: rgb(200,200,255); text-decoration: none;}
 	margin: 0px;
 }
 
+/* The shared class is also on the top RPGDX logo cell (a <td>),
+ * so scope the rounded-corner + padding to the sidebar <div> only. */
+div.menu_background {
+	padding-bottom: 12px;
+	border-bottom-right-radius: 12px;
+}
+
 .menu {
 	width: 140px;
 	padding: 0px 4px;
@@ -120,9 +127,21 @@ TD.body_footer {
 	background-color: rgb(100,100,150);
 	text-align: center;
 	border-bottom: 1px solid rgb(50,50,70);
+	display: flow-root;
 }
 
 
+
+.news-layout {
+	display: flex;
+	align-items: flex-start;
+	gap: 5px;
+}
+
+.news-main {
+	flex: 1 1 0;
+	min-width: 0;
+}
 
 .news-post {
 	margin-bottom: 20px;

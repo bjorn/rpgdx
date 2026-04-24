@@ -1,10 +1,6 @@
-<table cellspacing="0" cellpadding="0" width="100%">
-  <tr>
-    <td class="boxBody" style="border-width: 3px;">
-      {TYPE_DESCRIPTION}
-    </td>
-  </tr>
-</table>
+<div class="boxBody" style="border-width: 3px;">
+  {TYPE_DESCRIPTION}
+</div>
 
 <div style="height: 10px;">&nbsp;</div>
 
