@@ -1,5 +1,5 @@
-<div class="news-layout">
-  <div class="news-main">
+<div class="page-with-sidebar">
+  <div class="page-main">
     <!-- BEGIN newspost -->
     <article class="news-post">
       <!-- post_id = {newspost.POST_ID} -->
@@ -12,7 +12,7 @@
     </article>
     <!-- END newspost -->
   </div>
-  <aside class="news-sidebar">
+  <aside class="page-sidebar">
     <div class="thin_shadow">
       <div class="lift_by_one">
         <div class="sidebar">

@@ -1,7 +1,6 @@
-<table cellspacing="0" cellpadding="0" width="100%">
-  <tr>
-    <td valign="top" width="100%">
-      <table width="100%" cellspacing="2" cellpadding="0">
+<div class="page-with-sidebar">
+  <div class="page-main">
+    <table width="100%" cellspacing="2" cellpadding="0">
         <tr>
           <td class="th" width="0">Posted by</td>
           <td class="td" width="100%"><a href="{POSTER_PROFILE_URL}">{GAME_POSTER}</a>&nbsp;</td>
@@ -93,39 +92,37 @@
       </table>
       </div>
 
-    </td>
-    <td><img src="{TEMPL_DIR}images/pixel.gif" width="5" height="1" /></td>
-    <td valign="top">
-      <div class="thin_shadow">
+  </div>
+  <aside class="page-sidebar">
+    <div class="thin_shadow">
       <div class="lift_by_one">
-      <div class="sidebar">
-        <div class="sidebar_title">Project rating</div>
-        <div class="sidebar_item">
-          <div style="margin: 5px;">
-          <!-- BEGIN reviews -->
-          <div style="padding: 5px; border: 1px solid rgb(50,50,70); background-color: rgb(120,120,170); color: rgb(0,0,0);"><span style="font-size: 20px;">{reviews.AVERAGE}</span><div class="small_date">{reviews.CAPTION}</div></div>
-          <!-- END reviews -->
-          <!-- BEGIN review_allowed -->
-          <div align="center" style="padding: 5px;">[<a href="{GAME_REVIEW_URL}">review this game</a>]</div>
-          <!-- END review_allowed -->
-          <!-- BEGIN review_not_allowed -->
-          <div align="center" style="padding: 5px; font-size: 10px;">Reviewing disabled<br />for this project.</div>
-          <!-- END review_not_allowed -->
+        <div class="sidebar">
+          <div class="sidebar_title">Project rating</div>
+          <div class="sidebar_item">
+            <div style="margin: 5px;">
+              <!-- BEGIN reviews -->
+              <div style="padding: 5px; border: 1px solid rgb(50,50,70); background-color: rgb(120,120,170); color: rgb(0,0,0);"><span style="font-size: 20px;">{reviews.AVERAGE}</span><div class="small_date">{reviews.CAPTION}</div></div>
+              <!-- END reviews -->
+              <!-- BEGIN review_allowed -->
+              <div align="center" style="padding: 5px;">[<a href="{GAME_REVIEW_URL}">review this game</a>]</div>
+              <!-- END review_allowed -->
+              <!-- BEGIN review_not_allowed -->
+              <div align="center" style="padding: 5px; font-size: 10px;">Reviewing disabled<br />for this project.</div>
+              <!-- END review_not_allowed -->
+            </div>
           </div>
-        </div>
-        <!-- BEGIN screens -->
-        <div class="sidebar_title">Screenshots</div>
-        <div class="sidebar_item">
-          <div class="screenshots">
-          <!-- BEGIN shot -->
-          <a href="{screens.shot.LINK}"><img src="{screens.shot.IMG}" alt="Screenshot" title="{screens.shot.TITLE}" class="screenshot" /></a><br />
-          <!-- END shot -->
+          <!-- BEGIN screens -->
+          <div class="sidebar_title">Screenshots</div>
+          <div class="sidebar_item">
+            <div class="screenshots">
+              <!-- BEGIN shot -->
+              <a href="{screens.shot.LINK}"><img src="{screens.shot.IMG}" alt="Screenshot" title="{screens.shot.TITLE}" class="screenshot" /></a><br />
+              <!-- END shot -->
+            </div>
           </div>
+          <!-- END screens -->
         </div>
-        <!-- END screens -->
       </div>
-      </div>
-      </div>
-    </td>
-  </tr>
-</table>
+    </div>
+  </aside>
+</div>
