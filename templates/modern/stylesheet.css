@@ -4,6 +4,68 @@ BODY {
 	padding: 0px;
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
+	--site-sidebar-width: 148px;
+}
+
+/* Page frame rows. The left column is always --site-sidebar-width; the
+ * right column fills the remainder. The 10px gap and right margin in the
+ * body row stand in for the old pixel.gif spacer columns. */
+.site-header-row {
+	display: flex;
+	align-items: flex-end;
+}
+
+.site-header-logo {
+	width: var(--site-sidebar-width);
+	background-color: rgb(128,128,150);
+	text-align: center;
+	align-self: stretch;
+}
+
+.site-header-banner {
+	flex: 1;
+	padding: 3px;
+}
+
+.site-gradient-row {
+	display: flex;
+	height: 6px;
+	font-size: 0;
+}
+
+.site-gradient-sidebar {
+	width: var(--site-sidebar-width);
+	background-color: rgb(128,128,150);
+	background-image: url(images/menu_top_gradient.png);
+	background-repeat: repeat-x;
+}
+
+.site-gradient-main {
+	flex: 1;
+	background-image: url(images/page_top_gradient.png);
+	background-repeat: repeat-x;
+}
+
+.site-body-row {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding-right: 10px;
+}
+
+.site-sidebar {
+	width: var(--site-sidebar-width);
+	flex-shrink: 0;
+}
+
+.site-sidebar-promos {
+	text-align: center;
+}
+
+.site-main {
+	flex: 1;
+	min-width: 0;
+	padding-top: 9px;
 }
 
 BODY, TD, TH, TEXTAREA, INPUT {
@@ -93,12 +155,12 @@ div.menu_background {
 	border-top-width: 0px;
 }
 
-TD.seperation {
+.seperation {
 	font-size: 0px;
 	height: 5px;
 }
 
-TD.body_main {
+.body_main {
 	padding: 5px;
 }
 
@@ -182,17 +244,19 @@ TD.body_footer {
 
 
 .user_bar {
-	background-color: rgb(145,145,150);
 	background-color: rgb(160,160,170);
-	padding: 3px;
-	padding-left: 10px;
+	padding: 3px 3px 3px 10px;
 	color: rgb(0,0,0);
 	border-top: 1px solid rgb(0,0,0);
 	border-bottom: 1px solid rgb(0,0,0);
 	white-space: nowrap;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .user_links {
+	display: flex;
 	border-left: 1px solid rgb(100,100,100);
 	border-right: 1px solid rgb(200,200,200);
 }
