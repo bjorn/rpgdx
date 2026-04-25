@@ -155,8 +155,8 @@ exit;
 function randomise($scanline, $width)
 {
 	$new_line = '';
-	$start = floor($width/2);
-	$end = strlen($scanline) - ceil($width/2);
+	$start = (int) floor($width/2);
+	$end = strlen($scanline) - (int) ceil($width/2);
 
 	for ($i = $start; $i < $end; $i++)
 	{
