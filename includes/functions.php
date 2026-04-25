@@ -42,9 +42,10 @@ function array_addslashes(&$array) {
 //===============================
 
 /* check_access_level() succeeds when a user is logged in and is either the
- * expected user or an administrator.
+ * expected user or an administrator. $object_id is taken by reference and
+ * cast to int, so callers can interpolate it safely after this returns.
  */
-function check_access_level($object_table, $object_id_name, $object_id)
+function check_access_level($object_table, $object_id_name, &$object_id)
 {
 	global $error, $critical, $userdata;
 	$object_id = intval($object_id);

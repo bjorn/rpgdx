@@ -1,6 +1,10 @@
 <?php
 include_once("includes/main.php");
 
+$project_id = isset($project_id) ? (int) $project_id : 0;
+$contest_id = isset($contest_id) ? (int) $contest_id : 0;
+$entry_id   = isset($entry_id)   ? (int) $entry_id   : 0;
+
 // Standard authorisation
 if (!$userdata['session_logged_in']) {
 	abort_with_error('You have to be logged in.');

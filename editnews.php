@@ -1,6 +1,8 @@
 <?php
 include("includes/main.php");
 
+$news_id = isset($news_id) ? (int) $news_id : 0;
+
 $error = "";
 $critical = false;
 $message = "";

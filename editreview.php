@@ -1,6 +1,9 @@
 <?php
 include("includes/main.php");
 
+$project_id = isset($project_id) ? (int) $project_id : 0;
+$review_id  = isset($review_id)  ? (int) $review_id  : 0;
+
 $error = "";
 $message = "";
 
@@ -117,7 +120,7 @@ else
 if (($action == "edit" || $action == "remove") && $review_id > 0)
 {
 	// Get the name of the reviewed using the review_id
-	$row = mysql_fetch_object(doQuery("SELECT project_name FROM ". PROJECTS_TABLE ." WHERE project_id=". $form['project_id']));
+	$row = mysql_fetch_object(doQuery("SELECT project_name FROM ". PROJECTS_TABLE ." WHERE project_id=". (int) $form['project_id']));
 	$project_name = $row->project_name;
 }
 

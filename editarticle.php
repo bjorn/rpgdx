@@ -1,6 +1,8 @@
 <?php
 include("includes/main.php");
 
+$article_id = isset($article_id) ? (int) $article_id : 0;
+
 $error = "";
 $message = "";
 

@@ -1,6 +1,8 @@
 <?php
 include("includes/main.php");
 
+$project_id = isset($project_id) ? (int) $project_id : 0;
+
 $game = mysql_fetch_object(doQuery("SELECT * FROM ". PROJECTS_TABLE ." WHERE project_id=$project_id"));
 $reviews = doQuery(
 	"SELECT ". USERS_TABLE .".user_id, username, DATE_FORMAT(review_added, '%d-%m-%Y') AS review_added, review_score, review_text, review_id ".

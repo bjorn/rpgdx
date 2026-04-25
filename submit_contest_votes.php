@@ -50,7 +50,10 @@ $projects = array();
 $blank_votes = 0;
 foreach ($categories as $key => $col_value)
 {
-	// Check whether this is a valid category 
+	$key = (int) $key;
+	$col_value = (int) $col_value;
+
+	// Check whether this is a valid category
 	$result = doQuery(
 		"SELECT category_id FROM ". CONTEST_CATEGORIES_TABLE ." ".
 		"WHERE category_id = ". $key ." AND category_contest = ". $contest_id
@@ -60,7 +63,7 @@ foreach ($categories as $key => $col_value)
 	}
 
 	// Check whether this is a valid entry
-  if (intval($col_value) != -1) {
+  if ($col_value != -1) {
     $result = doQuery(
       "SELECT entry_id FROM ". CONTEST_ENTRIES_TABLE ." ".
       "WHERE entry_id = ". $col_value ." AND entry_contest = ". $contest_id
@@ -98,13 +101,16 @@ if ($num_categories - $qualified_entries > 0) {
 
 foreach ($categories as $category_id => $entry_id)
 {
+	$category_id = (int) $category_id;
+	$entry_id = (int) $entry_id;
+
 	// Remove any previous votes by this user for this category
 	doQuery(
     "DELETE FROM ". CONTEST_VOTES_TABLE ." ".
     "WHERE vote_user = ". $userdata['user_id'] ." ".
     "AND vote_category = $category_id");
 
-  if (intval($entry_id) != -1) {
+  if ($entry_id != -1) {
     // Add current vote for this category to the database
     doQuery(
       "INSERT INTO ". CONTEST_VOTES_TABLE ." ".

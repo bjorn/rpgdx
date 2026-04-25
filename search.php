@@ -1,6 +1,8 @@
 <?php
 include("includes/main.php");
 
+$search_status = isset($search_status) ? (int) $search_status : 0;
+
 $template->set_filenames(array(
 	'body' => 'search_body.tpl')
 );

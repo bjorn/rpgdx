@@ -1,6 +1,8 @@
 <?php
 include("includes/main.php");
 
+$project_id = isset($project_id) ? (int) $project_id : 0;
+
 $error = "";
 $message = "";
 

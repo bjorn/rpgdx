@@ -1,8 +1,10 @@
 <?php
 include("includes/main.php");
 
+$contest_id = isset($contest_id) ? (int) $contest_id : 0;
+
 // A contest ID must be specified
-if (!isset($contest_id)) {
+if (!$contest_id) {
 	abort_with_error('No contest_id specified.');
 }
 
@@ -12,7 +14,7 @@ if (!isset($contest_id)) {
 $result = doQuery(
 	"SELECT contest_id, contest_name, contest_description, contest_start, contest_end, contest_status ".
 	"FROM ". CONTESTS_TABLE ." ".
-	"WHERE contest_id=". intval($contest_id)
+	"WHERE contest_id=". $contest_id
 );
 
 // The contest ID must be valid
@@ -87,7 +89,7 @@ $result = doQuery(
 	"FROM ". CONTEST_ENTRIES_TABLE .
 		" LEFT JOIN ". PROJECTS_TABLE ." ON entry_project = project_id ".
 		" LEFT JOIN ". USERS_TABLE ." USING (user_id) ".
-	"WHERE entry_contest=". intval($contest_id) ." ORDER BY entry_date"
+	"WHERE entry_contest=". $contest_id ." ORDER BY entry_date"
 );
 
 if (mysql_num_rows($result) > 0)

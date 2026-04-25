@@ -1,7 +1,9 @@
 <?php
 include("includes/main.php");
 
-if (!isset($project_id)) {
+$project_id = isset($project_id) ? (int) $project_id : 0;
+
+if (!$project_id) {
 	abort_with_error('Somehow you didn\'t specify a project_id.');
 }
 if ($error = check_access_level(PROJECTS_TABLE, 'project_id', $project_id)) {
