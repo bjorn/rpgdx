@@ -84,6 +84,7 @@ else if ($page == 'stats')
 	$reviewcount = get_db_stat('reviewcount');
 	$articlecount = get_db_stat('articlecount');
 
+	$stats = new stdClass();
 	$row = mysql_fetch_object(doQuery("SELECT username, user_posts FROM ".
         USERS_TABLE ." WHERE username != 'Anonymous' ".
         "ORDER BY user_posts DESC LIMIT 1"));
