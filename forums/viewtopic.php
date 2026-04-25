@@ -1210,19 +1210,22 @@ for($i = 0; $i < $total_posts; $i++)
 	//
 	// Replace naughty words
 	//
-	/* TODO: This appears to filter out the entire post on recent versions of PHP, hence disabled for now
 	if (count($orig_word))
 	{
 		$post_subject = preg_replace($orig_word, $replacement_word, $post_subject);
 
+		// Censor only text between '>' and '<' so HTML tags/attributes are left alone.
+		$censor_callback = function($matches) use ($orig_word, $replacement_word) {
+			return @preg_replace($orig_word, $replacement_word, $matches[0]);
+		};
+
 		if ($user_sig != '')
 		{
-			$user_sig = str_replace('\"', '"', substr(@preg_replace('#(\>(((?>([^><]+|(?R)))*)\<))#se', "@preg_replace(\$orig_word, \$replacement_word, '\\0')", '>' . $user_sig . '<'), 1, -1));
+			$user_sig = substr(preg_replace_callback('#(\>(((?>([^><]+|(?R)))*)\<))#s', $censor_callback, '>' . $user_sig . '<'), 1, -1);
 		}
 
-		$message = str_replace('\"', '"', substr(@preg_replace('#(\>(((?>([^><]+|(?R)))*)\<))#se', "@preg_replace(\$orig_word, \$replacement_word, '\\0')", '>' . $message . '<'), 1, -1));
+		$message = substr(preg_replace_callback('#(\>(((?>([^><]+|(?R)))*)\<))#s', $censor_callback, '>' . $message . '<'), 1, -1);
 	}
-	*/
 
 	//
 	// Replace newlines (we use this rather than nl2br because
