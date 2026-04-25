@@ -2,11 +2,11 @@
 include("includes/main.php");
 
 
-if (!isset($project_id)) {
+$project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
+
+if (!$project_id) {
 	abort_with_error('No project_id specified.');
 }
-
-$project_id = intval($project_id);
 
 /* Grab all the info from the database.
  */

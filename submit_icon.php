@@ -1,6 +1,8 @@
 <?php
 include_once("includes/main.php");
 
+$project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
+
 
 function remove_project_icon($project_id)
 {
@@ -21,7 +23,7 @@ if (isset($_POST['remove'])) {$action = 'remove';}
 
 
 // Standard authorisation
-if (!isset($project_id)) {
+if (!$project_id) {
 	abort_with_error('Somehow you didn\'t specify a project_id.');
 }
 if ($error = check_access_level(PROJECTS_TABLE, 'project_id', $project_id)) {

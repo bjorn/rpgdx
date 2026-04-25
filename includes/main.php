@@ -26,20 +26,6 @@ $time_start	= getmicrotime();
 
 
 /*
- * Add slashes to posted information if not done automatically
- * (now done by forum common.php)
- */
-/*
-if (!get_cfg_var("magic_quotes_gpc")) {
-  array_addslashes($_POST);
-  array_addslashes($_GET);
-}
-*/
-extract($_POST, EXTR_OVERWRITE);
-extract($_GET, EXTR_OVERWRITE);
-
-
-/*
  * Create a new instance of the template class.
  */
 if ($userdata['session_logged_in'] && $userdata['user_theme'] > 0 && empty($override_theme)) {

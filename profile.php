@@ -1,7 +1,9 @@
 <?php
 include("includes/main.php");
 
-if (empty($_GET['user_id']) || $_GET['user_id'] == ANONYMOUS) {
+$user_id = (int) ($_GET['user_id'] ?? 0);
+
+if (!$user_id || $user_id == ANONYMOUS) {
 	die('<b>Error</b>: No user ID specified');
 }
 
@@ -35,7 +37,7 @@ while ($row = mysql_fetch_array($result)) {
 
 // Grab all direct user info
 
-$result = doQuery("SELECT * FROM ". USERS_TABLE ." WHERE user_id=". intval($user_id));
+$result = doQuery("SELECT * FROM ". USERS_TABLE ." WHERE user_id=". $user_id);
 if (mysql_num_rows($result) == 0) {
 	die('<b>Error:</b> No valid user ID specified');
 }

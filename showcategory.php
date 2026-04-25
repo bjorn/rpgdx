@@ -1,12 +1,14 @@
 <?php
 include("includes/main.php");
 
+$cat   = (int) ($_GET['cat']   ?? $_POST['cat']   ?? 0);
+$order = (int) ($_GET['order'] ?? $_POST['order'] ?? 0);
+
 $template->set_filenames(array(
 	'body' => 'showcategory_body.tpl')
 );
 
-if (isset($cat) && intval($cat) > 0) {
-	$cat = intval($cat);
+if ($cat > 0) {
 	if ($result = doQuery("SELECT * FROM ". PROJECT_TYPES_TABLE ." WHERE type_id = $cat")) {
 		$genre = mysql_fetch_object($result);
 	}
@@ -21,7 +23,7 @@ if (!(isset($genre) && $genre->type_id > 0)) {
 }
 
 
-if (!isset($order)) {
+if (!$order) {
 	if ($userdata['session_logged_in']) {
 		if ($userdata['user_projects_sort_method'] > 0) {
 			$order = $userdata['user_projects_sort_method'];

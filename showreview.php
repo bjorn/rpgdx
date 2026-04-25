@@ -1,7 +1,7 @@
 <?php
 include("includes/main.php");
 
-$project_id = isset($project_id) ? (int) $project_id : 0;
+$project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
 
 $game = mysql_fetch_object(doQuery("SELECT * FROM ". PROJECTS_TABLE ." WHERE project_id=$project_id"));
 $reviews = doQuery(

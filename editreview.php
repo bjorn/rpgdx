@@ -1,8 +1,13 @@
 <?php
 include("includes/main.php");
 
-$project_id = isset($project_id) ? (int) $project_id : 0;
-$review_id  = isset($review_id)  ? (int) $review_id  : 0;
+$action       = $_GET['action']    ?? $_POST['action']    ?? null;
+$confirmed    = $_GET['confirmed'] ?? $_POST['confirmed'] ?? null;
+$submit       = $_POST['submit']   ?? null;
+$project_id   = (int) ($_GET['project_id']   ?? $_POST['project_id']   ?? 0);
+$review_id    = (int) ($_GET['review_id']    ?? $_POST['review_id']    ?? 0);
+$review_score = (int) ($_POST['review_score'] ?? 0);
+$review_text  = $_POST['review_text'] ?? '';
 
 $error = "";
 $message = "";
@@ -12,7 +17,7 @@ if (!$userdata['session_logged_in']) {
 }
 
 if (isset($action) && $action != 'add') {
-	if (!isset($review_id)) {
+	if (!$review_id) {
 		abort_with_error('Somehow you didn\'t specify a review_id.');
 	}
 	if ($error = check_access_level(REVIEWS_TABLE, 'review_id', $review_id)) {

@@ -1,7 +1,13 @@
 <?php
 include("includes/main.php");
 
-$news_id = isset($news_id) ? (int) $news_id : 0;
+$action          = $_GET['action']    ?? $_POST['action']    ?? null;
+$confirmed       = $_GET['confirmed'] ?? $_POST['confirmed'] ?? null;
+$submit          = $_POST['submit']   ?? null;
+$news_id         = (int) ($_GET['news_id']         ?? $_POST['news_id']         ?? 0);
+$news_message    = $_POST['news_message']    ?? '';
+$news_title      = $_POST['news_title']      ?? '';
+$news_bbcode_uid = $_POST['news_bbcode_uid'] ?? '';
 
 $error = "";
 $critical = false;
@@ -12,7 +18,7 @@ if (!$userdata['session_logged_in']) {
 }
 
 if (isset($action) && $action != 'add') {
-	if (!isset($news_id)) {
+	if (!$news_id) {
 		abort_with_error('Somehow you didn\'t specify a news_id.');
 	}
 	if ($error = check_access_level(NEWS_TABLE, 'news_id', $news_id)) {

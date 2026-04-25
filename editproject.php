@@ -1,7 +1,7 @@
 <?php
 include("includes/main.php");
 
-$project_id = isset($project_id) ? (int) $project_id : 0;
+$project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
 
 if (!$project_id) {
 	abort_with_error('Somehow you didn\'t specify a project_id.');

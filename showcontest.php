@@ -1,7 +1,7 @@
 <?php
 include("includes/main.php");
 
-$contest_id = isset($contest_id) ? (int) $contest_id : 0;
+$contest_id = (int) ($_GET['contest_id'] ?? $_POST['contest_id'] ?? 0);
 
 // A contest ID must be specified
 if (!$contest_id) {

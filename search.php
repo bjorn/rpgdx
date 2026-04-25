@@ -1,7 +1,10 @@
 <?php
 include("includes/main.php");
 
-$search_status = isset($search_status) ? (int) $search_status : 0;
+$search           = $_GET['search']           ?? $_POST['search']           ?? null;
+$search_status    = (int) ($_GET['search_status'] ?? $_POST['search_status'] ?? 0);
+$search_download  = $_GET['search_download']  ?? $_POST['search_download']  ?? null;
+$search_reviewing = $_GET['search_reviewing'] ?? $_POST['search_reviewing'] ?? null;
 
 $template->set_filenames(array(
 	'body' => 'search_body.tpl')

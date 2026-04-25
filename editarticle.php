@@ -1,7 +1,14 @@
 <?php
 include("includes/main.php");
 
-$article_id = isset($article_id) ? (int) $article_id : 0;
+$action          = $_GET['action']    ?? $_POST['action']    ?? null;
+$confirmed       = $_GET['confirmed'] ?? $_POST['confirmed'] ?? null;
+$submit          = $_POST['submit']   ?? null;
+$article_id      = (int) ($_GET['article_id']      ?? $_POST['article_id']      ?? 0);
+$article_type    = (int) ($_POST['article_type']   ?? 0);
+$article_title   = $_POST['article_title']   ?? '';
+$article_url     = $_POST['article_url']     ?? '';
+$article_summary = $_POST['article_summary'] ?? '';
 
 $error = "";
 $message = "";
@@ -16,7 +23,7 @@ if (!$userdata['session_logged_in']) {
 	abort_with_error('You must be logged in to access this page.');
 }
 if (isset($action) && $action != 'add') {
-	if (!isset($article_id)) {
+	if (!$article_id) {
 		abort_with_error('Somehow you didn\'t specify an article_id.');
 	}
 	if ($error = check_access_level(ARTICLES_TABLE, 'article_id', $article_id)) {

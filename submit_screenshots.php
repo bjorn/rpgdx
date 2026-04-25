@@ -1,7 +1,8 @@
 <?php
 include_once("includes/main.php");
 
-$project_id = isset($project_id) ? (int) $project_id : 0;
+$action     = $_GET['action'] ?? $_POST['action'] ?? null;
+$project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
 
 // Standard authorisation
 if (!$project_id) {

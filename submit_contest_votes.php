@@ -1,6 +1,9 @@
 <?php
 include_once("includes/main.php");
 
+$contest_id = (int) ($_GET['contest_id'] ?? $_POST['contest_id'] ?? 0);
+$categories = $_POST['categories'] ?? null;
+
 // - The voter needs to be logged in
 // - The voter most have voted for some categories
 // - A contest ID must be specified
@@ -8,13 +11,11 @@ include_once("includes/main.php");
 if (!$userdata['session_logged_in']) {
 	abort_with_error('You have to login to be able to vote!');
 }
-if (!isset($categories)) {
+if (!is_array($categories)) {
 	abort_with_error('Somehow your submission lacked the categories.');
 }
-if (!isset($contest_id)) {
+if (!$contest_id) {
 	abort_with_error('No contest_id specified.');
-} else {
-  $contest_id = intval($contest_id);
 }
 
 // Get all the information about the contest

@@ -1,9 +1,10 @@
 <?php
 include_once("includes/main.php");
 
-$project_id = isset($project_id) ? (int) $project_id : 0;
-$contest_id = isset($contest_id) ? (int) $contest_id : 0;
-$entry_id   = isset($entry_id)   ? (int) $entry_id   : 0;
+$action     = $_GET['action'] ?? $_POST['action'] ?? null;
+$project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
+$contest_id = (int) ($_GET['contest_id'] ?? $_POST['contest_id'] ?? 0);
+$entry_id   = (int) ($_GET['entry_id']   ?? $_POST['entry_id']   ?? 0);
 
 // Standard authorisation
 if (!$userdata['session_logged_in']) {

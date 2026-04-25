@@ -2,6 +2,9 @@
 $override_theme = 'admin';
 include("./includes/main.php");
 
+$page  = $_GET['page']  ?? $_POST['page']  ?? 'log';
+$class = $_GET['class'] ?? $_POST['class'] ?? null;
+
 
 function make_table($title, $result)
 {
@@ -50,8 +53,6 @@ if (!($userdata['session_logged_in'] && $userdata['user_level'] == 1)) {
   exit();
 }
 
-
-if (!isset($page)) {$page = 'log';}
 
 if ($page == 'log')
 {

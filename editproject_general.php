@@ -1,7 +1,22 @@
 <?php
 include("includes/main.php");
 
-$project_id = isset($project_id) ? (int) $project_id : 0;
+$action               = $_GET['action']    ?? $_POST['action']    ?? null;
+$confirmed            = $_GET['confirmed'] ?? $_POST['confirmed'] ?? null;
+$submit               = $_POST['submit']   ?? null;
+$update_updated       = $_POST['update_updated']       ?? null;
+$project_allow_review = $_POST['project_allow_review'] ?? null;
+$project_id           = (int) ($_GET['project_id']     ?? $_POST['project_id']     ?? 0);
+$project_type         = (int) ($_POST['project_type']  ?? 0);
+$language_id          = (int) ($_POST['language_id']   ?? 0);
+$progress_id          = (int) ($_POST['progress_id']   ?? 0);
+$project_name         = $_POST['project_name']         ?? '';
+$project_contributors = $_POST['project_contributors'] ?? '';
+$project_summary      = $_POST['project_summary']      ?? '';
+$project_description  = $_POST['project_description']  ?? '';
+$project_url          = $_POST['project_url']          ?? '';
+$download             = $_POST['download']             ?? '';
+$project_bbcode_uid   = $_POST['project_bbcode_uid']   ?? '';
 
 $error = "";
 $message = "";
@@ -11,7 +26,7 @@ if (!$userdata['session_logged_in']) {
 }
 
 if (isset($action) && $action != 'add') {
-	if (!isset($project_id)) {
+	if (!$project_id) {
 		abort_with_error('Somehow you didn\'t specify a project_id.');
 	}
 	if ($error = check_access_level(PROJECTS_TABLE, 'project_id', $project_id)) {
