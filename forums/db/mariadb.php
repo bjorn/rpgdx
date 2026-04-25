@@ -134,7 +134,19 @@ class sql_db
 				$this->in_transaction = TRUE;
 			}
 
-			$this->query_result = mysql_query($query, $this->db_connect_id);
+			// PHP 8.1+ defaults mysqli to throwing mysqli_sql_exception on
+			// errors (e.g. duplicate-key INSERTs). phpBB 2 was written for
+			// the false-return contract of the old mysql_* API, so translate
+			// the exception back so callers like session_begin() see false
+			// and can call message_die() instead of dying with a 500.
+			try
+			{
+				$this->query_result = mysql_query($query, $this->db_connect_id);
+			}
+			catch (mysqli_sql_exception $e)
+			{
+				$this->query_result = false;
+			}
 		}
 		else
 		{
