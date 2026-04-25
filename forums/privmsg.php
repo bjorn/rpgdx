@@ -1094,7 +1094,11 @@ else if ( $submit || $refresh || $mode != '' )
 
 	$attach_sig = ( $submit || $refresh ) ? ( ( !empty($_POST['attach_sig']) ) ? TRUE : 0 ) : $userdata['user_attachsig'];
 	$user_sig = ( $userdata['user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['user_sig'] : "";
-	
+
+	$privmsg_subject = '';
+	$privmsg_message = '';
+	$l_box_name = '';
+
 	if ( $submit && $mode != 'edit' )
 	{
 		//
