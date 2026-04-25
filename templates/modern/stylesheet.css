@@ -489,3 +489,19 @@ TD.formNameCell {
 
 /* other things from phpbb2 */
 th.thHead,td.catHead { background-color: rgb(80,80,130); }
+
+
+/* Centered action link rows (e.g. add game / add article / post news).
+ * Keep the historical [bracketed] look in this theme. */
+.actions { text-align: center; margin: 10px 0; }
+.actions a::before { content: "["; }
+.actions a::after  { content: "]"; }
+.actions a + a { margin-left: 4px; }
+
+/* Inline action links (log out, log in, register, edit, remove).
+ * Some carry an inline SVG icon and a label span (for the 2026 theme);
+ * here we hide the icon and let the historical [bracketed] text stand. */
+.action-link::before { content: "["; }
+.action-link::after  { content: "]"; }
+.action-link .icon { display: none; }
+.row-actions .action-link + .action-link { margin-left: 4px; }

@@ -26,7 +26,7 @@ while ($row = mysql_fetch_object($result))
 {
 	$editlink = '';
 	if ($userdata['session_logged_in'] && ($row->user_id == $userdata['user_id'] || $userdata['user_level'] == ADMIN)) {
-		$editlink = '[<a href="'. append_sid('editnews.php?news_id='. $row->news_id .'&action=edit') .'">edit</a>]';
+		$editlink = action_link('edit', append_sid('editnews.php?news_id='. $row->news_id .'&action=edit'));
 	}
 
 	$template->assign_block_vars('newspost', array(

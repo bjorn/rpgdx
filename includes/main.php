@@ -32,7 +32,7 @@ if ($userdata['session_logged_in'] && $userdata['user_theme'] > 0 && empty($over
   $row = mysql_fetch_row(doQuery("SELECT theme_dir FROM ". RPGDX_THEMES_TABLE ." WHERE theme_id=". $userdata['user_theme']));
   $template_dir = $row[0];
 } elseif (empty($override_theme)) {
-  $template_dir = 'modern';
+  $template_dir = '2026';
 }
 else {
   $template_dir = $override_theme;
@@ -65,13 +65,13 @@ if ($userdata['session_logged_in']) {
 	}
 
 	$loginbar_text .= "Welcome ". (($userdata['user_level'] == ADMIN) ? 'admin.' : '') ." ". $userdata['username'];
-	$loginbar_text .= " [<a href=\"". append_sid("login.php?logout=true") ."\">log out</a>]";
+	$loginbar_text .= " <a class=\"action-link\" href=\"". append_sid("login.php?logout=true") ."\">log out</a>";
 }
 else
 {
 	$loginbar_text .= "Not logged in.";
-	$loginbar_text .= " [<a href=\"". append_sid("login.php") ."\">log in</a>]";
-	$loginbar_text .= " [<a href=\"". append_sid("register.php"). "\">register</a>]";
+	$loginbar_text .= " <a class=\"action-link\" href=\"". append_sid("login.php") ."\">log in</a>";
+	$loginbar_text .= " <a class=\"action-link\" href=\"". append_sid("register.php"). "\">register</a>";
 }
 
 

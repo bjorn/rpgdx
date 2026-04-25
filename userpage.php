@@ -61,9 +61,9 @@ if ($userdata['session_logged_in']) {
 			echo "<td class=\"td\">$row->project_name</td>";
 			echo "<td class=\"td\" nowrap>$row->project_type</td>";
 			echo "<td class=\"td\" nowrap>$row->project_last_update<img src=\"images/pixel.gif\" height=0 width=0></td>";
-			echo "<td class=\"td\" nowrap>";
-			echo "[<a href=\"". append_sid("editproject.php?project_id=$row->project_id") ."\">edit</a>]";
-			echo " [<a href=\"". append_sid("editproject_general.php?action=remove&amp;project_id=$row->project_id&amp;confirmed=1"). "\" onClick=\"if (!(window.confirm('Are you sure you want to remove this project?'))) { return false; }\">remove</a>]";
+			echo "<td class=\"td row-actions\" nowrap>";
+			echo action_link('edit', append_sid("editproject.php?project_id=$row->project_id"));
+			echo action_link('remove', append_sid("editproject_general.php?action=remove&amp;project_id=$row->project_id&amp;confirmed=1"), array('onclick' => "return window.confirm('Are you sure you want to remove this project?');"));
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -96,9 +96,9 @@ if ($userdata['session_logged_in']) {
 			echo "<td class=\"td\">$row->article_title</td>";
 			echo "<td class=\"td\" nowrap>$row->article_type</td>";
 			echo "<td class=\"td\" nowrap>$row->article_created<img src=\"images/pixel.gif\" height=0 width=0></td>";
-			echo "<td class=\"td\" nowrap>";
-			echo "[<a href=\"". append_sid("editarticle.php?action=edit&article_id=$row->article_id") ."\">edit</a>]";
-			echo " [<a href=\"". append_sid("editarticle.php?action=remove&article_id=$row->article_id&amp;confirmed=1") ."\" onClick=\"if (!(window.confirm('Are you sure you want to remove this article?'))) { return false; }\">remove</a>]";
+			echo "<td class=\"td row-actions\" nowrap>";
+			echo action_link('edit', append_sid("editarticle.php?action=edit&article_id=$row->article_id"));
+			echo action_link('remove', append_sid("editarticle.php?action=remove&article_id=$row->article_id&amp;confirmed=1"), array('onclick' => "return window.confirm('Are you sure you want to remove this article?');"));
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -130,9 +130,9 @@ if ($userdata['session_logged_in']) {
 			echo "<td class=\"td\">$row->project_name</td>";
 			echo "<td class=\"td\">$row->review_score</td>";
 			echo "<td class=\"td\" nowrap>$row->review_added<img src=\"images/pixel.gif\" height=0 width=0></td>";
-			echo "<td class=\"td\" nowrap>";
-			echo "[<a href=\"". append_sid("editreview.php?action=edit&amp;review_id=$row->review_id") ."\">edit</a>]";
-			echo " [<a href=\"". append_sid("editreview.php?action=remove&amp;review_id=$row->review_id&amp;confirmed=1") ."\" onClick=\"if (!(window.confirm('Are you sure you want to remove this review?'))) { return false; }\">remove</a>]";
+			echo "<td class=\"td row-actions\" nowrap>";
+			echo action_link('edit', append_sid("editreview.php?action=edit&amp;review_id=$row->review_id"));
+			echo action_link('remove', append_sid("editreview.php?action=remove&amp;review_id=$row->review_id&amp;confirmed=1"), array('onclick' => "return window.confirm('Are you sure you want to remove this review?');"));
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -142,11 +142,11 @@ if ($userdata['session_logged_in']) {
 	?>
 	</table>
 	<br />
-	<div align=center>
-	[<a href="<?php echo append_sid("editproject_general.php?action=add") ?>">add game</a>] 
-	[<a href="<?php echo append_sid("editarticle.php?action=add") ?>">add article</a>]
-	[<a href="<?php echo append_sid("editnews.php?action=add") ?>">post news</a>]
-	</div><br />
+	<div class="actions">
+		<a href="<?php echo append_sid("editproject_general.php?action=add") ?>">add game</a>
+		<a href="<?php echo append_sid("editarticle.php?action=add") ?>">add article</a>
+		<a href="<?php echo append_sid("editnews.php?action=add") ?>">post news</a>
+	</div>
 <?php
 } else {
 	// Login failed
