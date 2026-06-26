@@ -27,7 +27,9 @@ if ( !defined('IN_PHPBB') )
 	exit;
 }
 
-$sql = "SELECT user_active, user_id, username, user_email, user_newpasswd, user_lang, user_actkey 
+$password_confirm = '';
+
+$sql = "SELECT user_active, user_id, username, user_email, user_newpasswd, user_lang, user_actkey
 	FROM " . USERS_TABLE . "
 	WHERE user_id = " . intval($_GET[POST_USERS_URL]);
 if ( !($result = $db->sql_query($sql)) )
