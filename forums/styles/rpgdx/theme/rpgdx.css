@@ -233,7 +233,7 @@ fieldset.polls dl.voted { color: #fff; }
     .rpgdx-header { gap: 5px; }
     .rpgdx-tagline { max-width: calc(100vw - 154px); height: auto; }
     #nav-main { margin-inline: -5px; padding-inline: 5px; }
-    #page-header .navbar { margin-inline: 0; }
+    #page-header .navbar { margin: 0; }
     .postprofile { background: transparent; }
 }
 
