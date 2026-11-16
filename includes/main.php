@@ -1,20 +1,7 @@
 <?php
 
 define('IN_RPGDX', true);
-define('IN_PHPBB', true);
-$phpbb_root_path = './forums/';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
-include($phpbb_root_path . 'includes/bbcode.'.$phpEx);
-
-//
-// Start session management
-//
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
-init_userprefs($userdata);
-//
-// End session management
-//
+require_once __DIR__ . '/phpbb.php';
 
 include_once("includes/constants.php");
 include_once("includes/functions.php");
@@ -22,22 +9,37 @@ include_once("includes/database.php");
 include_once("includes/page.php");
 include_once("includes/bbcode.php");
 
-$time_start	= getmicrotime();
+$time_start = getmicrotime();
+
+$preferences = rpgdx_db_fetch_assoc(doQuery("SELECT * FROM " . USER_PREFERENCES_TABLE . " WHERE user_id = " . (int) $userdata['user_id']));
+$userdata = array_merge($userdata, $preferences ?: array(
+    'user_theme' => 0,
+    'user_projects_sort_method' => 0,
+    'user_projects_last_sort_method' => PSORT_RATING,
+));
 
 
 /*
  * Create a new instance of the template class.
  */
 if ($userdata['session_logged_in'] && $userdata['user_theme'] > 0 && empty($override_theme)) {
-  $row = mysql_fetch_row(doQuery("SELECT theme_dir FROM ". RPGDX_THEMES_TABLE ." WHERE theme_id=". $userdata['user_theme']));
-  $template_dir = $row[0];
+  $row = rpgdx_db_fetch_row(doQuery("SELECT theme_dir FROM ". RPGDX_THEMES_TABLE ." WHERE theme_id=". $userdata['user_theme']));
+  $template_dir = $row[0] ?? 'modern';
 } elseif (empty($override_theme)) {
   $template_dir = 'modern';
 }
 else {
   $template_dir = $override_theme;
 }
-$template = new Template("templates/$template_dir");
+if (!is_dir(__DIR__ . "/../templates/$template_dir")) {
+    $template_dir = 'modern';
+}
+$template = new \Rpgdx\Legacy\Template("templates/$template_dir");
+$site_host = strtolower(explode(':', $_SERVER['HTTP_HOST'] ?? '')[0]);
+if (in_array($site_host, array('rpgdx.net', 'www.rpgdx.net'), true)) {
+    $template->assign_block_vars('production_analytics', array());
+}
+
 
 
 
@@ -65,7 +67,7 @@ if ($userdata['session_logged_in']) {
 	}
 
 	$loginbar_text .= "Welcome ". (($userdata['user_level'] == ADMIN) ? 'admin.' : '') ." ". $userdata['username'];
-	$loginbar_text .= " [<a href=\"". append_sid("login.php?logout=true") ."\">log out</a>]";
+	$loginbar_text .= " [<a href=\"". append_sid("login.php?logout=true", "sid=" . $user->session_id) ."\">log out</a>]";
 }
 else
 {
@@ -89,7 +91,7 @@ $template->assign_vars(array(
   'U_CONTESTS'      => append_sid('showcontests.php'),
   'U_SEARCH'        => append_sid('search.php'),
 
-  'S_LOGIN_ACTION'  => append_sid('login.php'),
+  'S_LOGIN_ACTION'  => append_sid('forums/ucp.php', 'mode=login'),
 
   'HIDE_URL'        => 'onmouseover="status=\'\'; return true;"',
   'BBCODE_ON'       => 'bbcode enabled',
@@ -104,13 +106,13 @@ $template->assign_vars(array(
 
 // Get counts from different genres
 $result = doQuery("SELECT project_type, COUNT(*) AS number FROM ". PROJECTS_TABLE ." GROUP BY project_type");
-while ($row = mysql_fetch_object($result)) {
+while ($row = rpgdx_db_fetch_object($result)) {
 	$rpg_genre[$row->project_type] = $row->number;
 }
 
 // Add each RPG type
 $result = doQuery("SELECT * FROM ". PROJECT_TYPES_TABLE);
-while ($row = mysql_fetch_object($result))
+while ($row = rpgdx_db_fetch_object($result))
 {
 	if (!isset($rpg_genre[$row->type_id])) {
 		$rpg_genre[$row->type_id] = 0;
@@ -125,13 +127,13 @@ while ($row = mysql_fetch_object($result))
 
 // Get counts from different article categories
 $result = doQuery("SELECT article_type, COUNT(*) AS number FROM ". ARTICLES_TABLE ." GROUP BY article_type");
-while ($row = mysql_fetch_object($result)) {
+while ($row = rpgdx_db_fetch_object($result)) {
 	$rpg_category[$row->article_type] = $row->number;
 }
 
 // Add each article category
 $result = doQuery("SELECT * FROM ". ARTICLE_TYPES_TABLE);
-while ($row = mysql_fetch_object($result))
+while ($row = rpgdx_db_fetch_object($result))
 {
 	if (!isset($rpg_category[$row->type_id])) {
 		$rpg_category[$row->type_id] = 0;
@@ -152,10 +154,10 @@ $result = doQuery(
 	"SELECT DATE_FORMAT(project_last_update, '%d-%m-%Y %H:%i:%s') AS updated, project_name AS name, project_id ".
 	"FROM ". PROJECTS_TABLE ." WHERE project_last_update ORDER BY project_last_update DESC LIMIT 5"
 );
-if (mysql_num_rows($result) > 0) {
+if (rpgdx_db_num_rows($result) > 0) {
 	$template->assign_block_vars('submenu', array('TITLE' => 'Game updates'));
 
-	while ($game = mysql_fetch_object($result))
+	while ($game = rpgdx_db_fetch_object($result))
 	{
 		$template->assign_block_vars('submenu.update', array(
 			'DATE' => $game->updated,
@@ -174,10 +176,10 @@ $result = doQuery(
 	"FROM ". REVIEWS_TABLE ." LEFT JOIN ". PROJECTS_TABLE ." USING (project_id) LEFT JOIN ". USERS_TABLE ." ON ". REVIEWS_TABLE .".user_id = ". USERS_TABLE .".user_id ".
 	"WHERE review_added ORDER BY review_added DESC LIMIT 5"
 );
-if (mysql_num_rows($result) > 0) {
+if (rpgdx_db_num_rows($result) > 0) {
 	$template->assign_block_vars('submenu', array('TITLE' => 'Latest reviews'));
 
-	while ($review = mysql_fetch_object($result))
+	while ($review = rpgdx_db_fetch_object($result))
 	{
 		$template->assign_block_vars('submenu.update', array(
 			'DATE' => $review->added,
@@ -193,10 +195,10 @@ $result = doQuery(
 	"SELECT DATE_FORMAT(article_created, '%d-%m-%Y %H:%i:%s') AS created, article_title, article_url ".
 	"FROM ". ARTICLES_TABLE ." ORDER BY article_created DESC LIMIT 5"
 );
-if (mysql_num_rows($result) > 0) {
+if (rpgdx_db_num_rows($result) > 0) {
 	$template->assign_block_vars('submenu', array('TITLE' => 'Latest articles'));
 
-	while ($art = mysql_fetch_object($result))
+	while ($art = rpgdx_db_fetch_object($result))
 	{
 		$template->assign_block_vars('submenu.update', array(
 			'DATE' => $art->created,

@@ -1,0 +1,6 @@
+.git
+uploads
+forums/cache
+forums/files
+forums/store
+*.sql

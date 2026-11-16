@@ -1,0 +1,9 @@
+services:
+    rpgdx.site.listener:
+        class: rpgdx\site\event\listener
+        arguments:
+            - '@template'
+            - '@path_helper'
+            - '@request'
+        tags:
+            - { name: event.listener }

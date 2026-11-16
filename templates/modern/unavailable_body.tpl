@@ -2,7 +2,7 @@
 
 <head>
 <title>RPGDX</title>
-<meta name="Keywords" content="RPG RPGDX Indie IndieRPG Mandrake Bjørn Lindeijer Community Games Free independant programmers community">
+<meta name="Keywords" content="RPG RPGDX Indie IndieRPG Mandrake BjÃ¸rn Lindeijer Community Games Free independant programmers community">
 <meta name="Description" content="A community site for independent RPG programmers!">
 <link rel="stylesheet" href="RPGDX.css" type="text/css">
 </head>
@@ -35,7 +35,7 @@
 
 			<p align="justify">This move should be ok, I'm not removing anything from the database, only adding forum users and changing IDs. It should also not take longer than an hour, if it does you can assume that I'm having some very annoying problems...</p>
 
-			<p align="justify">Thank you for your patience,<br />Bjørn Lindeijer</p>
+			<p align="justify">Thank you for your patience,<br />BjÃ¸rn Lindeijer</p>
 
 		</td>
 	</tr>

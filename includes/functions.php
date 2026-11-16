@@ -3,6 +3,39 @@ if (!defined('IN_RPGDX')) {
 	die("Hacking attempt?");
 }
 
+function get_db_stat($mode)
+{
+    global $config;
+    switch ($mode) {
+        case 'postcount': return (int) $config['num_posts'];
+        case 'topiccount': return (int) $config['num_topics'];
+        case 'usercount': return (int) $config['num_users'];
+        case 'activeusercount':
+            $sql = "SELECT COUNT(*) FROM " . USERS_TABLE . " WHERE user_type IN (" . USER_NORMAL . ", " . USER_FOUNDER . ") AND user_lastvisit > " . (time() - 7 * 86400);
+            break;
+        case 'projectcount': $sql = "SELECT COUNT(*) FROM " . PROJECTS_TABLE; break;
+        case 'reviewcount': $sql = "SELECT COUNT(*) FROM " . REVIEWS_TABLE; break;
+        case 'articlecount': $sql = "SELECT COUNT(*) FROM " . ARTICLES_TABLE; break;
+        default: return false;
+    }
+    $row = rpgdx_db_fetch_row(doQuery($sql));
+    return (int) $row[0];
+}
+
+function rpgdx_save_preferences($values)
+{
+    global $userdata;
+    $values['user_id'] = (int) $userdata['user_id'];
+    $columns = implode(', ', array_keys($values));
+    $assignments = array();
+    foreach ($values as $column => $value) {
+        if ($column !== 'user_id') {
+            $assignments[] = "$column = VALUES($column)";
+        }
+    }
+    doQuery("INSERT INTO " . USER_PREFERENCES_TABLE . " ($columns) VALUES (" . implode(', ', array_map('intval', $values)) . ") ON DUPLICATE KEY UPDATE " . implode(', ', $assignments));
+}
+
 function getmicrotime()
 {	
 	list($usec, $sec) = explode(" ",microtime()); 
@@ -10,7 +43,7 @@ function getmicrotime()
 }
 
 
-function add_log($string)
+function rpgdx_add_log($string)
 {
   doQuery("INSERT INTO rpgdx_log (log_text, log_time) VALUES ('". addslashes($string) ."', NOW())");
 }
@@ -54,7 +87,7 @@ function check_access_level($object_table, $object_id_name, &$object_id)
 		return 'You have to login to be able to view this page.';
 	}
 	else if (($object_id < 1) ||
-		       !($object = mysql_fetch_object(doQuery("SELECT user_id FROM $object_table WHERE $object_id_name = $object_id"))))
+		       !($object = rpgdx_db_fetch_object(doQuery("SELECT user_id FROM $object_table WHERE $object_id_name = $object_id"))))
 	{
 		return 'No valid '. $object_id_name .' specified.';
 	}
@@ -96,7 +129,7 @@ function add_uploaded_file($temp_filename, $type, $extension)
 {
 	// Add the file entry to the database
 	$result = doQuery("INSERT INTO rpgdx_uploads (upload_type, upload_ext) VALUES ('$type', '$extension')");
-	$id = mysql_insert_id();
+	$id = rpgdx_db_insert_id();
 	
 	$final_filename = 'uploads/' . $type . $id . $extension;
 
@@ -118,7 +151,7 @@ function add_uploaded_file($temp_filename, $type, $extension)
 
 function remove_uploaded_file($upload_id)
 {
-	$result = mysql_fetch_array(doQuery(
+	$result = rpgdx_db_fetch_array(doQuery(
 		"SELECT upload_type, upload_id, upload_ext FROM rpgdx_uploads WHERE upload_id = $upload_id"
 	));
 
@@ -166,7 +199,7 @@ function get_contest_results($project_id)
 	);
 
 	// For each contest...
-	while ($contest = mysql_fetch_object($contests))
+	while ($contest = rpgdx_db_fetch_object($contests))
 	{
 		/* Initialize variables
 		 */
@@ -187,7 +220,7 @@ function get_contest_results($project_id)
 		);
 
 		$i = 0;
-		while ($category = mysql_fetch_object($result)) {
+		while ($category = rpgdx_db_fetch_object($result)) {
 			$categories[$i] = $category;
 			$i++;
 		}
@@ -206,7 +239,7 @@ function get_contest_results($project_id)
 		);
 
 		$i = 0;
-		while ($i < sizeof($categories) && $entry = mysql_fetch_object($result)) {
+		while ($i < sizeof($categories) && $entry = rpgdx_db_fetch_object($result)) {
 			if (isset($prev_score) && $entry->score != $prev_score) {
 				$i++;
 			}

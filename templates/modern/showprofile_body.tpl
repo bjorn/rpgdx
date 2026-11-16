@@ -12,7 +12,7 @@
         <tr>
           <td align="right" valign="top">
             <!-- BEGIN avatar -->
-            <img src="{avatar.IMG_URL}" style="background-color: rgb(56,56,97); border: 2px solid rgb(56,56,97);" alt="Avatar" />
+            {avatar.HTML}
             <!-- END avatar -->
           </td>
           <td valign="bottom">

@@ -40,7 +40,7 @@ if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "
 
 
 // Make sure there is a bbcode_uid
-if (empty($project_bbcode_uid)) {$project_bbcode_uid = make_bbcode_uid();}
+if (empty($project_bbcode_uid)) {$project_bbcode_uid = \Rpgdx\Legacy\make_bbcode_uid();}
 
 
 if (strlen($error) == 0 && ($action == "edit" || $action == "add") && isset($submit))
@@ -80,7 +80,7 @@ if (strlen($error) == 0 && ($action == "edit" || $action == "add") && isset($sub
 				"WHERE project_id=$project_id"
 			);
 			$message = stripslashes($project_name) ." has been updated.";
-			add_log("User ". $userdata['user_id'] ." (". $userdata['username'] .") has updated project $project_id ($project_name).");
+			rpgdx_add_log("User ". $userdata['user_id'] ." (". $userdata['username'] .") has updated project $project_id ($project_name).");
 		}
 		else if ($action == "add") {
 			// INSERT the project entry
@@ -92,8 +92,8 @@ if (strlen($error) == 0 && ($action == "edit" || $action == "add") && isset($sub
 				$userdata['user_id'] .", NOW(), NOW(), '$project_name', '$project_contributors', '$project_type', '$language_id', '$progress_id', '$project_summary', '$project_description', '$project_url', '$download', '$project_bbcode_uid', '". ((isset($project_allow_review)) ? "1" : "0") ."')"
 			);
 			$message = stripslashes($project_name) ." has been added to RPGDX!";
-			$project_id = mysql_insert_id();
-			add_log("User ". $userdata['user_id'] ." (". $userdata['username'] .") has added project $project_id (". stripslashes($project_name) .").");
+			$project_id = rpgdx_db_insert_id();
+			rpgdx_add_log("User ". $userdata['user_id'] ." (". $userdata['username'] .") has added project $project_id (". stripslashes($project_name) .").");
 			header('Location: editproject.php?project_id=' . $project_id);
 		}
 	}
@@ -105,7 +105,7 @@ if (isset($action) && ($action == "edit" || $action == "remove") && $project_id 
 {
 	// Get information about the selected project
 	$result = doQuery("SELECT * FROM ". PROJECTS_TABLE ." WHERE project_id='$project_id'");
-	if ($row = mysql_fetch_array($result)) {
+	if ($row = rpgdx_db_fetch_array($result)) {
 		foreach ($row as $key => $value) {
 			//$row["$key"] = htmlentities($value);
       $form[$key] = htmlentities($value);
@@ -132,7 +132,7 @@ if (isset($action) && $action == "remove" && isset($confirmed) && $project_id > 
 {
 	// DELETE project from database
 	doQuery("DELETE FROM ". PROJECTS_TABLE ." WHERE project_id=$project_id");
-	add_log("User ". $userdata['user_id'] ." (". $userdata['username'] .") has removed project $project_id (". $form['project_name'] .").");
+	rpgdx_add_log("User ". $userdata['user_id'] ." (". $userdata['username'] .") has removed project $project_id (". $form['project_name'] .").");
 	header("Location: userpage.php"); die();
 }
 
@@ -175,19 +175,19 @@ if ($action == "edit" || $action == "add")
 {
 	$genre_options = "<option value=0 selected>- please select a genre -</option>\n";
 	$genres = doQuery("SELECT * FROM ". PROJECT_TYPES_TABLE);
-	while ($genre = mysql_fetch_object($genres)) {
+	while ($genre = rpgdx_db_fetch_object($genres)) {
 		$genre_options .= "<option value=\"$genre->type_id\"". ((isset($form['project_type']) && $form['project_type'] == $genre->type_id) ? " selected" : "") .">$genre->type_title</option>\n";
 	}
 
 	$lang_options = "<option value=0 selected>Unspecified</option>\n";
 	$languages = doQuery("SELECT * FROM ". PROGRAMMING_LANGUAGES_TABLE ." ORDER BY language_name");
-	while ($row = mysql_fetch_object($languages)) {
+	while ($row = rpgdx_db_fetch_object($languages)) {
 		$lang_options .= "<option value=\"$row->language_id\"". ((isset($form['language_id']) && $form['language_id'] == $row->language_id) ? " selected" : "") .">$row->language_name</option>\n";
 	}
 
 	$progress_options = "<option value=0 selected>Unspecified</option>\n";
 	$progresses = doQuery("SELECT status_id, status_title FROM ". PROJECT_STATUSSES_TABLE ." ORDER BY status_perc");
-	while ($progress = mysql_fetch_object($progresses)) {
+	while ($progress = rpgdx_db_fetch_object($progresses)) {
 		$progress_options .= "<option value=\"$progress->status_id\"". ((isset($form['project_type']) && $form['progress_id'] == $progress->status_id) ? " selected" : "") .">$progress->status_title</option>\n";
 	}
 

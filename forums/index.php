@@ -1,452 +1,254 @@
 <?php
-/***************************************************************************
- *                                index.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: index.php 5502 2006-01-28 11:13:39Z acydburn $
- *
- *
- ***************************************************************************/
+/**
+*
+* This file is part of the phpBB Forum Software package.
+*
+* @copyright (c) phpBB Limited <https://www.phpbb.com>
+* @license GNU General Public License, version 2 (GPL-2.0)
+*
+* For full copyright and license information, please see
+* the docs/CREDITS.txt file.
+*
+*/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+/**
+*/
 
+/**
+* @ignore
+*/
 define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
+$phpEx = substr(strrchr(__FILE__, '.'), 1);
+include($phpbb_root_path . 'common.' . $phpEx);
+include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 
-//
 // Start session management
-//
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_begin();
+$auth->acl($user->data);
+$user->setup('viewforum');
 
-$viewcat = ( !empty($_GET[POST_CAT_URL]) ) ? $_GET[POST_CAT_URL] : -1;
-
-if( isset($_GET['mark']) || isset($_POST['mark']) )
+// Mark notifications read
+if (($mark_notification = $request->variable('mark_notification', 0)))
 {
-	$mark_read = ( isset($_POST['mark']) ) ? $_POST['mark'] : $_GET['mark'];
-}
-else
-{
-	$mark_read = '';
-}
-
-//
-// Handle marking posts
-//
-if( $mark_read == 'forums' )
-{
-	if( $userdata['session_logged_in'] )
+	if ($user->data['user_id'] == ANONYMOUS)
 	{
-		$sql = 'UPDATE '. USERS_TABLE .' SET user_lastread = '. time() .' WHERE user_id = '. $userdata['user_id'];
-
-		if ( !($db->sql_query($sql)) ) {
-			message_die(GENERAL_ERROR, 'Could not update user_lastread variable', '', __LINE__, __FILE__, $sql);
+		if ($request->is_ajax())
+		{
+			trigger_error('LOGIN_REQUIRED');
 		}
-
-		$sql = 'DELETE FROM '. READS_TABLE .' WHERE read_user_id = '. $userdata['user_id'];
-
-		if ( !($db->sql_query($sql)) ) {
-			message_die(GENERAL_ERROR, 'Could not remove phpbb_read entries', '', __LINE__, __FILE__, $sql);
-		}
+		login_box('', $user->lang['LOGIN_REQUIRED']);
 	}
 
-	$template->assign_vars(array(
-		"META" => '<meta http-equiv="refresh" content="3;url='  .append_sid("index.$phpEx") . '">')
-	);
+	if (check_link_hash($request->variable('hash', ''), 'mark_notification_read'))
+	{
+		/* @var $phpbb_notifications \phpbb\notification\manager */
+		$phpbb_notifications = $phpbb_container->get('notification_manager');
 
-	$message = $lang['Forums_marked_read'] . '<br /><br />' . sprintf($lang['Click_return_index'], '<a href="' . append_sid("index.$phpEx") . '">', '</a> ');
+		$notification = $phpbb_notifications->load_notifications('notification.method.board', array(
+			'notification_id'	=> $mark_notification,
+		));
 
-	message_die(GENERAL_MESSAGE, $message);
+		if (isset($notification['notifications'][$mark_notification]))
+		{
+			$notification = $notification['notifications'][$mark_notification];
+
+			$notification->mark_read();
+
+			/**
+			* You can use this event to perform additional tasks or redirect user elsewhere.
+			*
+			* @event core.index_mark_notification_after
+			* @var	int										mark_notification	Notification ID
+			* @var	\phpbb\notification\type\type_interface	notification		Notification instance
+			* @since 3.2.6-RC1
+			*/
+			$vars = array('mark_notification', 'notification');
+			extract($phpbb_dispatcher->trigger_event('core.index_mark_notification_after', compact($vars)));
+
+			if ($request->is_ajax())
+			{
+				$json_response = new \phpbb\json_response();
+				$json_response->send(array(
+					'success'	=> true,
+				));
+			}
+
+			if (($redirect = $request->variable('redirect', '')))
+			{
+				redirect(append_sid($phpbb_root_path . $redirect));
+			}
+
+			redirect($notification->get_redirect_url());
+		}
+	}
 }
-//
-// End handle marking posts
-//
 
-$tracking_topics = ( isset($_COOKIE[$board_config['cookie_name'] . '_t']) ) ? unserialize($_COOKIE[$board_config['cookie_name'] . "_t"]) : array();
-$tracking_forums = ( isset($_COOKIE[$board_config['cookie_name'] . '_f']) ) ? unserialize($_COOKIE[$board_config['cookie_name'] . "_f"]) : array();
+display_forums('', $config['load_moderators']);
 
-//
-// If you don't use these stats on your index you may want to consider
-// removing them
-//
-$total_posts = get_db_stat('postcount');
-$total_users = get_db_stat('usercount');
-$newest_userdata = get_db_stat('newestuser');
-$newest_user = $newest_userdata['username'];
-$newest_uid = $newest_userdata['user_id'];
-
-if( $total_posts == 0 )
+$order_legend = ($config['legend_sort_groupname']) ? 'group_name' : 'group_legend';
+// Grab group details for legend display
+if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
 {
-	$l_total_post_s = $lang['Posted_articles_zero_total'];
-}
-else if( $total_posts == 1 )
-{
-	$l_total_post_s = $lang['Posted_article_total'];
+	$sql = 'SELECT group_id, group_name, group_colour, group_type, group_legend
+		FROM ' . GROUPS_TABLE . '
+		WHERE group_legend > 0
+		ORDER BY ' . $order_legend . ' ASC';
 }
 else
 {
-	$l_total_post_s = $lang['Posted_articles_total'];
+	$sql = 'SELECT g.group_id, g.group_name, g.group_colour, g.group_type, g.group_legend
+		FROM ' . GROUPS_TABLE . ' g
+		LEFT JOIN ' . USER_GROUP_TABLE . ' ug
+			ON (
+				g.group_id = ug.group_id
+				AND ug.user_id = ' . $user->data['user_id'] . '
+				AND ug.user_pending = 0
+			)
+		WHERE g.group_legend > 0
+			AND (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')
+		ORDER BY g.' . $order_legend . ' ASC';
 }
+$result = $db->sql_query($sql);
 
-if( $total_users == 0 )
-{
-	$l_total_user_s = $lang['Registered_users_zero_total'];
-}
-else if( $total_users == 1 )
-{
-	$l_total_user_s = $lang['Registered_user_total'];
-}
-else
-{
-	$l_total_user_s = $lang['Registered_users_total'];
-}
+/** @var \phpbb\group\helper $group_helper */
+$group_helper = $phpbb_container->get('group_helper');
 
-
-//
-// Start page proper
-//
-$sql = "SELECT c.cat_id, c.cat_title, c.cat_order
-	FROM " . CATEGORIES_TABLE . " c 
-	ORDER BY c.cat_order";
-if( !($result = $db->sql_query($sql)) )
-{
-	message_die(GENERAL_ERROR, 'Could not query categories list', '', __LINE__, __FILE__, $sql);
-}
-
-$category_rows = array();
+$legend = array();
 while ($row = $db->sql_fetchrow($result))
 {
-	$category_rows[] = $row;
+	$colour_text = ($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . '"' : '';
+	$group_name = $group_helper->get_name($row['group_name']);
+
+	if ($row['group_name'] == 'BOTS' || ($user->data['user_id'] != ANONYMOUS && !$auth->acl_get('u_viewprofile')))
+	{
+		$legend[] = '<span' . $colour_text . '>' . $group_name . '</span>';
+	}
+	else
+	{
+		$legend[] = '<a' . $colour_text . ' href="' . append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']) . '">' . $group_name . '</a>';
+	}
 }
 $db->sql_freeresult($result);
 
-if( ( $total_categories = count($category_rows) ) )
+$legend = implode($user->lang['COMMA_SEPARATOR'], $legend);
+
+// Generate birthday list if required ...
+$show_birthdays = ($config['load_birthdays'] && $config['allow_birthdays'] && $auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel'));
+
+$birthdays = $birthday_list = array();
+if ($show_birthdays)
 {
-	//
-	// Define appropriate SQL
-	//
-	switch(SQL_LAYER)
-	{
-		case 'postgresql':
-			$sql = "SELECT f.*, p.post_time, p.post_username, u.username, u.user_id 
-				FROM " . FORUMS_TABLE . " f, " . POSTS_TABLE . " p, " . USERS_TABLE . " u
-				WHERE p.post_id = f.forum_last_post_id 
-					AND u.user_id = p.poster_id  
-					UNION (
-						SELECT f.*, NULL, NULL, NULL, NULL
-						FROM " . FORUMS_TABLE . " f
-						WHERE NOT EXISTS (
-							SELECT p.post_time
-							FROM " . POSTS_TABLE . " p
-							WHERE p.post_id = f.forum_last_post_id  
-						)
-					)
-					ORDER BY cat_id, forum_order";
-			break;
+	$time = $user->create_datetime();
+	$now = phpbb_gmgetdate($time->getTimestamp() + $time->getOffset());
 
-		case 'oracle':
-			$sql = "SELECT f.*, p.post_time, p.post_username, u.username, u.user_id 
-				FROM " . FORUMS_TABLE . " f, " . POSTS_TABLE . " p, " . USERS_TABLE . " u
-				WHERE p.post_id = f.forum_last_post_id(+)
-					AND u.user_id = p.poster_id(+)
-				ORDER BY f.cat_id, f.forum_order";
-			break;
-
-		default:
-			$sql = "SELECT f.*, p.post_time, p.post_username, u.username, u.user_id
-				FROM (( " . FORUMS_TABLE . " f
-				LEFT JOIN " . POSTS_TABLE . " p ON p.post_id = f.forum_last_post_id )
-				LEFT JOIN " . USERS_TABLE . " u ON u.user_id = p.poster_id )
-				ORDER BY f.cat_id, f.forum_order";
-			break;
-	}
-	if ( !($result = $db->sql_query($sql)) )
+	// Display birthdays of 29th february on 28th february in non-leap-years
+	$leap_year_birthdays = '';
+	if ($now['mday'] == 28 && $now['mon'] == 2 && !$time->format('L'))
 	{
-		message_die(GENERAL_ERROR, 'Could not query forums information', '', __LINE__, __FILE__, $sql);
+		$leap_year_birthdays = " OR u.user_birthday LIKE '" . $db->sql_escape(sprintf('%2d-%2d-', 29, 2)) . "%'";
 	}
 
-	$forum_data = array();
-	while( $row = $db->sql_fetchrow($result) )
-	{
-		$forum_data[] = $row;
-	}
-	$db->sql_freeresult($result);
-
-	if ( !($total_forums = count($forum_data)) )
-	{
-		message_die(GENERAL_MESSAGE, $lang['No_forums']);
-	}
-
-	//
-	// Obtain a list of topic ids which contain
-	// posts made since user last visited
-	//
-	if ($userdata['session_logged_in'])
-	{
-		// 60 days limit
-		/*
-		if ($userdata['user_lastvisit'] < (time() - 5184000))
-		{
-			$userdata['user_lastvisit'] = time() - 5184000;
-		}
-		*/
-
-		$sql =
-			"SELECT t.forum_id, t.topic_id, p.post_time ".
-			"FROM ". TOPICS_TABLE . " t ".
-				"LEFT JOIN ". POSTS_TABLE . " p ON t.topic_last_post_id = p.post_id ".
-				"LEFT JOIN ". READS_TABLE ." r ON r.read_topic_id = t.topic_id AND r.read_user_id = ". $userdata['user_id'] ." ".
-			"WHERE p.post_time >= " . $userdata['user_lastread'] ." ".
-				"AND IF(r.read_time, p.post_time >= r.read_time, 1) ".
-				"AND t.topic_moved_id = 0";
-
-		if ( !($result = $db->sql_query($sql)) )
-		{
-			message_die(GENERAL_ERROR, 'Could not query new topic information', '', __LINE__, __FILE__, $sql);
-		}
-
-		$new_topic_data = array();
-		while( $topic_data = $db->sql_fetchrow($result) )
-		{
-			$new_topic_data[$topic_data['forum_id']][$topic_data['topic_id']] = $topic_data['post_time'];
-		}
-		$db->sql_freeresult($result);
-	}
-
-	//
-	// Obtain list of moderators of each forum
-	// First users, then groups ... broken into two queries
-	//
-	$sql = "SELECT aa.forum_id, u.user_id, u.username 
-		FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g, " . USERS_TABLE . " u
-		WHERE aa.auth_mod = " . TRUE . " 
-			AND g.group_single_user = 1 
-			AND ug.group_id = aa.group_id 
-			AND g.group_id = aa.group_id 
-			AND u.user_id = ug.user_id 
-		GROUP BY u.user_id, u.username, aa.forum_id 
-		ORDER BY aa.forum_id, u.user_id";
-	if ( !($result = $db->sql_query($sql)) )
-	{
-		message_die(GENERAL_ERROR, 'Could not query forum moderator information', '', __LINE__, __FILE__, $sql);
-	}
-
-	$forum_moderators = array();
-	while( $row = $db->sql_fetchrow($result) )
-	{
-		$forum_moderators[$row['forum_id']][] = '<a href="' . viewprofile_url($row['user_id']) . '">' . $row['username'] . '</a>';
-	}
-	$db->sql_freeresult($result);
-
-	$sql = "SELECT aa.forum_id, g.group_id, g.group_name 
-		FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g 
-		WHERE aa.auth_mod = " . TRUE . " 
-			AND g.group_single_user = 0 
-			AND g.group_type <> " . GROUP_HIDDEN . "
-			AND ug.group_id = aa.group_id 
-			AND g.group_id = aa.group_id 
-		GROUP BY g.group_id, g.group_name, aa.forum_id 
-		ORDER BY aa.forum_id, g.group_id";
-	if ( !($result = $db->sql_query($sql)) )
-	{
-		message_die(GENERAL_ERROR, 'Could not query forum moderator information', '', __LINE__, __FILE__, $sql);
-	}
-
-	while( $row = $db->sql_fetchrow($result) )
-	{
-		$forum_moderators[$row['forum_id']][] = '<a href="' . append_sid("groupcp.$phpEx?" . POST_GROUPS_URL . "=" . $row['group_id']) . '">' . $row['group_name'] . '</a>';
-	}
-	$db->sql_freeresult($result);
-
-	//
-	// Find which forums are visible for this user
-	//
-	$is_auth_ary = array();
-	$is_auth_ary = auth(AUTH_VIEW, AUTH_LIST_ALL, $userdata, $forum_data);
-
-	//
-	// Start output of page
-	//
-	define('SHOW_ONLINE', true);
-	$page_title = 'Forums'/*$lang['Index']*/;
-
-	include($phpbb_root_path . 'includes/page_header.'.$phpEx);
-
-	$template->set_filenames(array(
-		'body' => 'index_body.tpl')
+	$sql_ary = array(
+		'SELECT' => 'u.user_id, u.username, u.user_colour, u.user_birthday',
+		'FROM' => array(
+			USERS_TABLE => 'u',
+		),
+		'LEFT_JOIN' => array(
+			array(
+				'FROM' => array(BANLIST_TABLE => 'b'),
+				'ON' => 'u.user_id = b.ban_userid',
+			),
+		),
+		'WHERE' => "(b.ban_id IS NULL OR b.ban_exclude = 1)
+			AND (u.user_birthday LIKE '" . $db->sql_escape(sprintf('%2d-%2d-', $now['mday'], $now['mon'])) . "%' $leap_year_birthdays)
+			AND u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')',
 	);
 
-	$template->assign_vars(array(
-		'TOTAL_POSTS' => sprintf($l_total_post_s, $total_posts),
-		'TOTAL_USERS' => sprintf($l_total_user_s, $total_users),
-		'NEWEST_USER' => sprintf($lang['Newest_user'], '<a href="' . viewprofile_url($newest_uid) . '">', $newest_user, '</a>'), 
+	/**
+	* Event to modify the SQL query to get birthdays data
+	*
+	* @event core.index_modify_birthdays_sql
+	* @var	array	now			The assoc array with the 'now' local timestamp data
+	* @var	array	sql_ary		The SQL array to get the birthdays data
+	* @var	object	time		The user related Datetime object
+	* @since 3.1.7-RC1
+	*/
+	$vars = array('now', 'sql_ary', 'time');
+	extract($phpbb_dispatcher->trigger_event('core.index_modify_birthdays_sql', compact($vars)));
 
-		'FORUM_IMG' => $images['forum'],
-		'FORUM_NEW_IMG' => $images['forum_new'],
-		'FORUM_LOCKED_IMG' => $images['forum_locked'],
+	$sql = $db->sql_build_query('SELECT', $sql_ary);
+	$result = $db->sql_query($sql);
+	$rows = $db->sql_fetchrowset($result);
+	$db->sql_freeresult($result);
 
-		'L_FORUM' => $lang['Forum'],
-		'L_TOPICS' => $lang['Topics'],
-		'L_REPLIES' => $lang['Replies'],
-		'L_VIEWS' => $lang['Views'],
-		'L_POSTS' => $lang['Posts'],
-		'L_LASTPOST' => $lang['Last_Post'], 
-		'L_NO_NEW_POSTS' => $lang['No_new_posts'],
-		'L_NEW_POSTS' => $lang['New_posts'],
-		'L_NO_NEW_POSTS_LOCKED' => $lang['No_new_posts_locked'], 
-		'L_NEW_POSTS_LOCKED' => $lang['New_posts_locked'], 
-		'L_ONLINE_EXPLAIN' => $lang['Online_explain'], 
-
-		'L_MODERATOR' => $lang['Moderators'], 
-		'L_FORUM_LOCKED' => $lang['Forum_is_locked'],
-		'L_MARK_FORUMS_READ' => $lang['Mark_all_forums'], 
-
-		'U_MARK_READ' => append_sid("index.$phpEx?mark=forums"))
-	);
-
-	//
-	// Let's decide which categories we should display
-	//
-	$display_categories = array();
-
-	for ($i = 0; $i < $total_forums; $i++ )
+	foreach ($rows as $row)
 	{
-		if ($is_auth_ary[$forum_data[$i]['forum_id']]['auth_view'])
-		{
-			$display_categories[$forum_data[$i]['cat_id']] = true;
-		}
+		$birthday_username	= get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
+		$birthday_year		= (int) substr($row['user_birthday'], -4);
+		$birthday_age		= ($birthday_year) ? max(0, $now['year'] - $birthday_year) : '';
+
+		$birthdays[] = array(
+			'USERNAME'	=> $birthday_username,
+			'AGE'		=> $birthday_age,
+		);
+
+		// For 3.0 compatibility
+		$birthday_list[] = $birthday_username . (($birthday_age) ? " ({$birthday_age})" : '');
 	}
 
-	//
-	// Okay, let's build the index
-	//
-	for($i = 0; $i < $total_categories; $i++)
-	{
-		$cat_id = $category_rows[$i]['cat_id'];
+	/**
+	* Event to modify the birthdays list
+	*
+	* @event core.index_modify_birthdays_list
+	* @var	array	birthdays		Array with the users birthdays data
+	* @var	array	rows			Array with the birthdays SQL query result
+	* @since 3.1.7-RC1
+	*/
+	$vars = array('birthdays', 'rows');
+	extract($phpbb_dispatcher->trigger_event('core.index_modify_birthdays_list', compact($vars)));
 
-		//
-		// Yes, we should, so first dump out the category
-		// title, then, if appropriate the forum list
-		//
-		if (isset($display_categories[$cat_id]) && $display_categories[$cat_id])
-		{
-			$template->assign_block_vars('catrow', array(
-				'CAT_ID' => $cat_id,
-				'CAT_DESC' => $category_rows[$i]['cat_title'],
-				'U_VIEWCAT' => append_sid("index.$phpEx?" . POST_CAT_URL . "=$cat_id"))
-			);
-
-			if ( $viewcat == $cat_id || $viewcat == -1 )
-			{
-				for($j = 0; $j < $total_forums; $j++)
-				{
-					if ( $forum_data[$j]['cat_id'] == $cat_id )
-					{
-						$forum_id = $forum_data[$j]['forum_id'];
-
-						if ( $is_auth_ary[$forum_id]['auth_view'] )
-						{
-							if ( $forum_data[$j]['forum_status'] == FORUM_LOCKED )
-							{
-								$folder_image = $images['forum_locked']; 
-								$folder_alt = $lang['Forum_locked'];
-							}
-							else
-							{
-								$unread_topics = false;
-								if ( $userdata['session_logged_in'] )
-								{
-									if ( !empty($new_topic_data[$forum_id]) )
-									{
-										$unread_topics = true;
-									}
-								}
-
-								$folder_image = ( $unread_topics ) ? $images['forum_new'] : $images['forum']; 
-								$folder_alt = ( $unread_topics ) ? $lang['New_posts'] : $lang['No_new_posts']; 
-							}
-
-							$posts = $forum_data[$j]['forum_posts'];
-							$topics = $forum_data[$j]['forum_topics'];
-
-							if ( $forum_data[$j]['forum_last_post_id'] )
-							{
-								$last_post_time = create_date($board_config['default_dateformat'], $forum_data[$j]['post_time'], $board_config['board_timezone']);
-
-								$last_post = $last_post_time . '<br />';
-
-								$last_post .= ( $forum_data[$j]['user_id'] == ANONYMOUS ) ? ( ($forum_data[$j]['post_username'] != '' ) ? $forum_data[$j]['post_username'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . viewprofile_url($forum_data[$j]['user_id']) . '">' . $forum_data[$j]['username'] . '</a> ';
-								
-								$last_post .= '<a href="' . append_sid("viewtopic.$phpEx?"  . POST_POST_URL . '=' . $forum_data[$j]['forum_last_post_id']) . '#' . $forum_data[$j]['forum_last_post_id'] . '"><img src="' . $images['icon_latest_reply'] . '" border="0" alt="' . $lang['View_latest_post'] . '" title="' . $lang['View_latest_post'] . '" /></a>';
-							}
-							else
-							{
-								$last_post = $lang['No_Posts'];
-							}
-
-							if ( count($forum_moderators[$forum_id]) > 0 )
-							{
-								$l_moderators = ( count($forum_moderators[$forum_id]) == 1 ) ? $lang['Moderator'] : $lang['Moderators'];
-								$moderator_list = implode(', ', $forum_moderators[$forum_id]);
-							}
-							else
-							{
-								$l_moderators = '&nbsp;';
-								$moderator_list = '&nbsp;';
-							}
-
-							$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-							$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
-							$template->assign_block_vars('catrow.forumrow',	array(
-								'ROW_COLOR' => '#' . $row_color,
-								'ROW_CLASS' => $row_class,
-								'FORUM_FOLDER_IMG' => $folder_image, 
-								'FORUM_NAME' => $forum_data[$j]['forum_name'],
-								'FORUM_DESC' => $forum_data[$j]['forum_desc'],
-								'POSTS' => $forum_data[$j]['forum_posts'],
-								'TOPICS' => $forum_data[$j]['forum_topics'],
-								'LAST_POST' => $last_post,
-								'MODERATORS' => $moderator_list,
-
-								'L_MODERATOR' => $l_moderators, 
-								'L_FORUM_FOLDER_ALT' => $folder_alt, 
-
-								'U_VIEWFORUM' => append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id"))
-							);
-						}
-					}
-				}
-			}
-		}
-	} // for ... categories
-
-}// if ... total_categories
-else
-{
-	message_die(GENERAL_MESSAGE, $lang['No_forums']);
+	$template->assign_block_vars_array('birthdays', $birthdays);
 }
 
-//
-// Generate the page
-//
-$template->pparse('body');
+$controller_helper = $phpbb_container->get('controller.helper');
+// Assign index specific vars
+$template->assign_vars(array(
+	'TOTAL_POSTS'	=> $user->lang('TOTAL_POSTS_COUNT', (int) $config['num_posts']),
+	'TOTAL_TOPICS'	=> $user->lang('TOTAL_TOPICS', (int) $config['num_topics']),
+	'TOTAL_USERS'	=> $user->lang('TOTAL_USERS', (int) $config['num_users']),
+	'NEWEST_USER'	=> $user->lang('NEWEST_USER', get_username_string('full', $config['newest_user_id'], $config['newest_username'], $config['newest_user_colour'])),
 
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+	'LEGEND'		=> $legend,
+	'BIRTHDAY_LIST'	=> (empty($birthday_list)) ? '' : implode($user->lang['COMMA_SEPARATOR'], $birthday_list),
 
-?>
+	'S_LOGIN_ACTION'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=login'),
+	'U_SEND_PASSWORD'           => ($config['email_enable'] && $config['allow_password_reset']) ? $controller_helper->route('phpbb_ucp_forgot_password_controller') : '',
+	'S_DISPLAY_BIRTHDAY_LIST'	=> $show_birthdays,
+	'S_INDEX'					=> true,
+
+	'U_CANONICAL'		=> generate_board_url() . '/',
+	'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}index.$phpEx", 'hash=' . generate_link_hash('global') . '&amp;mark=forums&amp;mark_time=' . time()) : '',
+	'U_MCP'				=> ($auth->acl_get('m_') || $auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=main&amp;mode=front', true, $user->session_id) : '')
+);
+
+$page_title = ($config['board_index_text'] !== '') ? $config['board_index_text'] : $user->lang['INDEX'];
+
+/**
+* You can use this event to modify the page title and load data for the index
+*
+* @event core.index_modify_page_title
+* @var	string	page_title		Title of the index page
+* @since 3.1.0-a1
+*/
+$vars = array('page_title');
+extract($phpbb_dispatcher->trigger_event('core.index_modify_page_title', compact($vars)));
+
+// Output page
+page_header($page_title, true);
+
+$template->set_filenames(array(
+	'body' => 'index_body.html')
+);
+
+page_footer();

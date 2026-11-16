@@ -7,7 +7,7 @@ $template->set_filenames(array(
 );
 
 $template->assign_vars(array(
-	'REGISTER_LINK' => "http://forums.rpgdx.net/profile.php?mode=register")
+	'REGISTER_LINK' => append_sid('forums/ucp.php', 'mode=register'))
 );
 
 $template->pparse('body');

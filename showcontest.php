@@ -18,7 +18,7 @@ $result = doQuery(
 );
 
 // The contest ID must be valid
-if (!$contest = mysql_fetch_object($result)) {
+if (!$contest = rpgdx_db_fetch_object($result)) {
 	abort_with_error('No such contest, it might have been removed.');
 }
 
@@ -51,7 +51,7 @@ if ($contest->contest_status == CON_CLOSED)
 	);
 
 	$i = 0;
-	while ($category = mysql_fetch_object($result)) {
+	while ($category = rpgdx_db_fetch_object($result)) {
 		$categories[$i] = $category;
 		$i++;
 	}
@@ -70,7 +70,7 @@ if ($contest->contest_status == CON_CLOSED)
 	);
 
 	$i = 0;
-	while ($i < sizeof($categories) && $entry = mysql_fetch_object($result)) {
+	while ($i < sizeof($categories) && $entry = rpgdx_db_fetch_object($result)) {
 		if (isset($prev_score) && $entry->score != $prev_score) {
 			$i++;
 		}
@@ -92,13 +92,13 @@ $result = doQuery(
 	"WHERE entry_contest=". $contest_id ." ORDER BY entry_date"
 );
 
-if (mysql_num_rows($result) > 0)
+if (rpgdx_db_num_rows($result) > 0)
 {
 	$template->assign_block_vars('subscriptions', array(
-		'NUMBER' => mysql_num_rows($result)
+		'NUMBER' => rpgdx_db_num_rows($result)
 	));
 
-	while ($row = mysql_fetch_object($result))
+	while ($row = rpgdx_db_fetch_object($result))
 	{
 		$won = (isset($entries[$row->project_id])) ? $entries[$row->project_id]->category_name : '';
 		if ($row->project_name) {
@@ -139,10 +139,10 @@ if ($contest->contest_status == CON_OPEN) {
 			"LIMIT 1"
 		);
 
-		if (mysql_num_rows($result) == 1)
+		if (rpgdx_db_num_rows($result) == 1)
 		{
 			// The user is subscribed, offer unsubscription
-			$row = mysql_fetch_object($result);
+			$row = rpgdx_db_fetch_object($result);
 
 			$template->assign_block_vars('unsubscribe', array(
 				'ACTION'    => append_sid('submit_subscription.php?action=unsubscribe'),
@@ -155,11 +155,11 @@ if ($contest->contest_status == CON_OPEN) {
 			// The user is not subscribed, check if he can subscribe
 			$result = doQuery("SELECT project_id, project_name FROM ". PROJECTS_TABLE ." WHERE user_id = ". $userdata['user_id']);
 
-			if (mysql_num_rows($result) > 0)
+			if (rpgdx_db_num_rows($result) > 0)
 			{
 				// The user has at least one project he could subscribe with
 				$project_options = '';
-				while ($row = mysql_fetch_object($result)) {
+				while ($row = rpgdx_db_fetch_object($result)) {
 					$project_options .= '<option value="'. $row->project_id .'">'. $row->project_name .'</option>\n';
 				}
 
@@ -213,7 +213,7 @@ if ($contest->contest_status == CON_VOTING)
 			"FROM ". CONTEST_CATEGORIES_TABLE ." ".
 			"WHERE category_contest = ". $contest_id
 		);
-		$num_categories = mysql_num_rows($result);
+		$num_categories = rpgdx_db_num_rows($result);
 
 		// Determine whether this user has voted yet.
 		$result = doQuery(
@@ -222,7 +222,7 @@ if ($contest->contest_status == CON_VOTING)
 			"WHERE category_contest = ". $contest->contest_id ." AND vote_user = ". $userdata['user_id']
 		);
 
-		if (mysql_num_rows($result) == $num_categories) {
+		if (rpgdx_db_num_rows($result) == $num_categories) {
 			$template->assign_block_vars('no_voting', array(
 				'TEXT' => 'Thank you for voting!'
 			));
@@ -238,7 +238,7 @@ if ($contest->contest_status == CON_VOTING)
 			);
 
 			$project_options = '<option value="-1">-</option>';
-			while ($row = mysql_fetch_object($result)) {
+			while ($row = rpgdx_db_fetch_object($result)) {
 				$project_options .= '<option value="'. $row->entry_id .'">'. $row->project_name .'</option>\n';
 			}
 
@@ -255,10 +255,10 @@ if ($contest->contest_status == CON_VOTING)
 				"WHERE category_contest = ". $contest->contest_id
 			);
 
-			if (mysql_num_rows($result) > 0)
+			if (rpgdx_db_num_rows($result) > 0)
 			{
 				$template->assign_block_vars('voting.categories', array());
-				while ($row = mysql_fetch_object($result)) {
+				while ($row = rpgdx_db_fetch_object($result)) {
 					$template->assign_block_vars('voting.categories.categorie', array(
 						'NAME'          => $row->category_name,
 						'PROJECT_FIELD' => 'categories['. $row->category_id .']'

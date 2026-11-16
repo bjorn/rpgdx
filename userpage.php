@@ -6,8 +6,11 @@ placeHeader(array(array("User page", append_sid('userpage.php'))));
 if ($userdata['session_logged_in']) {
 ?>
 	<h4>Profile settings</h4>
+    <p><a href="<?php echo append_sid('forums/ucp.php', 'i=ucp_profile&amp;mode=profile_info') ?>">Edit forum profile</a> |
+    <a href="<?php echo append_sid('forums/ucp.php', 'i=ucp_profile&amp;mode=reg_details') ?>">Account settings</a></p>
 	<form action="<?php echo append_sid('submit_profile.php') ?>" method="post">
-	<table width="50%">
+	<?php add_form_key('rpgdx_preferences'); echo $template->_tpldata['.'][0]['S_FORM_TOKEN']; ?>
+    <table width="50%">
     <tr>
       <td class="td" width="50%">Theme:</td>
       <td class="td" width="50%">
@@ -15,7 +18,7 @@ if ($userdata['session_logged_in']) {
         <?php
         echo "<option value=\"0\" ". (($userdata['user_theme'] == 0) ? " selected" : "") .">&lt;default&gt;</option>\n";
         $result = doQuery("SELECT theme_id, theme_name FROM ". RPGDX_THEMES_TABLE ." ORDER BY theme_name");
-        while ($row = mysql_fetch_object($result)) {
+        while ($row = rpgdx_db_fetch_object($result)) {
           echo "<option value=\"$row->theme_id\"". (($userdata['user_theme'] == $row->theme_id) ? " selected" : "") .">$row->theme_name</option>\n";
         }
         ?>
@@ -55,8 +58,8 @@ if ($userdata['session_logged_in']) {
 		"WHERE user_id = ". $userdata['user_id'] ." ORDER BY project_name"
 	);
 
-	if (mysql_num_rows($result) > 0) {
-		while ($row = mysql_fetch_object($result)) {
+	if (rpgdx_db_num_rows($result) > 0) {
+		while ($row = rpgdx_db_fetch_object($result)) {
 			echo "<tr>";
 			echo "<td class=\"td\">$row->project_name</td>";
 			echo "<td class=\"td\" nowrap>$row->project_type</td>";
@@ -90,8 +93,8 @@ if ($userdata['session_logged_in']) {
 		"WHERE user_id = ". $userdata['user_id'] ." ORDER BY article_title"
 	);
 
-	if (mysql_num_rows($result) > 0) {
-		while ($row = mysql_fetch_object($result)) {
+	if (rpgdx_db_num_rows($result) > 0) {
+		while ($row = rpgdx_db_fetch_object($result)) {
 			echo "<tr>";
 			echo "<td class=\"td\">$row->article_title</td>";
 			echo "<td class=\"td\" nowrap>$row->article_type</td>";
@@ -124,8 +127,8 @@ if ($userdata['session_logged_in']) {
 		"FROM ". REVIEWS_TABLE ." r LEFT JOIN ". PROJECTS_TABLE ." USING (project_id) WHERE r.user_id = ". $userdata['user_id'] ." ORDER BY review_added"
 	);
 
-	if (mysql_num_rows($result) > 0) {
-		while ($row = mysql_fetch_object($result)) {
+	if (rpgdx_db_num_rows($result) > 0) {
+		while ($row = rpgdx_db_fetch_object($result)) {
 			echo "<tr>";
 			echo "<td class=\"td\">$row->project_name</td>";
 			echo "<td class=\"td\">$row->review_score</td>";

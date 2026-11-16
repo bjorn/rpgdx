@@ -30,6 +30,8 @@ rpgdx_projects_awards       (praw_id, praw_project, praw_award)
 
 */
 
+define('USER_PREFERENCES_TABLE',      'rpgdx_user_preferences');
+
 define('ARTICLE_TYPES_TABLE',         'rpgdx_article_types');
 define('ARTICLES_TABLE',              'rpgdx_articles');
 define('NEWS_TABLE',                  'rpgdx_news');
@@ -41,7 +43,7 @@ define('PROJECT_TYPES_TABLE',         'rpgdx_project_types');
 define('PROJECTS_TABLE',              'rpgdx_projects');
 define('REVIEWS_TABLE',               'rpgdx_reviews');
 define('RPGDX_THEMES_TABLE',          'rpgdx_themes');
-define('LOG_TABLE',                   'rpgdx_log');
+define('RPGDX_LOG_TABLE',                   'rpgdx_log');
 define('UPLOADS_TABLE',               'rpgdx_uploads');
 define('CONTESTS_TABLE',              'rpgdx_contests');
 define('CONTEST_ENTRIES_TABLE',       'rpgdx_contest_entries');

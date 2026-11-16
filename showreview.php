@@ -3,7 +3,7 @@ include("includes/main.php");
 
 $project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
 
-$game = mysql_fetch_object(doQuery("SELECT * FROM ". PROJECTS_TABLE ." WHERE project_id=$project_id"));
+$game = rpgdx_db_fetch_object(doQuery("SELECT * FROM ". PROJECTS_TABLE ." WHERE project_id=$project_id"));
 $reviews = doQuery(
 	"SELECT ". USERS_TABLE .".user_id, username, DATE_FORMAT(review_added, '%d-%m-%Y') AS review_added, review_score, review_text, review_id ".
 	"FROM ". REVIEWS_TABLE ." LEFT JOIN ". USERS_TABLE ." USING (user_id) ".
@@ -21,7 +21,7 @@ $template->assign_vars(array(
 	'GAME_URL'  => "showgame.php?project_id=$game->project_id")
 );
 
-while ($row = mysql_fetch_object($reviews))
+while ($row = rpgdx_db_fetch_object($reviews))
 {
 	$template->assign_block_vars('review', array(
 		'REVIEW_ID' => $row->review_id,

@@ -10,6 +10,7 @@ cd "$REPO" || exit 1
 echo "Synchronizing website at $WWW_DATA"
 
 rsync -rtv \
+	--include=".htaccess" \
 	--exclude=".*" \
 	--exclude "*.md" \
 	--exclude "HOSTED" \
@@ -18,8 +19,16 @@ rsync -rtv \
 	--exclude "sql" \
 	--exclude "install" \
 	--exclude "docker" \
-	--exclude "docker-compose.yml" \
+	--exclude "docker-compose*.yml" \
 	--exclude "deploy" \
+	--exclude "tools" \
+	--exclude "scripts" \
+	--exclude "tests" \
+	--exclude "forums/config.php" \
+	--exclude "forums/cache/*" \
+	--exclude "forums/files/*" \
+	--exclude "forums/store/*" \
+	--exclude "forums/images/avatars/upload/*" \
 	./ "$WWW_DATA"
 
 echo "Website deployed!"

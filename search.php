@@ -13,7 +13,7 @@ $template->set_filenames(array(
 
 $progress_options = "<option value=0 selected></option>\n";
 $progresses = doQuery("SELECT status_id, status_title FROM ". PROJECT_STATUSSES_TABLE ." ORDER BY status_perc");
-while ($progress = mysql_fetch_object($progresses)) {
+while ($progress = rpgdx_db_fetch_object($progresses)) {
 	$progress_options .= "<option value=\"$progress->status_id\"". ((isset($search_status) && $search_status == $progress->status_id) ? " selected" : "") .">$progress->status_title</option>\n";
 }
 
@@ -85,9 +85,9 @@ if (isset($search)) {
 
 	if (strlen($keywords_implode) > 0) {
 		if ($userdata['session_logged_in']) {
-			add_log("A user <!-- ". $userdata['username'] ." --> searched for \"$keywords_implode\".");
+			rpgdx_add_log("A user <!-- ". $userdata['username'] ." --> searched for \"$keywords_implode\".");
 		} else {
-			add_log("A guest searched for \"$keywords_implode\".");
+			rpgdx_add_log("A guest searched for \"$keywords_implode\".");
 		}
 	}
 
@@ -97,12 +97,12 @@ if (isset($search)) {
 	$result = doQuery($query);
 
 	// Display the results
-	if (mysql_num_rows($result) > 0) {
+	if (rpgdx_db_num_rows($result) > 0) {
 		$template->assign_block_vars('rpglist', array(
-			'NR_SEARCH_RESULTS' => mysql_num_rows($result)
+			'NR_SEARCH_RESULTS' => rpgdx_db_num_rows($result)
 		));
 
-		while ($row = mysql_fetch_object($result)) {
+		while ($row = rpgdx_db_fetch_object($result)) {
 			$desc = shorten_text($row->project_description, 256);
 
 			$template->assign_block_vars('rpglist.rpg', array(

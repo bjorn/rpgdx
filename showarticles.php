@@ -5,7 +5,7 @@ $cat = isset($_GET['cat']) ? (int) $_GET['cat'] : 0;
 
 if ($cat > 0) {
 	if ($result = doQuery("SELECT * FROM ". ARTICLE_TYPES_TABLE ." WHERE type_id = $cat")) {
-		$category = mysql_fetch_object($result);
+		$category = rpgdx_db_fetch_object($result);
 	}
 }
 
@@ -23,7 +23,7 @@ if (isset($category) && $category->type_id > 0)
 	$result = doQuery("SELECT * FROM ". ARTICLES_TABLE ." WHERE article_type = $cat ORDER BY article_title");
 
 	// Print list of selected Articles
-	while ($row = mysql_fetch_object($result)) {
+	while ($row = rpgdx_db_fetch_object($result)) {
 		$template->assign_block_vars('article', array(
 			'URL'  => $row->article_url,
 			'NAME' => $row->article_title,

@@ -6,7 +6,7 @@ $project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
 
 function remove_project_icon($project_id)
 {
-	$row = mysql_fetch_row(doQuery("SELECT project_icon_file FROM ". PROJECTS_TABLE ." WHERE project_id = $project_id"));
+	$row = rpgdx_db_fetch_row(doQuery("SELECT project_icon_file FROM ". PROJECTS_TABLE ." WHERE project_id = $project_id"));
 	$upload_id = $row[0];
 
 	// If an icon file exists, delete it and set the icon variable of the project to NULL

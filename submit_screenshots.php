@@ -18,7 +18,7 @@ if (!isset($action) || !($action == 'add' || $action == 'remove')) {
 
 if ($action == 'add') {
 	// Check if this project has already reached its screenshot limit
-	$row = mysql_fetch_array(doQuery(
+	$row = rpgdx_db_fetch_array(doQuery(
 		"SELECT COUNT(*) AS scr_count FROM ". PROJECT_SCREENSHOTS_TABLE ." WHERE project_id=$project_id"
 	));
 	if ($row['scr_count'] >= $rpgdx_config['screenshots_limit']) {
@@ -88,7 +88,7 @@ if ($action == 'remove' && isset($_POST['screenshots']))
 			abort_with_error('Error, invalid screenshot id: '. $screenshot_id);
 		}
 		
-		$row = mysql_fetch_array(doQuery(
+		$row = rpgdx_db_fetch_array(doQuery(
 			"SELECT project_id, ". PROJECT_SCREENSHOTS_TABLE .".upload_id, upload_ext ".
 			"FROM ". PROJECT_SCREENSHOTS_TABLE ." LEFT JOIN ". UPLOADS_TABLE ." USING (upload_id) ".
 			"WHERE screenshot_id = ". intval($screenshot_id)));

@@ -32,7 +32,7 @@ if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "
 
 
 // Make sure there is an bbcode_uid
-if (empty($news_bbcode_uid)) {$news_bbcode_uid = make_bbcode_uid();}
+if (empty($news_bbcode_uid)) {$news_bbcode_uid = \Rpgdx\Legacy\make_bbcode_uid();}
 
 
 if ($action == "remove" && isset($confirmed) && $news_id > 0 && strlen($error) == 0)
@@ -81,7 +81,7 @@ if (($action == "edit" || $action == "remove") && !isset($submit) && empty($erro
 {
 	// Get information about the selected news message
 	$result = doQuery("SELECT * FROM ". NEWS_TABLE ." WHERE news_id='$news_id'");
-	if ($row = mysql_fetch_array($result)) {
+	if ($row = rpgdx_db_fetch_array($result)) {
 		foreach ($row as $key => $value) {
 			$form[$key] = htmlentities($value);
 		}

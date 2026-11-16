@@ -1,0 +1,5 @@
+# Only load this override while converting a private backup locally.
+services:
+  web:
+    volumes:
+      - ${RPGDX_LEGACY_FORUMS:?Set RPGDX_LEGACY_FORUMS to a private phpBB2 forum copy}:/var/www/html/legacy-forums:ro

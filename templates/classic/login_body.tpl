@@ -2,8 +2,8 @@
 <!-- BEGIN error -->
 <p style="color: rgb(255,255,255); font-weight: bold;">{error.TEXT}</p>
 <!-- END error -->
-<!-- BEGIN form -->
-<form action="{form.ACTION}" method="post" target="_top">
+<form action="{S_LOGIN_ACTION}" method="post" target="_top">
+{S_HIDDEN_FIELDS}
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="formNameCell" align="right">Username:&nbsp;</td>
@@ -19,6 +19,7 @@
 <br />
 <input type="submit" value="Login" name="login"><br />
 </form>
-<!-- END form -->
 When you choose to be remembered you will be automatically logged in on future visits to RPGDX. You can stop this behaviour by explicitly logging out.
 </center>
+
+<p style="text-align: center;"><a href="{U_SEND_PASSWORD}">Forgot your password?</a></p>

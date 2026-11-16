@@ -19,7 +19,7 @@ $template->set_filenames(array(
 // Get information about the selected project
 
 $result = doQuery("SELECT project_id, project_name FROM ". PROJECTS_TABLE ." WHERE project_id=$project_id");
-$row = mysql_fetch_object($result);
+$row = rpgdx_db_fetch_object($result);
 
 $project_id = $row->project_id;
 $project_name = $row->project_name;
@@ -50,11 +50,11 @@ $result = doQuery(
 	"ORDER BY screenshot_id"
 );
 
-if (mysql_num_rows($result) > 0)
+if (rpgdx_db_num_rows($result) > 0)
 {
 	$template->assign_block_vars('screenshots', array());
 
-	while ($row = mysql_fetch_object($result))
+	while ($row = rpgdx_db_fetch_object($result))
 	{
 		$url = $row->screenshot_url;
 		$size = @getimagesize($url);
@@ -72,12 +72,12 @@ if (mysql_num_rows($result) > 0)
 
 // Add the currently present icon (if present)
 
-$row = mysql_fetch_row(doQuery("SELECT project_icon_file FROM ". PROJECTS_TABLE ." WHERE project_id = $project_id"));
+$row = rpgdx_db_fetch_row(doQuery("SELECT project_icon_file FROM ". PROJECTS_TABLE ." WHERE project_id = $project_id"));
 $icon_upload_id = $row[0];
 
 if ($icon_upload_id > 0)
 {
-	$row = mysql_fetch_array(doQuery("SELECT ". UPLOAD_FILENAME ." AS url FROM ". UPLOADS_TABLE ." WHERE upload_id = $icon_upload_id"));
+	$row = rpgdx_db_fetch_array(doQuery("SELECT ". UPLOAD_FILENAME ." AS url FROM ". UPLOADS_TABLE ." WHERE upload_id = $icon_upload_id"));
 	$template->assign_block_vars('icon', array(
 		'WIDTH'       => 32,
 		'HEIGHT'      => 32,

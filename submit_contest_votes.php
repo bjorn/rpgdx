@@ -26,7 +26,7 @@ $result = doQuery(
 );
 
 // The contest ID must be valid
-if (!$contest = mysql_fetch_object($result)) {
+if (!$contest = rpgdx_db_fetch_object($result)) {
 	abort_with_error('No such contest, it might have been removed.');
 }
 
@@ -36,7 +36,7 @@ $result = doQuery(
 	"FROM ". CONTEST_CATEGORIES_TABLE ." ".
 	"WHERE category_contest = ". $contest_id
 );
-$num_categories = mysql_num_rows($result);
+$num_categories = rpgdx_db_num_rows($result);
 
 // The number of categories voted on must match the number of
 // categories of the contest
@@ -59,7 +59,7 @@ foreach ($categories as $key => $col_value)
 		"SELECT category_id FROM ". CONTEST_CATEGORIES_TABLE ." ".
 		"WHERE category_id = ". $key ." AND category_contest = ". $contest_id
 	);
-	if (mysql_num_rows($result) != 1) {
+	if (rpgdx_db_num_rows($result) != 1) {
 		abort_with_error('At least one category you voted for seems to be invalid.');
 	}
 
@@ -69,7 +69,7 @@ foreach ($categories as $key => $col_value)
       "SELECT entry_id FROM ". CONTEST_ENTRIES_TABLE ." ".
       "WHERE entry_id = ". $col_value ." AND entry_contest = ". $contest_id
     );
-    if (mysql_num_rows($result) != 1) {
+    if (rpgdx_db_num_rows($result) != 1) {
       abort_with_error('At least one entry you voted on seems to be invalid.');
     }
 
@@ -89,7 +89,7 @@ $result = doQuery(
 	"SELECT entry_id FROM ". CONTEST_ENTRIES_TABLE ." ".
 	"WHERE entry_disqualified = 0 AND entry_contest = ". $contest_id
 );
-$qualified_entries = mysql_num_rows($result);
+$qualified_entries = rpgdx_db_num_rows($result);
 
 // Number of blank votes cannot supercede lacking qualified entries
 if ($num_categories - $qualified_entries > 0) {

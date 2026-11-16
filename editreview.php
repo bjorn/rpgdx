@@ -39,7 +39,7 @@ if ($action == 'add') {
 
 if (isset($project_id) && $project_id > 0) {
 	// Extract game information
-	$game = mysql_fetch_object(doQuery(
+	$game = rpgdx_db_fetch_object(doQuery(
     "SELECT project_name, project_allow_review FROM ". PROJECTS_TABLE ." ".
     "WHERE project_id=$project_id"));
 
@@ -105,7 +105,7 @@ if (($action == "edit" || $action == "remove") && $review_id > 0 && !isset($subm
 	$result = doQuery(
 		"SELECT * FROM ". REVIEWS_TABLE ." WHERE review_id='$review_id'"
 	);
-	if ($row = mysql_fetch_array($result)) {
+	if ($row = rpgdx_db_fetch_array($result)) {
 		foreach ($row as $key => $value) {
 			//$row["$key"] = htmlentities($value);
       $form[$key] = htmlentities($value);
@@ -125,7 +125,7 @@ else
 if (($action == "edit" || $action == "remove") && $review_id > 0)
 {
 	// Get the name of the reviewed using the review_id
-	$row = mysql_fetch_object(doQuery("SELECT project_name FROM ". PROJECTS_TABLE ." WHERE project_id=". (int) $form['project_id']));
+	$row = rpgdx_db_fetch_object(doQuery("SELECT project_name FROM ". PROJECTS_TABLE ." WHERE project_id=". (int) $form['project_id']));
 	$project_name = $row->project_name;
 }
 
