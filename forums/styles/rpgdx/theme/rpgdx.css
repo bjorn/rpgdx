@@ -14,13 +14,25 @@ h3, hr { border-color: #646480; }
 #page-header .navbar { padding: 0; border: 0; background: transparent; }
 #nav-main {
     display: flex; flex-wrap: wrap; align-items: center; gap: 0;
-    margin: 0 -10px 14px; padding: 0 10px; min-height: 21px;
+    margin: 0 -10px 14px; padding: 0 10px; min-height: 25px;
     border-block: 1px solid #000; background: #a0a0aa; color: #000;
     box-shadow: 0 3px 3px #212139; font-size: 13px; line-height: 16px;
 }
 #nav-main > li { float: none; order: 20; margin: 0; padding: 0 5px; font-size: 13px; line-height: 16px; border-left: 1px solid #646464; box-shadow: inset 1px 0 #c8c8c8; }
 #nav-main > li > a { text-transform: lowercase; }
 #nav-main > li > a > .icon { display: none; }
+#nav-main > li > a:has(.badge) { display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
+#nav-main .badge {
+    box-sizing: border-box;
+    position: static;
+    float: none;
+    min-width: 16px;
+    margin: 0;
+    padding: 1px 5px;
+    font-size: 10px;
+    line-height: 14px;
+    opacity: 1;
+}
 #nav-main .rpgdx-session { order: -3; padding: 0 3px 0 0; border: 0; box-shadow: none; }
 #nav-main > li:has(> a[accesskey="x"]) { order: -2; padding: 0; border: 0; box-shadow: none; }
 #nav-main > li:has(> a[href*="mode=register"]) { order: -1; padding: 0 0 0 3px; border: 0; box-shadow: none; }
@@ -39,7 +51,7 @@ h3, hr { border-color: #646480; }
 #nav-breadcrumbs, #page-footer .navbar { box-shadow: 1px 1px 0 #212139; }
 #nav-breadcrumbs::before { content: none; }
 #nav-breadcrumbs .rpgdx-page-title { box-sizing: content-box; flex: 0 0 100%; margin: 0 -5px; padding: 3px 5px; background: #383861; color: #b4b4c8; font: bold 20px/24px Verdana, Arial, sans-serif; }
-#nav-breadcrumbs .breadcrumbs { float: none; margin: 0; max-width: 100%; font: normal 12px/14px Verdana, Arial, sans-serif; }
+#nav-breadcrumbs .breadcrumbs { float: none; margin: 0; padding-block: 2px; max-width: 100%; font: normal 12px/14px Verdana, Arial, sans-serif; }
 .breadcrumbs .crumb > a { font-weight: normal; line-height: 14px; }
 .breadcrumbs .crumb::before { content: ">>"; font: normal 12px/14px Verdana, Arial, sans-serif; padding: 0 3px; }
 .breadcrumbs .crumb:first-child::before { display: none; }
@@ -194,7 +206,7 @@ fieldset.polls dl.voted { color: #fff; }
 dl.row-item { background-size: 19px 18px; }
 a[title] > .fa-external-link-square { width: 18px; height: 9px; background: url("images/icon_latest_reply.gif") no-repeat center; vertical-align: baseline; }
 a[title] > .fa-external-link-square::before { content: none; }
-#page-footer .navbar { padding: 0 4px; }
+#page-footer .navbar { padding: 2px 4px; }
 #nav-footer { font-size: 10px; line-height: 16px; }
 #nav-footer > li { margin: 0; line-height: 16px; }
 #nav-footer .breadcrumbs { font-size: 12px; }
@@ -202,7 +214,7 @@ a[title] > .fa-external-link-square::before { content: none; }
 #page-footer .copyright .footer-row { font-size: inherit; }
 #page-footer .copyright .footer-row:last-child { margin-top: 3px; font-size: 10px; }
 @media (max-width: 700px) {
-    #nav-main { min-height: 24px; }
+    #nav-main { min-height: 26px; row-gap: 4px; }
     #nav-main > li { font-size: 11px; padding-inline: 3px; }
     #nav-main .rpgdx-session { font-size: 11px; }
     #nav-main .header-profile > a::before { font-size: 11px; }

@@ -163,10 +163,39 @@
 }
 
 .post-buttons .button:hover, .post-buttons .button:focus { background: #505082; }
-.post-buttons a[title] > .fa-quote-left { display: none; }
-.post-buttons a:has(> .fa-quote-left) > .sr-only { position: static; width: auto; height: auto; clip: auto; font-size: 11px; }
-.post-buttons a:has(> .fa-quote-left)::before { content: "["; }
-.post-buttons a:has(> .fa-quote-left)::after { content: "]"; }
+.post-buttons > li > a[title] > .fa-quote-left { display: none; }
+.post-buttons > li > a:has(> .fa-quote-left) > .sr-only { position: static; width: auto; height: auto; clip: auto; font-size: 11px; }
+.post-buttons > li > a:has(> .fa-quote-left)::before { content: "["; }
+.post-buttons > li > a:has(> .fa-quote-left)::after { content: "]"; }
+
+/* Overflow actions are ordinary menu items, including Quote. */
+.post-buttons .dropdown .dropdown-contents {
+    padding: 3px;
+    border-radius: 0;
+    box-shadow: 1px 1px 0 #212139;
+}
+.post-buttons .dropdown .pointer { border-color: #808096 transparent; }
+.post-buttons .dropdown-contents > li { padding: 0; border: 0; }
+.post-buttons .dropdown-contents a {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 8px;
+    color: #fff;
+    font: 11px/16px Verdana, Arial, sans-serif;
+    text-align: left;
+    text-decoration: none;
+}
+.post-buttons .dropdown-contents a:hover,
+.post-buttons .dropdown-contents a:focus { background: #646496; }
+.post-buttons .dropdown-contents .icon {
+    display: inline-block;
+    float: none;
+    flex: 0 0 14px;
+    margin: 0;
+    font-size: 11px;
+    text-align: center;
+}
 
 .post.has-profile .back2top {
     grid-column: 1;
