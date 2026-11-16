@@ -1,87 +1,56 @@
-html, body {
-    background: #424273;
-    color: #b4b4c8;
-}
-
-body {
-    padding: 0;
-    font-family: Verdana, Arial, sans-serif;
-}
-
-a { color: #fff; }
+html, body { background: #424273; color: #b4b4c8; }
+body { padding: 0; font-family: Verdana, Arial, sans-serif; }
+a, a:visited { color: #fff; }
 a:hover, a:focus { color: #c8c8ff; }
-h2, h3, .content h2, .panel h2 { color: #dedeee; }
+h2, h3, .content h2, .panel h2 { color: #b4b4c8; }
 h3, hr { border-color: #646480; }
-
-.wrap {
-    max-width: none;
-    margin: 0 10px 9px;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-}
-
-.rpgdx-header {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    min-height: 40px;
-    padding: 0 4px;
-}
-
+.wrap { max-width: none; margin: 0 10px 9px; padding: 0; border: 0; border-radius: 0; background: transparent; }
+.rpgdx-header { display: flex; align-items: flex-end; gap: 8px; height: 40px; padding: 0 4px; }
 .rpgdx-header img { display: block; }
+.rpgdx-header a { width: 136px; height: 40px; }
 .rpgdx-tagline { margin-bottom: 3px; }
-
-/* The shared RPGDX header replaces the parent style's branding banner.
- * All account, search, moderation and notification controls remain native. */
 .rpgdx-header + .wrap .headerbar { display: none; }
-.navbar {
-    border: 1px solid #323246;
-    border-radius: 0;
-    background: #646480;
-}
-
-ul.navlinks { border-top-color: #808096; }
-
+.navbar { border: 1px solid #323246; border-radius: 0; background: #646480; }
 #page-header .navbar { padding: 0; border: 0; background: transparent; }
 #nav-main {
-    margin: 0 -10px 15px;
-    padding: 1px 10px;
-    border-block: 1px solid #000;
-    background: #a0a0aa;
-    color: #171727;
-    box-shadow: 0 6px 0 #383861;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0;
+    margin: 0 -10px 14px; padding: 0 10px; min-height: 21px;
+    border-block: 1px solid #000; background: #a0a0aa; color: #000;
+    box-shadow: 0 3px 3px #212139; font-size: 13px; line-height: 16px;
 }
+#nav-main > li { float: none; order: 20; margin: 0; padding: 0 5px; font-size: 13px; line-height: 16px; border-left: 1px solid #646464; box-shadow: inset 1px 0 #c8c8c8; }
+#nav-main > li > a { text-transform: lowercase; }
+#nav-main > li > a > .icon { display: none; }
+#nav-main .rpgdx-session { order: -3; padding: 0 3px 0 0; border: 0; box-shadow: none; }
+#nav-main > li:has(> a[accesskey="x"]) { order: -2; padding: 0; border: 0; box-shadow: none; }
+#nav-main > li:has(> a[href*="mode=register"]) { order: -1; padding: 0 0 0 3px; border: 0; box-shadow: none; }
+#nav-main > li:has(> a[accesskey="x"])::before, #nav-main > li:has(> a[href*="mode=register"])::before { content: "["; }
+#nav-main > li:has(> a[accesskey="x"])::after, #nav-main > li:has(> a[href*="mode=register"])::after { content: "]"; }
+#nav-main > li:has(> a[rel="help"]) { margin-left: auto; }
+#nav-main #quick-links:not(.hidden) { display: block; order: 99; }
+#nav-main #quick-links.dropdown-left .dropdown { right: 0; }
+#quick-links > a span { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+#nav-main #quick-links > a > .icon { display: inline-block; font-size: 11px; }
+#nav-main .header-avatar img { display: none; }
+#nav-main .header-profile > a { font-size: 0; }
+#nav-main .header-profile > a::before { content: "profile"; font-size: 13px; }
+#nav-main .header-profile > a::after { display: none; }
+#nav-breadcrumbs { display: flex; flex-wrap: wrap; margin: 0; padding: 0 5px 1px; border: 1px solid #323246; background: #646480; font-size: 12px; line-height: 14px; }
+#nav-breadcrumbs::before { content: none; }
+#nav-breadcrumbs .rpgdx-page-title { box-sizing: content-box; flex: 0 0 100%; margin: 0 -5px; padding: 3px 5px; background: #383861; color: #b4b4c8; font: bold 20px/24px Verdana, Arial, sans-serif; }
+#nav-breadcrumbs .breadcrumbs { float: none; margin: 0; max-width: 100%; font: normal 12px/14px Verdana, Arial, sans-serif; }
+.breadcrumbs .crumb > a { font-weight: normal; line-height: 14px; }
+.breadcrumbs .crumb::before { content: ">>"; font: normal 12px/14px Verdana, Arial, sans-serif; padding: 0 3px; }
+.breadcrumbs .crumb:first-child::before { display: none; }
+.breadcrumbs .crumb .icon, .breadcrumbs .crumb[data-rpgdx-category] { display: none; }
+/* Search is already available in the main navigation at every width. */
+#nav-breadcrumbs .responsive-search { display: none !important; }
+.breadcrumbs .crumb { float: none; display: inline; }
+.breadcrumbs .crumb > a { display: inline; white-space: normal; overflow-wrap: anywhere; }
+#page-body { margin-top: 5px; }
+.forabg, .forumbg { padding: 0; border: 0; border-radius: 0; background: #505082; }
+li.header { padding: 2px 4px; text-transform: none; }
 
-#nav-breadcrumbs {
-    margin: 0;
-    padding: 0 5px 2px;
-    border: 1px solid #323246;
-    background: #646480;
-}
-
-#nav-breadcrumbs::before {
-    content: "Forums";
-    display: block;
-    margin: 0 -5px;
-    padding: 3px 5px;
-    background: #383861;
-    color: #b4b4c8;
-    font-family: Verdana, Arial, sans-serif;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1.3;
-}
-
-.forabg, .forumbg {
-    padding: 0 1px 1px;
-    border: 1px solid #323246;
-    border-radius: 0;
-    background: #383861;
-}
-
-li.header { padding: 5px; }
 ul.forums { background: #424273; }
 li.row {
     border-top-color: #646480;
@@ -100,7 +69,7 @@ ul.topiclist li, table.table1 td, dl.details dd, .notification_list p.notificati
 ul.topiclist dd, li.row:hover dd { border-left-color: #646480; }
 li.row strong, .postprofile strong, dl.details dt, dl.faq dt { color: #dedeee; }
 .bg1, table.zebra-list tr:nth-child(odd) td, ul.zebra-list li:nth-child(odd) { background: #424273; }
-.bg2, table.zebra-list tr:nth-child(even) td, ul.zebra-list li:nth-child(even) { background: #484878; }
+.bg2, table.zebra-list tr:nth-child(even) td, ul.zebra-list li:nth-child(even) { background: #424273; }
 .bg3, .panel, .cp-mini { background: #505082; color: #dedeee; }
 .ucprowbg, .fieldsbg, table.table1 tbody th { background: #505082; color: #dedeee; }
 .post { border-radius: 0; border: 1px solid #323246; }
@@ -219,3 +188,77 @@ fieldset.polls dl.voted { color: #fff; }
     #page-header .navbar { margin-inline: 0; }
     .postprofile { background: transparent; }
 }
+
+/* Reuse the original small paper icons for every native read/unread state. */
+dl.row-item { background-size: 19px 18px; }
+a[title] > .fa-external-link-square { width: 18px; height: 9px; background: url("images/icon_latest_reply.gif") no-repeat center; vertical-align: baseline; }
+a[title] > .fa-external-link-square::before { content: none; }
+#page-footer .navbar { padding: 0 4px; }
+#nav-footer { font-size: 10px; line-height: 16px; }
+#nav-footer > li { margin: 0; line-height: 16px; }
+#nav-footer .breadcrumbs { font-size: 12px; }
+#page-footer .copyright { margin: 30px 0 0; padding: 10px; border-top: 2px solid #323246; font-size: 13px; line-height: 15px; }
+#page-footer .copyright .footer-row { font-size: inherit; }
+#page-footer .copyright .footer-row:last-child { margin-top: 3px; font-size: 10px; }
+@media (max-width: 700px) {
+    #nav-main { min-height: 24px; }
+    #nav-main > li { font-size: 11px; padding-inline: 3px; }
+    #nav-main .rpgdx-session { font-size: 11px; }
+    #nav-main .header-profile > a::before { font-size: 11px; }
+    #nav-breadcrumbs .rpgdx-page-title { font-size: 18px; line-height: 23px; overflow-wrap: anywhere; }
+}
+.global_read { background-image: url("images/folder_announce.gif"); }
+.global_read_mine { background-image: url("images/folder_announce.gif"); }
+.global_read_locked { background-image: url("images/folder_lock.gif"); }
+.global_read_locked_mine { background-image: url("images/folder_lock.gif"); }
+.global_unread { background-image: url("images/folder_announce_new.gif"); }
+.global_unread_mine { background-image: url("images/folder_announce_new.gif"); }
+.global_unread_locked { background-image: url("images/folder_lock_new.gif"); }
+.global_unread_locked_mine { background-image: url("images/folder_lock_new.gif"); }
+.announce_read { background-image: url("images/folder_announce.gif"); }
+.announce_read_mine { background-image: url("images/folder_announce.gif"); }
+.announce_read_locked { background-image: url("images/folder_lock.gif"); }
+.announce_read_locked_mine { background-image: url("images/folder_lock.gif"); }
+.announce_unread { background-image: url("images/folder_announce_new.gif"); }
+.announce_unread_mine { background-image: url("images/folder_announce_new.gif"); }
+.announce_unread_locked { background-image: url("images/folder_lock_new.gif"); }
+.announce_unread_locked_mine { background-image: url("images/folder_lock_new.gif"); }
+.forum_link { background-image: url("images/folder.gif"); }
+.forum_read { background-image: url("images/folder.gif"); }
+.forum_read_locked { background-image: url("images/folder_lock.gif"); }
+.forum_read_subforum { background-image: url("images/folder.gif"); }
+.forum_unread { background-image: url("images/folder_new.gif"); }
+.forum_unread_locked { background-image: url("images/folder_lock_new.gif"); }
+.forum_unread_subforum { background-image: url("images/folder_new.gif"); }
+.sticky_read { background-image: url("images/folder_sticky.gif"); }
+.sticky_read_mine { background-image: url("images/folder_sticky.gif"); }
+.sticky_read_locked { background-image: url("images/folder_lock.gif"); }
+.sticky_read_locked_mine { background-image: url("images/folder_lock.gif"); }
+.sticky_unread { background-image: url("images/folder_sticky_new.gif"); }
+.sticky_unread_mine { background-image: url("images/folder_sticky_new.gif"); }
+.sticky_unread_locked { background-image: url("images/folder_lock_new.gif"); }
+.sticky_unread_locked_mine { background-image: url("images/folder_lock_new.gif"); }
+.topic_moved { background-image: url("images/folder.gif"); }
+.topic_read { background-image: url("images/folder.gif"); }
+.topic_read_mine { background-image: url("images/folder.gif"); }
+.topic_read_hot { background-image: url("images/folder_hot.gif"); }
+.topic_read_hot_mine { background-image: url("images/folder_hot.gif"); }
+.topic_read_locked { background-image: url("images/folder_lock.gif"); }
+.topic_read_locked_mine { background-image: url("images/folder_lock.gif"); }
+.topic_unread { background-image: url("images/folder_new.gif"); }
+.topic_unread_mine { background-image: url("images/folder_new.gif"); }
+.topic_unread_hot { background-image: url("images/folder_new_hot.gif"); }
+.topic_unread_hot_mine { background-image: url("images/folder_new_hot.gif"); }
+.topic_unread_locked { background-image: url("images/folder_lock_new.gif"); }
+.topic_unread_locked_mine { background-image: url("images/folder_lock_new.gif"); }
+
+/* Match the old muted administrator/moderator legend on the dark background. */
+.rpgdx-index-statistics a[style*="AA0000"], .rpgdx-index-statistics a[style*="aa0000"] { color: #ffa0c8 !important; }
+.rpgdx-index-statistics a[style*="00AA00"], .rpgdx-index-statistics a[style*="00aa00"] { color: #a0a0ff !important; }
+.section-index #nav-footer .breadcrumbs, .section-index #nav-footer > li:not(.rightside) { display: none; }
+.section-index #page-footer .navbar { border: 0; background: transparent; }
+.section-index #nav-footer { display: flex; justify-content: flex-end; gap: 10px; }
+.section-index #nav-footer > li { color: #b4b4c8; }
+.section-index #nav-footer > li:first-of-type { display: none; }
+.section-index #page-footer .copyright { margin-top: 5px; }
+#nav-footer > li.rightside { margin-left: 8px; }

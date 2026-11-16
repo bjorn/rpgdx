@@ -22,6 +22,12 @@ prosilver along with the forum, and verify both forum and site login flows after
 an update. The release archive URL and checksums are recorded in
 `tools/phpbb-upstream.json`.
 
+The child style inherits prosilver, with three template overrides for the compact
+index and topic tables: `index_body.html`, `forumlist_body.html`, and
+`viewforum_body.html`. Compare these against their updated prosilver versions
+when upgrading. Header, breadcrumb and topic additions use extension events;
+phpBB core and prosilver remain unchanged.
+
 The main site's existing templates and BBCode content are supported by isolated
 legacy helpers. They do not replace phpBB3's template or text rendering systems.
 

@@ -1,0 +1,97 @@
+<!-- INCLUDE overall_header.html -->
+
+<div class="rpgdx-index">
+<div class="rpgdx-index-summary">
+    <p class="time"><!-- IF S_USER_LOGGED_IN -->{LAST_VISIT_DATE}<br /><!-- ENDIF -->{CURRENT_TIME}</p>
+    <!-- IF S_DISPLAY_SEARCH --><p class="rpgdx-index-search">
+        <!-- IF S_USER_LOGGED_IN --><a href="{U_SEARCH_NEW}">{L_SEARCH_NEW}</a><br /><a href="{U_SEARCH_SELF}">{L_SEARCH_SELF}</a><br /><!-- ENDIF -->
+        <a href="{U_SEARCH_UNANSWERED}">{L_SEARCH_UNANSWERED}</a>
+    </p><!-- ENDIF -->
+</div>
+
+<!-- INCLUDE forumlist_body.html -->
+
+<!-- EVENT index_body_forumlist_body_after -->
+
+<!-- EVENT index_body_markforums_before -->
+<div class="rpgdx-index-actions">
+    <!-- IF U_MARK_FORUMS --><a href="{U_MARK_FORUMS}" class="mark-read" accesskey="m" data-ajax="mark_forums_read">{L_MARK_FORUMS_READ}</a><!-- ENDIF -->
+    <span>{S_TIMEZONE}</span>
+</div>
+<!-- EVENT index_body_markforums_after -->
+
+<!-- EVENT index_body_stat_blocks_before -->
+<div class="rpgdx-index-statistics">
+    <h3><!-- IF U_VIEWONLINE --><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --></h3>
+<!-- IF NEWEST_USER -->
+	<div class="stat-block statistics">
+
+		<p>
+			<!-- EVENT index_body_block_stats_prepend -->
+			{TOTAL_POSTS} &bull; {TOTAL_TOPICS}<br />{TOTAL_USERS}<br />{NEWEST_USER}
+			<!-- EVENT index_body_block_stats_append -->
+		</p>
+	</div>
+<!-- ENDIF -->
+
+
+
+<!-- IF S_DISPLAY_ONLINE_LIST -->
+	<div class="stat-block online-list">
+
+		<p>
+			<!-- EVENT index_body_block_online_prepend -->
+			{TOTAL_USERS_ONLINE}<!-- IF LEGEND --> &nbsp; {LEGEND}<!-- ENDIF --><br />{RECORD_USERS}<br />
+			<!-- IF U_VIEWONLINE -->
+				{LOGGED_IN_USER_LIST}
+
+			<!-- ENDIF -->
+			<!-- EVENT index_body_block_online_append -->
+		</p>
+	</div>
+<!-- ENDIF -->
+
+<!-- EVENT index_body_birthday_block_before -->
+
+<!-- IF S_DISPLAY_BIRTHDAY_LIST -->
+	<div class="stat-block birthday-list">
+		<h3>{L_BIRTHDAYS}</h3>
+		<p>
+			<!-- EVENT index_body_block_birthday_prepend -->
+			<!-- IF .birthdays -->{L_CONGRATULATIONS}{L_COLON} <strong><!-- BEGIN birthdays -->{birthdays.USERNAME}<!-- IF birthdays.AGE !== '' --> ({birthdays.AGE})<!-- ENDIF --><!-- IF not birthdays.S_LAST_ROW -->, <!-- ENDIF --><!-- END birthdays --></strong><!-- ELSE -->{L_NO_BIRTHDAYS}<!-- ENDIF -->
+			<!-- EVENT index_body_block_birthday_append -->
+		</p>
+	</div>
+<!-- ENDIF -->
+
+</div>
+<!-- IF S_DISPLAY_ONLINE_LIST --><p class="rpgdx-online-explain">{L_ONLINE_EXPLAIN}</p><!-- ENDIF -->
+<!-- EVENT index_body_stat_blocks_after -->
+
+<!-- IF not S_USER_LOGGED_IN and not S_IS_BOT -->
+	<form method="post" action="{S_LOGIN_ACTION}" class="rpgdx-index-login">
+	<h3><a href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a></h3>
+		<fieldset class="quick-login">
+			<label for="username"><span>{L_USERNAME}{L_COLON}</span> <input type="text" tabindex="1" name="username" id="username" size="10" class="inputbox" title="{L_USERNAME}" autocomplete="username" /></label>
+			<label for="password"><span>{L_PASSWORD}{L_COLON}</span> <input type="password" tabindex="2" name="password" id="password" size="10" class="inputbox" title="{L_PASSWORD}" autocomplete="current-password" /></label>
+			<!-- IF U_SEND_PASSWORD -->
+				<a href="{U_SEND_PASSWORD}">{L_FORGOT_PASS}</a>
+			<!-- ENDIF -->
+			<!-- IF S_AUTOLOGIN_ENABLED -->
+				<span class="responsive-hide">|</span> <label for="autologin">{L_LOG_ME_IN} <input type="checkbox" tabindex="4" name="autologin" id="autologin" /></label>
+			<!-- ENDIF -->
+			<input type="submit" tabindex="5" name="login" value="{L_LOGIN}" class="button2" />
+			{S_LOGIN_REDIRECT}
+			{S_FORM_TOKEN_LOGIN}
+		</fieldset>
+	</form>
+<!-- ENDIF -->
+
+<ul class="rpgdx-forum-legend">
+    <li><span class="forum_unread" aria-hidden="true"></span>{L_NEW_POSTS}</li>
+    <li><span class="forum_read" aria-hidden="true"></span>{L_NO_NEW_POSTS}</li>
+    <li><span class="forum_read_locked" aria-hidden="true"></span>{L_FORUM_LOCKED}</li>
+</ul>
+</div>
+
+<!-- INCLUDE overall_footer.html -->
