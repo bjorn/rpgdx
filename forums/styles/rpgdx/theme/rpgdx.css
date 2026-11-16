@@ -84,6 +84,8 @@ ul.topiclist li, table.table1 td, dl.details dd, .notification_list p.notificati
 }
 
 ul.topiclist dd, li.row:hover dd { border-left-color: #646480; }
+/* UCP sections are selected through the native tabs and side menu. */
+.section-ucp #page-body > .ucp-title { display: none; }
 /* Control-panel lists use the same single separator as the forum directory. */
 .panel-container .panel li.row { border-top: 0; border-bottom: 1px solid #505082; }
 .panel-container .panel ul.cplist { border-top-color: #505082; }
