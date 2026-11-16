@@ -5,6 +5,12 @@ integration uses a separate bootstrap, adapters, `forums/ext/rpgdx/site`, and th
 `forums/styles/rpgdx` child style. Check the distribution with
 `python3 tools/check-phpbb-core.py` after changing the integration.
 
+Run `python3 tools/check-phpbb-style.py` after replacing phpBB files. It compares
+the native sources of child template overrides with their reviewed hashes,
+flagging only templates that need attention. After reviewing those differences
+and updating overrides as needed, refresh the baseline with
+`python3 tools/check-phpbb-style.py --record`.
+
 ## Updating an existing phpBB3 database
 
 After replacing the stock files with the verified release, back up the existing

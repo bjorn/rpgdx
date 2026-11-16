@@ -1,5 +1,4 @@
 /* Topic lists keep the compact columns of the original RPGDX forum. */
-.section-viewforum .forum-title { display: none; }
 .section-viewforum .rpgdx-forum-info { margin: 12px 9px 6px; }
 .section-viewforum .rpgdx-forum-info p { margin: 0; font-size: 10px; line-height: 12px; }
 .section-viewforum .forumbg:has(.rpgdx-topiclist) {
@@ -72,7 +71,6 @@
     margin: 0 0 0 3px;
     font-size: 10px;
 }
-.section-viewforum .rpgdx-topiclist .row .pagination > span { display: none; }
 .section-viewforum .rpgdx-topiclist .row .pagination::before { content: "[ "; }
 .section-viewforum .rpgdx-topiclist .row .pagination::after { content: " ]"; }
 .section-viewforum .rpgdx-topiclist .row .pagination ul { display: inline; padding: 0; }
@@ -104,7 +102,6 @@
 .section-viewforum .search-box .inputbox { height: 19px; font-size: 10px; }
 .section-viewforum .search-box .button { line-height: 17px; }
 .section-viewforum .permissions { text-align: right; }
-.section-viewforum .permissions h3 { display: none; }
 .section-viewforum .permissions p { font-size: 10px; }
 .section-viewforum .online-list { margin: 6px 9px; font-size: 10px; }
 .section-viewforum .online-list h3 { font-size: 11px; }
@@ -122,18 +119,6 @@
 }
 .section-viewforum .rpgdx-topiclist dd.topic-author { font-size: 11px; }
 .section-viewforum .rpgdx-topiclist dd.topic-author a { color: #fff !important; font-weight: normal; }
-.section-viewforum .action-bar .topic-total { display: none; }
-.section-viewforum .action-bar .page-jump > a::before { content: "Goto page "; }
-.section-viewforum .action-bar .page-jump > a .icon,
-.section-viewforum .action-bar .pagination .arrow .icon { display: none; }
-.section-viewforum .action-bar .pagination .arrow .sr-only {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    clip: auto;
-}
 @media (min-width: 701px) {
     .section-viewforum .action-bar.bar-top { margin-top: 20px; position: relative; }
     .section-viewforum .bar-top > .pagination { position: absolute; right: 0; top: -18px; }
@@ -167,5 +152,3 @@
 @media (min-width: 701px) {
     .section-viewforum .permissions { clear: none; margin-top: 8px; }
 }
-
-.section-viewforum .rpgdx-topiclist .lastpost-author { display: none; }

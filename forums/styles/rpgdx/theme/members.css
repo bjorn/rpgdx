@@ -1,5 +1,4 @@
 /* Member and search tables retain native controls and responsive labels. */
-.section-memberlist #page-body > form > h2.solo:not(:has(a)) { display: none; }
 :is(.section-memberlist, .section-search, body:has(#results)) .forumbg-table {
     margin: 0 5px 12px;
     padding: 0;

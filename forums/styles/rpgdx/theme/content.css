@@ -1,13 +1,5 @@
-/* The page heading already contains the topic title. */
-.section-viewtopic h2.topic-title {
-    display: none;
-}
-
 .section-viewtopic .action-bar.bar-top { margin: 16px 5px 8px; }
 .section-viewtopic .action-bar.bar-bottom { margin-inline: 5px; }
-/* The footer breadcrumbs already link to the parent forum. */
-.section-viewtopic .jumpbox-return,
-.section-viewtopic .actions-jump:not(:has(.jumpbox)) { display: none; }
 .section-viewtopic .action-bar .button { line-height: 14px; }
 .section-viewtopic .action-bar .rpgdx-new-topic { margin-right: 4px; }
 .rpgdx-topic-nav {
@@ -77,8 +69,6 @@
 .post.has-profile .postprofile dd { order: 5; margin: 0; line-height: 1.1; overflow-wrap: anywhere; }
 .post.has-profile .postprofile dd.profile-rank { order: 2; margin-bottom: 0; }
 .post.has-profile .postprofile .avatar-container { order: 3; margin: 0 0 10px; }
-.post.has-profile .postprofile .avatar-container:empty,
-.post.has-profile .postprofile .no-avatar .avatar-container { display: none; }
 .post.has-profile .postprofile dd.profile-joined { order: 4; }
 .post.has-profile .postprofile dd.profile-contact { order: 6; margin-top: 3px; }
 .post.has-profile .postprofile dt.no-avatar + .profile-rank { margin-bottom: 10px; }
@@ -126,7 +116,6 @@
 }
 
 .post.has-profile .postbody h3 a { color: #b4b4c8; }
-.post.has-profile .postbody h3:has(> a:empty) { display: none; }
 .post.has-profile p.author {
     grid-column: 1;
     grid-row: 1;
@@ -164,10 +153,6 @@
 }
 
 .post-buttons .button:hover, .post-buttons .button:focus { background: #505082; }
-.post-buttons > li > a[title] > .fa-quote-left { display: none; }
-.post-buttons > li > a:has(> .fa-quote-left) > .sr-only { position: static; width: auto; height: auto; clip: auto; font-size: 11px; }
-.post-buttons > li > a:has(> .fa-quote-left)::before { content: "["; }
-.post-buttons > li > a:has(> .fa-quote-left)::after { content: "]"; }
 
 /* Overflow actions are ordinary menu items, including Quote. */
 .post-buttons .dropdown .dropdown-contents {
@@ -210,7 +195,6 @@
 
 .post.has-profile .back2top .top { display: inline-flex; align-items: center; gap: 3px; float: none; margin: 0; font-size: 10px; }
 .post.has-profile .back2top .icon { font-size: 10px; }
-.post.has-profile .back2top .sr-only { position: static; width: auto; height: auto; clip: auto; }
 .post.has-profile .signature { margin-top: 12px; padding-top: 2px; border: 0; font-size: 12px; line-height: normal; }
 .post.has-profile .signature::before { content: ""; display: block; width: 114px; border-top: 1px solid #646496; }
 .postlink, .postlink:visited { color: #fff; text-decoration: none; border: 0; }

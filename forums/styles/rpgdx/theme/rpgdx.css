@@ -10,9 +10,8 @@ h3, hr { border-color: #646480; }
 .wrap { max-width: none; margin: 0 10px 9px; padding: 0; border: 0; border-radius: 0; background: transparent; }
 .rpgdx-header { display: flex; align-items: flex-end; gap: 8px; height: 40px; padding: 0 4px; }
 .rpgdx-header img { display: block; }
-.rpgdx-header a { width: 136px; height: 40px; }
+.rpgdx-header > a:not(.sr-only) { width: 136px; height: 40px; }
 .rpgdx-tagline { margin-bottom: 3px; }
-.rpgdx-header + .wrap .headerbar { display: none; }
 .navbar { border: 1px solid #323246; border-radius: 0; background: #646480; }
 #page-header .navbar { padding: 0; border: 0; background: transparent; }
 #nav-main {
@@ -23,7 +22,6 @@ h3, hr { border-color: #646480; }
 }
 #nav-main > li { float: none; order: 20; margin: 0; padding: 0 5px; font-size: 13px; line-height: 16px; border-left: 1px solid #646464; box-shadow: inset 1px 0 #c8c8c8; }
 #nav-main > li > a { text-transform: lowercase; }
-#nav-main > li > a > .icon { display: none; }
 #nav-main > li > a:has(.badge) { display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
 #nav-main .badge {
     box-sizing: border-box;
@@ -39,18 +37,12 @@ h3, hr { border-color: #646480; }
 #nav-main .rpgdx-session { order: -3; padding: 0 3px 0 0; border: 0; box-shadow: none; }
 #nav-main > li:has(> a[accesskey="x"]) { order: -2; padding: 0; border: 0; box-shadow: none; }
 #nav-main > li:has(> a[href*="mode=register"]) { order: -1; padding: 0 0 0 3px; border: 0; box-shadow: none; }
-#nav-main > li:has(> a[accesskey="x"])::before, #nav-main > li:has(> a[href*="mode=register"])::before { content: "["; }
-#nav-main > li:has(> a[accesskey="x"])::after, #nav-main > li:has(> a[href*="mode=register"])::after { content: "]"; }
 #nav-main > li:has(> a[rel="help"]) { margin-left: auto; }
 #nav-main #quick-links:not(.hidden) { display: block; order: 99; }
 #nav-main #quick-links.dropdown-left .dropdown { right: 0; }
-#quick-links > a span { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 #nav-main #quick-links > a > .icon { display: inline-block; font-size: 11px; }
-#nav-main .header-avatar img { display: none; }
-#nav-main .header-profile > a { display: flex; align-items: center; font-size: 0; line-height: 16px; }
-#nav-main .header-profile > a span::after { display: none; }
-#nav-main .header-profile > a::before { content: "profile"; font-size: 13px; }
-#nav-main .header-profile > a::after { content: ""; width: 0; height: 0; margin-left: 6px; border-inline: 4px solid transparent; border-top: 4px solid currentColor; }
+#nav-main .header-profile > a { display: flex; align-items: center; line-height: 16px; text-transform: lowercase; }
+#nav-main .rpgdx-profile-caret { width: 0; height: 0; margin-left: 6px; border-inline: 4px solid transparent; border-top: 4px solid currentColor; }
 #nav-breadcrumbs { display: flex; flex-wrap: wrap; margin: 0; padding: 0 5px 1px; border: 1px solid #323246; background: #646480; font-size: 12px; line-height: 14px; }
 #nav-breadcrumbs, #page-footer .navbar { box-shadow: 1px 1px 0 #212139; }
 #nav-breadcrumbs::before { content: none; }
@@ -60,9 +52,6 @@ h3, hr { border-color: #646480; }
 .breadcrumbs .crumb > a { font-weight: normal; line-height: 14px; }
 .breadcrumbs .crumb::before { content: ">>"; font: normal 12px/14px var(--rpgdx-font); padding: 0 3px; }
 .breadcrumbs .crumb:first-child::before { display: none; }
-.breadcrumbs .crumb .icon, .breadcrumbs .crumb[data-rpgdx-category] { display: none; }
-/* Search is already available in the main navigation at every width. */
-#nav-breadcrumbs .responsive-search { display: none !important; }
 .breadcrumbs .crumb { float: none; display: inline; }
 .breadcrumbs .crumb > a { display: inline; vertical-align: baseline; white-space: normal; overflow-wrap: anywhere; }
 #page-body { margin-top: 5px; }
@@ -86,7 +75,6 @@ ul.topiclist li, table.table1 td, dl.details dd, .notification_list p.notificati
 
 ul.topiclist dd, li.row:hover dd { border-left-color: #646480; }
 /* UCP sections are selected through the native tabs and side menu. */
-.section-ucp #page-body > .ucp-title { display: none; }
 .section-ucp .navigation { padding-top: 0; }
 /* Control-panel lists use the same single separator as the forum directory. */
 .panel-container .panel li.row { border-top: 0; border-bottom: 1px solid #505082; }
@@ -252,7 +240,6 @@ a[title] > .fa-external-link-square::before { content: none; }
     #nav-main { min-height: 26px; row-gap: 4px; }
     #nav-main > li { font-size: 11px; padding-inline: 3px; }
     #nav-main .rpgdx-session { font-size: 11px; }
-    #nav-main .header-profile > a::before { font-size: 11px; }
     #nav-breadcrumbs .rpgdx-page-title { font-size: 18px; line-height: 23px; overflow-wrap: anywhere; }
 }
 .global_read { background-image: url("images/folder_announce.gif"); }
@@ -303,10 +290,8 @@ a[title] > .fa-external-link-square::before { content: none; }
 /* Match the old muted administrator/moderator legend on the dark background. */
 .rpgdx-index-statistics a[style*="AA0000"], .rpgdx-index-statistics a[style*="aa0000"] { color: #ffa0c8 !important; }
 .rpgdx-index-statistics a[style*="00AA00"], .rpgdx-index-statistics a[style*="00aa00"] { color: #a0a0ff !important; }
-.section-index #nav-footer .breadcrumbs, .section-index #nav-footer > li:not(.rightside) { display: none; }
 .section-index #page-footer .navbar { border: 0; background: transparent; box-shadow: none; }
 .section-index #nav-footer { display: flex; justify-content: flex-end; gap: 10px; }
 .section-index #nav-footer > li { color: #b4b4c8; }
-.section-index #nav-footer > li:first-of-type { display: none; }
 .section-index #page-footer .copyright { margin-top: 5px; }
 #nav-footer > li.rightside { margin-left: 8px; }

@@ -1,21 +1,18 @@
-/* Flex wrapping replaces prosilver's float-based navigation overflow calculation. */
+/* Remote avatars can fail after the server has rendered the page. */
 (function () {
     'use strict';
-    var navigation = document.getElementById('nav-main');
-    if (navigation) {
-        navigation.setAttribute('data-skip-responsive', 'true');
-    }
-    document.querySelectorAll('.breadcrumbs').forEach(function (breadcrumbs) {
-        breadcrumbs.setAttribute('data-skip-responsive', 'true');
-    });
-    // Historical remote avatars may no longer exist. Keep the author details visible.
+    var fallback = new URL('images/no_avatar.gif', document.currentScript.src).href;
     document.querySelectorAll('.postprofile .avatar img').forEach(function (image) {
-        function hideMissingAvatar() {
-            image.closest('.avatar-container').hidden = true;
+        function showFallbackAvatar() {
+            if (image.src !== fallback) {
+                image.width = 80;
+                image.height = 80;
+                image.src = fallback;
+            }
         }
-        image.addEventListener('error', hideMissingAvatar);
+        image.addEventListener('error', showFallbackAvatar, { once: true });
         if (image.complete && image.naturalWidth === 0) {
-            hideMissingAvatar();
+            showFallbackAvatar();
         }
     });
 }());

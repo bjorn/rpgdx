@@ -156,7 +156,6 @@
 .rpgdx-index-login fieldset.quick-login label { margin: 0; white-space: nowrap; font-size: 10px; }
 .rpgdx-index-login fieldset.quick-login input.inputbox { box-sizing: border-box; width: 102px; margin: 0; padding: 2px; }
 .rpgdx-index-login fieldset.quick-login input.button2 { padding: 0 5px; font-size: 10px; }
-.rpgdx-index-login fieldset.quick-login .responsive-hide { display: none; }
 .rpgdx-forum-legend {
     display: flex;
     flex-wrap: wrap;

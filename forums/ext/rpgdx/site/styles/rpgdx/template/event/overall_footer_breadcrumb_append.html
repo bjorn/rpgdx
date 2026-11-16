@@ -1,3 +1,6 @@
+<!-- IF S_RPGDX_UCP -->
+<span class="crumb"><a href="{U_RPGDX_UCP}">{L_UCP}</a></span>
+<!-- ELSE -->
 <!-- BEGIN navlinks -->
 <!-- IF not navlinks.S_IS_CAT -->
 <span class="crumb"><a href="{{ navlinks.U_BREADCRUMB | default(navlinks.U_VIEW_FORUM) }}">{{ navlinks.BREADCRUMB_NAME | default(navlinks.FORUM_NAME) }}</a></span>
@@ -5,4 +8,5 @@
 <!-- END navlinks -->
 <!-- IF SCRIPT_NAME == 'viewtopic' -->
 <span class="crumb"><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></span>
+<!-- ENDIF -->
 <!-- ENDIF -->

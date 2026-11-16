@@ -25,7 +25,6 @@ class listener implements EventSubscriberInterface
         return array(
             'core.page_header_after' => 'navigation',
             'core.ucp_display_module_before' => 'ucpNavigation',
-            'core.generate_forum_nav' => 'breadcrumbs',
             'core.viewtopic_cache_user_data' => 'profileDate',
         );
     }
@@ -43,11 +42,6 @@ class listener implements EventSubscriberInterface
         $page_title = basename($this->request->server('SCRIPT_NAME', '')) === 'index.php' ? 'Forums' : $event['page_title'];
         if ($this->in_ucp && $this->user->style['style_path'] === 'rpgdx') {
             $page_title = $this->user->lang('UCP');
-            $this->template->destroy_block_vars('navlinks');
-            $this->template->assign_block_vars('navlinks', array(
-                'BREADCRUMB_NAME' => $page_title,
-                'U_BREADCRUMB' => append_sid($this->path_helper->get_web_root_path() . 'ucp.php'),
-            ));
         }
         $this->template->assign_vars(array(
             'U_RPGDX_HOME' => $site_root,
@@ -55,6 +49,8 @@ class listener implements EventSubscriberInterface
             'L_SITE_HOME' => 'RPGDX',
             'L_INDEX' => 'Forums',
             'RPGDX_PAGE_TITLE' => $page_title,
+            'S_RPGDX_UCP' => $this->in_ucp,
+            'U_RPGDX_UCP' => append_sid($this->path_helper->get_web_root_path() . 'ucp.php'),
             'S_RPGDX_ANALYTICS' => in_array(strtolower($this->request->server('SERVER_NAME', '')), array('rpgdx.net', 'www.rpgdx.net'), true),
         ));
     }
@@ -69,14 +65,4 @@ class listener implements EventSubscriberInterface
         $event['user_cache_data'] = $profile;
     }
 
-    public function breadcrumbs($event)
-    {
-        $parents = $event['navlinks_parents'];
-        foreach ($parents as &$parent) {
-            if (!empty($parent['S_IS_CAT'])) {
-                $parent['MICRODATA'] .= ' data-rpgdx-category="true"';
-            }
-        }
-        $event['navlinks_parents'] = $parents;
-    }
 }
