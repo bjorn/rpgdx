@@ -47,10 +47,10 @@ h3, hr { border-color: #646480; }
 #quick-links > a span { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 #nav-main #quick-links > a > .icon { display: inline-block; font-size: 11px; }
 #nav-main .header-avatar img { display: none; }
-#nav-main .header-profile > a { display: flex; align-items: center; gap: 6px; font-size: 0; line-height: 16px; }
-#nav-main .header-profile > a > span { display: none; }
+#nav-main .header-profile > a { display: flex; align-items: center; font-size: 0; line-height: 16px; }
+#nav-main .header-profile > a span::after { display: none; }
 #nav-main .header-profile > a::before { content: "profile"; font-size: 13px; }
-#nav-main .header-profile > a::after { content: ""; width: 0; height: 0; border-inline: 4px solid transparent; border-top: 4px solid currentColor; }
+#nav-main .header-profile > a::after { content: ""; width: 0; height: 0; margin-left: 6px; border-inline: 4px solid transparent; border-top: 4px solid currentColor; }
 #nav-breadcrumbs { display: flex; flex-wrap: wrap; margin: 0; padding: 0 5px 1px; border: 1px solid #323246; background: #646480; font-size: 12px; line-height: 14px; }
 #nav-breadcrumbs, #page-footer .navbar { box-shadow: 1px 1px 0 #212139; }
 #nav-breadcrumbs::before { content: none; }
@@ -84,6 +84,9 @@ ul.topiclist li, table.table1 td, dl.details dd, .notification_list p.notificati
 }
 
 ul.topiclist dd, li.row:hover dd { border-left-color: #646480; }
+/* Control-panel lists use the same single separator as the forum directory. */
+.panel-container .panel li.row { border-top: 0; border-bottom: 1px solid #505082; }
+.panel-container .panel ul.cplist { border-top-color: #505082; }
 li.row strong, .postprofile strong, dl.details dt, dl.faq dt { color: #dedeee; }
 .bg1, table.zebra-list tr:nth-child(odd) td, ul.zebra-list li:nth-child(odd) { background: #424273; }
 .bg2, table.zebra-list tr:nth-child(even) td, ul.zebra-list li:nth-child(even) { background: #424273; }
@@ -165,6 +168,15 @@ div.rules { color: #fff; }
     border-color: #808096;
 }
 
+.dropdown-extended .header {
+    padding: 6px 10px;
+    font-family: var(--rpgdx-font);
+    font-size: 12px;
+    line-height: 20px;
+    text-shadow: none;
+    text-transform: none;
+}
+
 .dropdown-extended ul li:hover, .search-results li:hover, .search-results li.active,
 .jumpbox-forum-link, .jumpbox-sub-link { background: #646480; color: #fff; }
 .jumpbox-cat-link, .jumpbox-cat-link:hover, .jumpbox-forum-link:hover, .jumpbox-sub-link:hover { background: #383861; }
@@ -188,6 +200,18 @@ div.rules { color: #fff; }
 .panel-container h2, .panel-container .panel li.header dd,
 .panel-container .panel li.header dt, .panel-container table.table1 thead th,
 dl.mini dt { color: #dedeee; }
+.panel-container table.table1 { border-collapse: collapse; border: 0; }
+.panel-container table.table1 thead th {
+    border-bottom: 1px solid #505082;
+    background: #505082;
+    color: #b4b4c8;
+    font: bold 13px/18px var(--rpgdx-font);
+    text-transform: none;
+}
+.panel-container table.table1 tbody tr { border: 0; border-bottom: 1px solid #505082; }
+.panel-container table.table1 tbody td { border: 0; }
+.panel-container table.table1 tbody tr.bg3,
+.panel-container table.table1 tbody tr.bg3:hover { background: #646496; }
 fieldset.polls dl { color: #dedeee; border-color: #646480; }
 fieldset.polls dl.voted { color: #fff; }
 

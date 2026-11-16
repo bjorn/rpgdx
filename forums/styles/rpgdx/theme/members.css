@@ -1,0 +1,68 @@
+/* Member lists retain native sorting, custom fields and responsive labels. */
+.section-memberlist #page-body > form > h2.solo:not(:has(a)) { display: none; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table {
+    margin: 0 5px 12px;
+    padding: 0;
+    background: #424273;
+}
+:is(.section-memberlist, body:has(#results)) .forumbg-table > .inner { margin: 0; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 {
+    border-collapse: collapse;
+    border: 0;
+}
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 thead th {
+    padding: 5px;
+    border: 0;
+    border-left: 1px solid #484878;
+    background: #505082;
+    color: #b4b4c8;
+    font: bold 13px/16px var(--rpgdx-font);
+    text-transform: none;
+    vertical-align: middle;
+}
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 thead th:first-child { border-left: 0; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 thead th a { color: inherit; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 thead th a:hover { color: #fff; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 tbody tr { border: 0; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 tbody td {
+    padding: 5px;
+    border: 0;
+    color: #b4b4c8;
+    font: 12px/16px var(--rpgdx-font);
+    overflow-wrap: anywhere;
+}
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 tbody tr:hover { background: #484878; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 .rank-img { font-size: 10px; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 th .rank-img { font-size: inherit; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 .info { font-size: 11px; }
+:is(.section-memberlist, body:has(#results)) .forumbg-table table.table1 thead .info { font-size: 13px; }
+.section-memberlist .member-search.panel {
+    padding: 0;
+    background: transparent;
+    color: #b4b4c8;
+    font-size: 11px;
+    line-height: 18px;
+}
+.section-memberlist #page-body > form > .action-bar {
+    margin: 14px 5px 8px;
+    font-size: 10px;
+}
+.section-memberlist .pagination li.page-jump a { padding: 0 4px; }
+.section-memberlist .pagination li.page-jump a i { font-size: 13px; }
+.section-memberlist .pagination li.active span { font: 10px/17px var(--rpgdx-font); }
+@media (max-width: 700px) {
+    :is(.section-memberlist, body:has(#results)) .forumbg-table { margin-inline: 0; }
+    .section-memberlist .member-search.panel { float: none; }
+    .section-memberlist #page-body > form > .action-bar .pagination { float: none; margin-top: 6px; }
+    :is(.section-memberlist, body:has(#results)) .forumbg-table table.responsive tbody tr {
+        margin: 0;
+        padding: 5px 0;
+        border-bottom: 1px solid #505082;
+    }
+    :is(.section-memberlist, body:has(#results)) .forumbg-table table.responsive tbody td { padding: 2px 5px; }
+    :is(.section-memberlist, body:has(#results)) .forumbg-table table.responsive td > dfn {
+        color: #b4b4c8;
+        font-size: 10px;
+        font-style: normal;
+    }
+}

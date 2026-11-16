@@ -286,6 +286,13 @@ a.button2:hover, input.button2:hover, input.button3:hover {
 .pagination li.active span { color: #b4b4c8; }
 .pagination li a:hover { background: #505082; }
 .pagination li.page-jump a { border: 1px solid #646496; }
+.pagination li a:hover .icon { background: transparent; color: #fff; }
+.pagination .dropdown-visible a.dropdown-trigger,
+.nojs .pagination .dropdown-container:hover a.dropdown-trigger {
+    background: #505082;
+    border-color: #646496;
+    color: #fff;
+}
 
 @media (max-width: 700px) {
     .rpgdx-post-columns { display: none; }
