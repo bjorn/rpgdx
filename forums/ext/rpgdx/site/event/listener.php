@@ -55,7 +55,6 @@ class listener implements EventSubscriberInterface
             'L_SITE_HOME' => 'RPGDX',
             'L_INDEX' => 'Forums',
             'RPGDX_PAGE_TITLE' => $page_title,
-            'U_RPGDX_MEMBERS' => append_sid($this->path_helper->get_web_root_path() . 'memberlist.php'),
             'S_RPGDX_ANALYTICS' => in_array(strtolower($this->request->server('SERVER_NAME', '')), array('rpgdx.net', 'www.rpgdx.net'), true),
         ));
     }
