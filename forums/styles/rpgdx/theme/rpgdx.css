@@ -243,7 +243,7 @@ a[title] > .fa-external-link-square::before { content: none; }
 #page-footer .navbar { padding: 2px 4px; }
 #nav-footer { font-size: 10px; line-height: 16px; }
 #nav-footer > li { margin: 0; padding-top: 0; line-height: 16px; }
-#nav-footer .breadcrumbs { font-size: 12px; }
+#nav-footer .breadcrumbs { margin-inline-end: 8px; font-size: 12px; }
 #page-footer .copyright { margin: 30px 0 0; padding: 10px; border-top: 2px solid #323246; font-size: 13px; line-height: 15px; }
 #page-footer .copyright .footer-row { font-size: inherit; }
 #page-footer .copyright .footer-row:last-child { margin-top: 3px; font-size: 10px; }
