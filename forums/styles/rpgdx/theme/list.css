@@ -105,7 +105,7 @@
 .section-viewforum .search-box .button { line-height: 17px; }
 .section-viewforum .permissions { text-align: right; }
 .section-viewforum .permissions h3 { display: none; }
-.section-viewforum .permissions p { font-size: 10px; line-height: 11px; }
+.section-viewforum .permissions p { font-size: 10px; }
 .section-viewforum .online-list { margin: 6px 9px; font-size: 10px; }
 .section-viewforum .online-list h3 { font-size: 11px; }
 @media (max-width: 700px) {
