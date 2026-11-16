@@ -5,6 +5,9 @@
 
 .section-viewtopic .action-bar.bar-top { margin: 16px 5px 8px; }
 .section-viewtopic .action-bar.bar-bottom { margin-inline: 5px; }
+/* The footer breadcrumbs already link to the parent forum. */
+.section-viewtopic .jumpbox-return,
+.section-viewtopic .actions-jump:not(:has(.jumpbox)) { display: none; }
 .section-viewtopic .action-bar .button { line-height: 14px; }
 .section-viewtopic .action-bar .rpgdx-new-topic { margin-right: 4px; }
 .rpgdx-topic-nav {
