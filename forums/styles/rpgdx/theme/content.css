@@ -1,7 +1,5 @@
 /* The page heading already contains the topic title. */
-.section-viewtopic h2.topic-title,
-.section-viewtopic h2.topic-title + p,
-.section-viewtopic h2.topic-title + div[style*="display: none"] + p {
+.section-viewtopic h2.topic-title {
     display: none;
 }
 

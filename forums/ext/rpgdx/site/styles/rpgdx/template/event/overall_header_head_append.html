@@ -1,4 +1,28 @@
 <link rel="icon" href="data:,">
+{# Decide title visibility before first paint while inheriting stock page templates. #}
+{% if RPGDX_PAGE_TITLE %}
+<style>
+{% if RPGDX_PAGE_TITLE == lang('SEARCH') %}
+.section-search #page-body > h2.solo { display: none; }
+{% endif %}
+{% if not SEARCH_WORDS and (SEARCH_TITLE ?: SEARCH_MATCHES) == RPGDX_PAGE_TITLE %}
+#page-body > h2.searchresults-title { display: none; }
+{% endif %}
+{% if PAGE_TITLE == RPGDX_PAGE_TITLE %}
+.section-memberlist #page-body > h2.solo,
+.section-memberlist #page-body > h2.memberlist-title { display: none; }
+{% endif %}
+{% if lang('FAQ_TITLE') == RPGDX_PAGE_TITLE %}
+#page-body > h2.faq-title { display: none; }
+{% endif %}
+{% if (LOGIN_EXPLAIN ?: lang('LOGIN')) == RPGDX_PAGE_TITLE %}
+#page-body h2.login-title { display: none; }
+{% endif %}
+{% if MESSAGE_TITLE == RPGDX_PAGE_TITLE %}
+#page-body h2.message-title { display: none; }
+{% endif %}
+</style>
+{% endif %}
 <!-- IF S_RPGDX_ANALYTICS -->
 <script defer data-domain="rpgdx.net" src="https://plausible.io/js/script.js"></script>
 <!-- ENDIF -->
