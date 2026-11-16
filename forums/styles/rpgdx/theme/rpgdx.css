@@ -36,6 +36,7 @@ h3, hr { border-color: #646480; }
 #nav-main .header-profile > a::before { content: "profile"; font-size: 13px; }
 #nav-main .header-profile > a::after { display: none; }
 #nav-breadcrumbs { display: flex; flex-wrap: wrap; margin: 0; padding: 0 5px 1px; border: 1px solid #323246; background: #646480; font-size: 12px; line-height: 14px; }
+#nav-breadcrumbs, #page-footer .navbar { box-shadow: 1px 1px 0 #212139; }
 #nav-breadcrumbs::before { content: none; }
 #nav-breadcrumbs .rpgdx-page-title { box-sizing: content-box; flex: 0 0 100%; margin: 0 -5px; padding: 3px 5px; background: #383861; color: #b4b4c8; font: bold 20px/24px Verdana, Arial, sans-serif; }
 #nav-breadcrumbs .breadcrumbs { float: none; margin: 0; max-width: 100%; font: normal 12px/14px Verdana, Arial, sans-serif; }
@@ -256,7 +257,7 @@ a[title] > .fa-external-link-square::before { content: none; }
 .rpgdx-index-statistics a[style*="AA0000"], .rpgdx-index-statistics a[style*="aa0000"] { color: #ffa0c8 !important; }
 .rpgdx-index-statistics a[style*="00AA00"], .rpgdx-index-statistics a[style*="00aa00"] { color: #a0a0ff !important; }
 .section-index #nav-footer .breadcrumbs, .section-index #nav-footer > li:not(.rightside) { display: none; }
-.section-index #page-footer .navbar { border: 0; background: transparent; }
+.section-index #page-footer .navbar { border: 0; background: transparent; box-shadow: none; }
 .section-index #nav-footer { display: flex; justify-content: flex-end; gap: 10px; }
 .section-index #nav-footer > li { color: #b4b4c8; }
 .section-index #nav-footer > li:first-of-type { display: none; }
