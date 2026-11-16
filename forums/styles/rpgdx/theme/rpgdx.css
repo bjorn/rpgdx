@@ -63,7 +63,7 @@ h3, hr { border-color: #646480; }
 /* Search is already available in the main navigation at every width. */
 #nav-breadcrumbs .responsive-search { display: none !important; }
 .breadcrumbs .crumb { float: none; display: inline; }
-.breadcrumbs .crumb > a { display: inline; white-space: normal; overflow-wrap: anywhere; }
+.breadcrumbs .crumb > a { display: inline; vertical-align: baseline; white-space: normal; overflow-wrap: anywhere; }
 #page-body { margin-top: 5px; }
 .forabg, .forumbg { padding: 0; border: 0; border-radius: 0; background: #505082; }
 li.header { padding: 2px 4px; text-transform: none; }
@@ -94,6 +94,9 @@ li.row strong, .postprofile strong, dl.details dt, dl.faq dt { color: #dedeee; }
 .bg1, table.zebra-list tr:nth-child(odd) td, ul.zebra-list li:nth-child(odd) { background: #424273; }
 .bg2, table.zebra-list tr:nth-child(even) td, ul.zebra-list li:nth-child(even) { background: #424273; }
 .bg3, .panel, .cp-mini { background: #505082; color: #dedeee; }
+/* Panel backgrounds must not tile the native online ribbon. */
+.panel.online { background-repeat: no-repeat; background-position: 100% 0; }
+.rtl .panel.online { background-position: 0 0; }
 .ucprowbg, .fieldsbg, table.table1 tbody th { background: #505082; color: #dedeee; }
 .post { border-radius: 0; border: 1px solid #323246; }
 .postbody, .content, .postprofile, .post:target .content, .post h3 a.first-unread, .post:target h3 a {
@@ -239,7 +242,7 @@ a[title] > .fa-external-link-square { width: 18px; height: 9px; background: url(
 a[title] > .fa-external-link-square::before { content: none; }
 #page-footer .navbar { padding: 2px 4px; }
 #nav-footer { font-size: 10px; line-height: 16px; }
-#nav-footer > li { margin: 0; line-height: 16px; }
+#nav-footer > li { margin: 0; padding-top: 0; line-height: 16px; }
 #nav-footer .breadcrumbs { font-size: 12px; }
 #page-footer .copyright { margin: 30px 0 0; padding: 10px; border-top: 2px solid #323246; font-size: 13px; line-height: 15px; }
 #page-footer .copyright .footer-row { font-size: inherit; }

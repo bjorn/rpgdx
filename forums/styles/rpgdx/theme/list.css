@@ -143,6 +143,7 @@
 .section-viewforum .rpgdx-topic-legend {
     display: grid;
     grid-template-columns: 132px 146px auto;
+    gap: 3px;
     float: left;
     margin: 8px 9px 16px;
     padding: 0;
