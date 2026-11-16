@@ -1,0 +1,3 @@
+updater:
+    type: db_only
+    extensions: []

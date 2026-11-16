@@ -5,7 +5,7 @@ Read [readme.md](readme.md), [development.md](development.md), and
 
 ## Architecture
 
-- `forums/` contains the official phpBB 3.3.18 distribution. Keep upstream files
+- `forums/` contains the official phpBB 3.3.19 distribution. Keep upstream files
   unchanged and run `python3 tools/check-phpbb-core.py` to verify them.
 - `forums/styles/rpgdx/` inherits prosilver; `forums/ext/rpgdx/site/` supplies
   site navigation through supported events.

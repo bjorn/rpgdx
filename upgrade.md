@@ -1,9 +1,29 @@
 # phpBB3 upgrade
 
-The forum uses the official phpBB 3.3.18 files without core modifications. RPGDX
+The forum uses the official phpBB 3.3.19 files without core modifications. RPGDX
 integration uses a separate bootstrap, adapters, `forums/ext/rpgdx/site`, and the
 `forums/styles/rpgdx` child style. Check the distribution with
 `python3 tools/check-phpbb-core.py` after changing the integration.
+
+## Updating an existing phpBB3 database
+
+After replacing the stock files with the verified release, back up the existing
+target database. Run the stock database-only updater without rerunning the
+phpBB2 conversion or supplemental data copy:
+
+```bash
+scripts/migration/installer.sh enable
+docker compose -p rpgdx-phpbb3 exec -T --user www-data web php forums/install/phpbbcli.php update tools/phpbb-update-db.yml --no-interaction --safe-mode
+docker compose -p rpgdx-phpbb3 exec -T --user www-data web php forums/bin/phpbbcli.php cache:purge
+scripts/migration/installer.sh disable
+python3 tools/check-phpbb-core.py
+```
+
+The installer is served only temporarily. Keep it restricted to the operator.
+Remove it with `installer.sh disable` immediately after updating. Outside Docker,
+run the same PHP commands as the web user. Verify forum and site login, posting and profile pages afterward.
+phpBB 3.3.19 supplies the security fixes omitted from the 3.3.18 packages; see
+[the official changelog](https://www.phpbb.com/community/docs/CHANGELOG.html#v3318).
 
 ## Local rehearsal
 

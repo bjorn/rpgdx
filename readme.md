@@ -1,7 +1,7 @@
 # RPGDX
 
 RPGDX hosts independent RPG projects, reviews, articles, contests, and a phpBB forum.
-The forum uses stock phpBB 3.3.18 with a prosilver-based RPGDX style and a small
+The forum uses stock phpBB 3.3.19 with a prosilver-based RPGDX style and a small
 extension. Site authentication uses phpBB sessions and permissions.
 
 ## Local development
