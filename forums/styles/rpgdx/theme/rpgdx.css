@@ -1,5 +1,8 @@
+/* Preserve the original preference for the browser default after Verdana. */
+:root { --rpgdx-font: Verdana, sans-serif, Arial, Helvetica; }
 html, body { background: #424273; color: #b4b4c8; }
-body { padding: 0; font-family: Verdana, Arial, sans-serif; }
+body { padding: 0; font-family: var(--rpgdx-font); }
+h1, h2, h3, h4, input, button, select, textarea { font-family: var(--rpgdx-font); }
 a, a:visited { color: #fff; }
 a:hover, a:focus { color: #c8c8ff; }
 h2, h3, .content h2, .panel h2 { color: #b4b4c8; }
@@ -44,16 +47,17 @@ h3, hr { border-color: #646480; }
 #quick-links > a span { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 #nav-main #quick-links > a > .icon { display: inline-block; font-size: 11px; }
 #nav-main .header-avatar img { display: none; }
-#nav-main .header-profile > a { font-size: 0; }
+#nav-main .header-profile > a { display: flex; align-items: center; gap: 6px; font-size: 0; line-height: 16px; }
+#nav-main .header-profile > a > span { display: none; }
 #nav-main .header-profile > a::before { content: "profile"; font-size: 13px; }
-#nav-main .header-profile > a::after { display: none; }
+#nav-main .header-profile > a::after { content: ""; width: 0; height: 0; border-inline: 4px solid transparent; border-top: 4px solid currentColor; }
 #nav-breadcrumbs { display: flex; flex-wrap: wrap; margin: 0; padding: 0 5px 1px; border: 1px solid #323246; background: #646480; font-size: 12px; line-height: 14px; }
 #nav-breadcrumbs, #page-footer .navbar { box-shadow: 1px 1px 0 #212139; }
 #nav-breadcrumbs::before { content: none; }
-#nav-breadcrumbs .rpgdx-page-title { box-sizing: content-box; flex: 0 0 100%; margin: 0 -5px; padding: 3px 5px; background: #383861; color: #b4b4c8; font: bold 20px/24px Verdana, Arial, sans-serif; }
-#nav-breadcrumbs .breadcrumbs { float: none; margin: 0; padding-block: 2px; max-width: 100%; font: normal 12px/14px Verdana, Arial, sans-serif; }
+#nav-breadcrumbs .rpgdx-page-title { box-sizing: content-box; flex: 0 0 100%; margin: 0 -5px; padding: 3px 5px; background: #383861; color: #b4b4c8; font: bold 20px/24px var(--rpgdx-font); }
+#nav-breadcrumbs .breadcrumbs { float: none; margin: 0; padding-block: 2px; max-width: 100%; font: normal 12px/14px var(--rpgdx-font); }
 .breadcrumbs .crumb > a { font-weight: normal; line-height: 14px; }
-.breadcrumbs .crumb::before { content: ">>"; font: normal 12px/14px Verdana, Arial, sans-serif; padding: 0 3px; }
+.breadcrumbs .crumb::before { content: ">>"; font: normal 12px/14px var(--rpgdx-font); padding: 0 3px; }
 .breadcrumbs .crumb:first-child::before { display: none; }
 .breadcrumbs .crumb .icon, .breadcrumbs .crumb[data-rpgdx-category] { display: none; }
 /* Search is already available in the main navigation at every width. */

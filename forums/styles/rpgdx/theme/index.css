@@ -44,9 +44,9 @@
 }
 .rpgdx-forumlist ul.topiclist dt .list-inner {
     margin: 0;
-    padding: 2px 0;
+    padding: 3px 0;
     font-size: 11px;
-    line-height: 11px;
+    line-height: 13px;
 }
 .rpgdx-forumlist ul.topiclist dd,
 .rpgdx-forumlist ul.topiclist li.row dd {
@@ -59,7 +59,7 @@
     padding: 0 2px;
     border: 0;
     font-size: 10px;
-    line-height: 11px;
+    line-height: 13px;
 }
 .rpgdx-forumlist ul.topiclist dd.topics,
 .rpgdx-forumlist ul.topiclist dd.posts { flex: 0 0 60px; width: 60px; }
@@ -72,26 +72,26 @@
     border-bottom: 1px solid #505082;
 }
 .rpgdx-forumlist li.row dl.row-item dt,
-.rpgdx-forumlist li.row dl.row-item dd { min-height: 28px; }
-.rpgdx-forumlist a.forumtitle { font-family: Verdana, Arial, sans-serif; font-size: 11px; line-height: 12px; }
+.rpgdx-forumlist li.row dl.row-item dd { min-height: 32px; }
+.rpgdx-forumlist a.forumtitle { font-family: var(--rpgdx-font); font-size: 11px; line-height: 13px; }
 .rpgdx-moderators { font-size: 10px; white-space: normal; }
 .rpgdx-forumlist li.header {
     margin: 0;
     padding: 0;
-    min-height: 19px;
+    min-height: 21px;
     border-bottom: 1px solid #424273;
     background: #646496;
     font-size: 13px;
-    line-height: 19px;
+    line-height: 21px;
     text-transform: none;
 }
 .rpgdx-forumlist li.header dl.row-item dt,
-.rpgdx-forumlist li.header dl.row-item dd { min-height: 19px; padding: 0 2px; text-transform: none; }
+.rpgdx-forumlist li.header dl.row-item dd { min-height: 21px; padding: 0 2px; text-transform: none; }
 .rpgdx-forumlist li.header dl.row-item dt .list-inner {
     padding: 0;
-    font-family: Verdana, Arial, sans-serif;
+    font-family: var(--rpgdx-font);
     font-size: 13px;
-    line-height: 19px;
+    line-height: 21px;
     font-weight: normal;
 }
 .rpgdx-forumlist li.header a { font-weight: normal; }
@@ -126,7 +126,7 @@
     padding: 3px 2px;
     border: 0;
     background: #646496;
-    font-family: Verdana, Arial, sans-serif;
+    font-family: var(--rpgdx-font);
     font-size: 13px;
     line-height: 15px;
     font-weight: normal;
@@ -134,7 +134,7 @@
 }
 .rpgdx-index-statistics > h3,
 .rpgdx-index-statistics > h3 a { color: #fff; }
-.rpgdx-index-statistics { margin-top: 11px; }
+.rpgdx-index-statistics { margin-top: 14px; }
 .rpgdx-index-statistics .stat-block { margin: 0; }
 .rpgdx-index-statistics .stat-block + .stat-block { border-top: 1px solid #646496; }
 .rpgdx-index-statistics .stat-block p { margin: 0; padding: 2px; font-size: 10px; line-height: 11px; }
@@ -150,7 +150,7 @@
     gap: 6px 10px;
     margin: 0;
     padding: 4px 3px;
-    min-height: 19px;
+    min-height: 21px;
     font-size: 10px;
 }
 .rpgdx-index-login fieldset.quick-login label { margin: 0; white-space: nowrap; font-size: 10px; }

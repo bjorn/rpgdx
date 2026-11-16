@@ -37,7 +37,7 @@
     margin: 0;
     padding: 0;
     border: 0;
-    font: 10px/21px Verdana, Arial, sans-serif;
+    font: 10px/21px var(--rpgdx-font);
 }
 .section-viewforum .rpgdx-topiclist dt { min-width: 0; }
 .section-viewforum .rpgdx-topiclist dt .list-inner {
@@ -49,7 +49,7 @@
     text-overflow: ellipsis;
 }
 .section-viewforum .rpgdx-topiclist a.topictitle {
-    font: 11px/21px Verdana, Arial, sans-serif;
+    font: 11px/21px var(--rpgdx-font);
 }
 .section-viewforum .rpgdx-topiclist dd.topic-author { text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .section-viewforum .rpgdx-topiclist dd.lastpost { text-align: right; white-space: nowrap; }
@@ -57,7 +57,7 @@
 .section-viewforum .rpgdx-topiclist li.header dl { min-height: 19px; background: none; }
 .section-viewforum .rpgdx-topiclist li.header dt,
 .section-viewforum .rpgdx-topiclist li.header dd {
-    font: bold 13px/19px Verdana, Arial, sans-serif;
+    font: bold 13px/19px var(--rpgdx-font);
     text-align: center;
     text-transform: none;
     color: #b4b4c8;
@@ -84,7 +84,7 @@
     border: 0;
     border-radius: 0;
     background: transparent;
-    font: 10px/15px Verdana, Arial, sans-serif;
+    font: 10px/15px var(--rpgdx-font);
     box-shadow: none;
 }
 .section-viewforum .pagination li.active span { color: #b4b4c8; }
@@ -97,7 +97,7 @@
     min-height: 0;
     padding: 0 3px;
     border-radius: 0;
-    font: 11px/17px Verdana, Arial, sans-serif;
+    font: 11px/17px var(--rpgdx-font);
 }
 .section-viewforum .action-bar .pagination { line-height: 18px; }
 .section-viewforum .search-box { margin-left: 8px; }
@@ -147,7 +147,7 @@
     margin: 8px 9px 16px;
     padding: 0;
     list-style: none;
-    font: 10px/18px Verdana, Arial, sans-serif;
+    font: 10px/18px var(--rpgdx-font);
 }
 .section-viewforum .rpgdx-topic-legend li { display: flex; align-items: center; gap: 2px; }
 .section-viewforum .rpgdx-topic-legend img { flex-shrink: 0; }
@@ -162,7 +162,7 @@
     .section-viewforum .permissions { min-height: 0; }
 }
 
-.section-viewforum .rpgdx-page-number { display: inline-block; margin: 0 6px; font: 10px/18px Verdana, Arial, sans-serif; }
+.section-viewforum .rpgdx-page-number { display: inline-block; margin: 0 6px; font: 10px/18px var(--rpgdx-font); }
 @media (min-width: 701px) {
     .section-viewforum .permissions { clear: none; margin-top: 8px; }
 }
