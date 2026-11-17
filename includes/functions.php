@@ -42,6 +42,30 @@ function getmicrotime()
 	return ((float)$usec + (float)$sec); 
 }
 
+function rpgdx_html_attribute($value)
+{
+	return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+function rpgdx_is_http_url($url)
+{
+	if (!is_string($url) || $url === '' || !mb_check_encoding($url, 'UTF-8')) {
+		return false;
+	}
+	if (!preg_match('#\Ahttps?://#i', $url) || preg_match('/[\x00-\x1F\x7F]/', $url)) {
+		return false;
+	}
+
+	$parts = parse_url($url);
+	return $parts !== false && !empty($parts['host']) &&
+		isset($parts['scheme']) && in_array(strtolower($parts['scheme']), array('http', 'https'), true);
+}
+
+function rpgdx_http_url_attribute($url)
+{
+	return rpgdx_is_http_url($url) ? rpgdx_html_attribute($url) : null;
+}
+
 
 function rpgdx_add_log($string)
 {
@@ -160,25 +184,34 @@ function remove_uploaded_file($upload_id)
 }
 
 
-// Creates a thumbnail alongside the image, adding _thumb to the filename.
+// Creates a JPEG thumbnail alongside the image.
 function create_thumbnail($img_filename)
 {
-	$img_size = getimagesize($img_filename);
+	$img_size = @getimagesize($img_filename);
 	$img = false;
 
-	switch ($img_size[2])
+	switch ($img_size[2] ?? 0)
 	{
-		case 1: $img = imagecreatefromgif($img_filename); break; // GIF
-		case 2: $img = imagecreatefromjpeg($img_filename); break; // JPG
-		case 3: $img = imagecreatefrompng($img_filename); break; // PNG
+		case 1: $img = @imagecreatefromgif($img_filename); break; // GIF
+		case 2: $img = @imagecreatefromjpeg($img_filename); break; // JPG
+		case 3: $img = @imagecreatefrompng($img_filename); break; // PNG
 	}
 
 	if (!$img) {
-		abort_with_error("Creating thumbnail failed, could not open image ($img_filename).");
-	} else {
-		$thumb = imagecreatetruecolor(140, imagesy($img) * (140 / imagesx($img)));
-		imagecopyresampled($thumb, $img, 0, 0, 0, 0, 140, imagesy($img) * (140 / imagesx($img)), imagesx($img), imagesy($img));
-		imagejpeg($thumb, $img_filename.'.thumb.jpg', 90);
+		abort_with_error('Creating thumbnail failed, could not open image.');
+	}
+
+	$height = max(1, (int) (imagesy($img) * (140 / imagesx($img))));
+	$thumb = imagecreatetruecolor(140, $height);
+	$saved = $thumb && imagecopyresampled($thumb, $img, 0, 0, 0, 0, 140, $height, imagesx($img), imagesy($img))
+		&& @imagejpeg($thumb, $img_filename . '.thumb.jpg', 90);
+	if ($thumb) {
+		imagedestroy($thumb);
+	}
+	imagedestroy($img);
+	if (!$saved) {
+		@unlink($img_filename . '.thumb.jpg');
+		abort_with_error('Creating thumbnail failed, could not save the image preview.');
 	}
 }
 
@@ -301,11 +334,10 @@ function highlight($text, $words)
 	$replacements = array();
 	foreach ($words as $key => $word) {
 		$replacements[$key] = '<u>\\0</u>';
-		$word = str_replace(array('.'), array('\.'), $word);
-		$words[$key] = "/$word/i";
+		$words[$key] = '/' . preg_quote($word, '/') . '/i';
 	}
-	$text = preg_replace($words, $replacements, $text);
-	return $text;
+	$highlighted_text = preg_replace($words, $replacements, $text);
+	return ($highlighted_text === null) ? $text : $highlighted_text;
 }
 
 

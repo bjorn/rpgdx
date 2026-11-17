@@ -50,3 +50,7 @@ tables in cleanup.
 docker compose -p rpgdx-phpbb3 exec -T \
   -e RPGDX_SMOKE_ALLOW_WRITES=1 web php tests/contest-integrity.php
 ```
+
+Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/screenshot-thumbnail.php` for thumbnail generation at square, minimum and extreme aspect ratios. The site smoke also rejects an image with a valid PNG header but incomplete image data.
+
+Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/search-highlight.php` for database-free checks of literal, case-insensitive search highlighting, including regex metacharacters.
