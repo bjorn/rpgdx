@@ -1,0 +1,18 @@
+{
+    "name": "rpgdx/site",
+    "type": "phpbb-extension",
+    "description": "RPGDX site navigation for the RPGDX forum style.",
+    "version": "1.0.0",
+    "license": "GPL-2.0-only",
+    "authors": [{ "name": "RPGDX" }],
+    "require": {
+        "php": ">=7.2",
+        "phpbb/phpbb": ">=3.3.0,<4.0.0"
+    },
+    "extra": {
+        "display-name": "RPGDX site navigation",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.3.0,<4.0.0"
+        }
+    }
+}

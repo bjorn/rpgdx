@@ -1,200 +1,72 @@
 <?php
 include("includes/main.php");
+require_once $phpbb_root_path . 'includes/functions_display.php';
 
 $user_id = (int) ($_GET['user_id'] ?? 0);
-
+if ($user_id == ANONYMOUS) {
+    $mapped = rpgdx_db_fetch_row(doQuery("SELECT user_id FROM rpgdx_user_id_map WHERE legacy_user_id = 1"));
+    if ($mapped && $mapped[0] != ANONYMOUS) {
+        header('Location: profile.php?user_id=' . (int) $mapped[0], true, 301);
+        exit;
+    }
+}
 if (!$user_id || $user_id == ANONYMOUS) {
-	die('<b>Error</b>: No user ID specified');
+    abort_with_error('No user ID specified.');
 }
-
-$template->set_filenames(array(
-	'body' => 'showprofile_body.tpl')
-);
-
-
-// Get the board config information
-
-$board_config = array();
-
-if(!($result = doQuery("SELECT * FROM ". CONFIG_TABLE))) {
-	die("<b>Error:</b> Could not query config information");
+$profiledata = rpgdx_db_fetch_assoc(doQuery("SELECT * FROM " . USERS_TABLE . " WHERE user_id = $user_id AND user_type IN (" . USER_NORMAL . ", " . USER_FOUNDER . ", " . USER_INACTIVE . ")"));
+if (!$profiledata) {
+    abort_with_error('No valid user ID specified.');
 }
-while ($row = mysql_fetch_array($result)) {
-	$board_config[$row['config_name']] = $row['config_value'];
+$fields = rpgdx_db_fetch_assoc(doQuery("SELECT * FROM " . PROFILE_FIELDS_DATA_TABLE . " WHERE user_id = $user_id")) ?: array();
+$reviews = rpgdx_db_fetch_assoc(doQuery("SELECT COUNT(*) AS count, AVG(review_score) AS avg_score FROM " . REVIEWS_TABLE . " WHERE user_id = $user_id"));
+$memberdays = max(1, round((time() - $profiledata['user_regdate']) / 86400));
+$total_posts = (int) $config['num_posts'];
+$posts_percentage = $total_posts ? min(100, $profiledata['user_posts'] / $total_posts * 100) : 0;
+$rank = phpbb_get_user_rank($profiledata, $profiledata['user_posts']);
+
+$template->set_filenames(array('body' => 'showprofile_body.tpl'));
+$avatar = phpbb_get_user_avatar($profiledata, 'USER_AVATAR');
+if ($avatar) {
+    $template->assign_block_vars('avatar', array('HTML' => $avatar));
 }
-
-
-// Get the ranks table
-
-$sql = "SELECT * FROM " . RANKS_TABLE . " ORDER BY rank_special, rank_min";
-if (!($result = doQuery($sql))) {
-	die('<b>Error:</b> Could not obtain ranks information');
+if (($profiledata['user_allow_viewemail'] && $auth->acl_get('u_sendemail')) || $userdata['user_level'] == ADMIN) {
+    $template->assign_block_vars('email', array('URL' => append_sid('forums/memberlist.php', 'mode=email&amp;u=' . $user_id)));
 }
-while ($row = mysql_fetch_array($result)) {
-	$ranksrow[] = $row;
+$website = $fields['pf_phpbb_website'] ?? '';
+if ($website && preg_match('#^https?://#i', $website)) {
+    $template->assign_block_vars('website', array('URL' => htmlspecialchars($website, ENT_QUOTES, 'UTF-8')));
 }
-
-
-// Grab all direct user info
-
-$result = doQuery("SELECT * FROM ". USERS_TABLE ." WHERE user_id=". $user_id);
-if (mysql_num_rows($result) == 0) {
-	die('<b>Error:</b> No valid user ID specified');
+foreach (array('phpbb_icq' => 'icq', 'phpbb_yahoo' => 'yim', 'phpbb_aim' => 'aim', 'phpbb_msnm' => 'msn') as $field => $block) {
+    $value = htmlspecialchars($fields['pf_' . $field] ?? '', ENT_QUOTES, 'UTF-8');
+    if ($value !== '') {
+        $template->assign_block_vars($block, array('NUMBER' => $value, 'NAME' => $value, 'EMAIL' => $value, 'IMG' => '', 'URL' => append_sid('forums/memberlist.php', 'mode=viewprofile&amp;u=' . $user_id)));
+    }
 }
-$profiledata = mysql_fetch_array($result);
-
-
-// Select review count and average review score
-
-$result = doQuery("SELECT COUNT(*) AS count, AVG(review_score) AS avg_score FROM ". REVIEWS_TABLE ." WHERE user_id=". $profiledata['user_id']);
-$reviews = mysql_fetch_array($result);
-
-
-// Calculate the number of days this user has been a member ($memberdays)
-// Then calculate their posts per day
-
-$regdate = $profiledata['user_regdate'];
-$memberdays = max(1, round((time() - $regdate) / 86400));
-$posts_per_day = $profiledata['user_posts'] / $memberdays;
-
-
-// Get the users percentage of total posts
-
-$total_posts = get_db_stat('postcount');
-if ($total_posts && $profiledata['user_posts'] != 0) {
-	$posts_percentage = min(100, ($profiledata['user_posts'] / $total_posts) * 100);
-} else {
-	$posts_percentage = 0;
-}
-
-
-// Determine user avatar link
-
-$avatar_img = '';
-if ($profiledata['user_avatar_type'] && $profiledata['user_allowavatar']) {
-	switch($profiledata['user_avatar_type'])
-	{
-		case USER_AVATAR_UPLOAD:
-			$avatar_img = ($board_config['allow_avatar_upload']) ? 'forums/'. $board_config['avatar_path'] .'/'. $profiledata['user_avatar'] : '';
-			break;
-		case USER_AVATAR_REMOTE:
-			$avatar_img = ($board_config['allow_avatar_remote']) ? $profiledata['user_avatar'] : '';
-			break;
-		case USER_AVATAR_GALLERY:
-			$avatar_img = ($board_config['allow_avatar_local']) ? $board_config['avatar_gallery_path'] .'/'. $profiledata['user_avatar'] : '';
-			break;
-	}
-}
-
-if (strlen($avatar_img) > 0) {
-	$template->assign_block_vars('avatar', array('IMG_URL' => $avatar_img));
-}
-
-
-// Do the contact stuff
-
-$pm_url = append_sid("http://forums.rpgdx.net/privmsg.php?mode=post&amp;" . POST_USERS_URL . "=" . $profiledata['user_id']);
-
-if (!empty($profiledata['user_viewemail']) || ($userdata['session_logged_in'] && $userdata['user_level'] == ADMIN))
-{
-	$template->assign_block_vars('email', array(
-		'URL' => 'mailto:'. $profiledata['user_email'])
-	);
-}
-
-if (!empty($profiledata['user_website'])) {
-	$template->assign_block_vars('website', array(
-		'URL' => $profiledata['user_website'])
-	);
-}
-
-if (!empty($profiledata['user_icq']))
-{
-	$template->assign_block_vars('icq', array(
-		'IMG'    => '<a href="http://wwp.icq.com/'. $profiledata['user_icq'] .'#pager"><img src="http://web.icq.com/whitepages/online?icq='. $profiledata['user_icq'] .'&amp;img=5" width="18" height="18" border="0" align=top /></a>',
-		'NUMBER' => $profiledata['user_icq'])
-	);
-}
-
-if (!empty($profiledata['user_aim'])) {
-	$template->assign_block_vars('aim', array(
-		'URL'  => 'aim:goim?screenname=' . $profiledata['user_aim'] . '&amp;message=Hello+Are+you+there?',
-		'NAME' => $profiledata['user_aim'])
-	);
-}
-
-if (!empty($profiledata['user_msnm'])) {
-	$template->assign_block_vars('msn', array(
-		'EMAIL' => $profiledata['user_msnm'])
-	);
-}
-
-if (!empty($profiledata['user_yim'])) {
-	$template->assign_block_vars('yim', array(
-		'URL'  => 'http://edit.yahoo.com/config/send_webmesg?.target=' . $profiledata['user_yim'] . '&amp;.src=pg',
-		'NAME' => $profiledata['user_yim'])
-	);
-}
-
-$search_url = append_sid("http://forums.rpgdx.net/search.php?search_author=" . urlencode($profiledata['username']) . "&amp;showresults=posts");
-
-
-// Determine user rank text and image
-
-$poster_rank = '';
-$rank_image = '';
-if ($profiledata['user_rank']) {
-	for ($i = 0; $i < count($ranksrow); $i++) {
-		if ($profiledata['user_rank'] == $ranksrow[$i]['rank_id'] && $ranksrow[$i]['rank_special'])
-		{
-			$poster_rank = $ranksrow[$i]['rank_title'];
-			$rank_image = ($ranksrow[$i]['rank_image']) ? '<img src="'. $ranksrow[$i]['rank_image'] .'" alt="'. $poster_rank .'" title="'. $poster_rank .'" border="0" /><br />' : '';
-		}
-	}
-}
-else {
-	for($i = 0; $i < count($ranksrow); $i++) {
-		if ($profiledata['user_posts'] >= $ranksrow[$i]['rank_min'] && !$ranksrow[$i]['rank_special'])
-		{
-			$poster_rank = $ranksrow[$i]['rank_title'];
-			$rank_image = ($ranksrow[$i]['rank_image']) ? '<img src="'. $ranksrow[$i]['rank_image'] .'" alt="'. $poster_rank .'" title="'. $poster_rank .'" border="0" /><br />' : '';
-		}
-	}
-}
-
-
-
-
 $template->assign_vars(array(
-	'USERNAME'         => $profiledata['username'],
-	'JOINED'           => create_date('d M Y', $profiledata['user_regdate'], $board_config['board_timezone']),
-	'POSTS'            => $profiledata['user_posts'],
-	'POSTS_PERCENTAGE' => sprintf("%01.2f", $posts_percentage),
-	'POSTS_PER_DAY'    => sprintf("%01.2f", $posts_per_day),
-	'RANK'             => $poster_rank,
-	'RANK_IMAGE'       => $rank_image,
-
-	'PM_URL'           => $pm_url,
-	'SEARCH_URL'       => $search_url,
-
-	'LOCATION'         => ($profiledata['user_from'])      ? $profiledata['user_from']      : '&nbsp;',
-	'OCCUPATION'       => ($profiledata['user_occ'])       ? $profiledata['user_occ']       : '&nbsp;',
-	'INTERESTS'        => ($profiledata['user_interests']) ? $profiledata['user_interests'] : '&nbsp;',
-
-	'REVIEWS'          => $reviews['count'],
-	'AVG_REVIEW_SCORE' => sprintf("%01.1f", $reviews['avg_score'])
-	)
-);
-
+    'USERNAME' => $profiledata['username'],
+    'JOINED' => $user->format_date($profiledata['user_regdate'], 'd M Y'),
+    'POSTS' => $profiledata['user_posts'],
+    'POSTS_PERCENTAGE' => sprintf('%01.2f', $posts_percentage),
+    'POSTS_PER_DAY' => sprintf('%01.2f', $profiledata['user_posts'] / $memberdays),
+    'RANK' => $rank['title'] ?? '',
+    'RANK_IMAGE' => $rank['img'] ?? '',
+    'PM_URL' => append_sid('forums/ucp.php', 'i=pm&amp;mode=compose&amp;u=' . $user_id),
+    'SEARCH_URL' => append_sid('forums/search.php', 'author_id=' . $user_id . '&amp;sr=posts'),
+    'LOCATION' => $fields['pf_phpbb_location'] ?? '&nbsp;',
+    'OCCUPATION' => $fields['pf_phpbb_occupation'] ?? '&nbsp;',
+    'INTERESTS' => $fields['pf_phpbb_interests'] ?? '&nbsp;',
+    'REVIEWS' => $reviews['count'],
+    'AVG_REVIEW_SCORE' => sprintf('%01.1f', $reviews['avg_score'] ?? 0),
+));
 
 /* Get all the projects by this user
  */
 
 $result = doQuery("SELECT project_id, project_name FROM ". PROJECTS_TABLE ." WHERE user_id=". $profiledata['user_id'] ." ORDER BY project_name");
-if (mysql_num_rows($result) > 0) {
+if (rpgdx_db_num_rows($result) > 0) {
 	$template->assign_block_vars('projects', array());
 
-	while ($row = mysql_fetch_array($result))
+	while ($row = rpgdx_db_fetch_array($result))
 	{
 		$template->assign_block_vars('projects.project', array(
 			'NAME' => $row['project_name'],

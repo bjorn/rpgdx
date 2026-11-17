@@ -1,224 +1,171 @@
 <?php
-/***************************************************************************
- *                                common.php
- *                            -------------------
- *   begin                : Saturday, Feb 23, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: common.php 5970 2006-05-26 17:46:59Z grahamje $
- *
- ***************************************************************************/
+/**
+*
+* This file is part of the phpBB Forum Software package.
+*
+* @copyright (c) phpBB Limited <https://www.phpbb.com>
+* @license GNU General Public License, version 2 (GPL-2.0)
+*
+* For full copyright and license information, please see
+* the docs/CREDITS.txt file.
+*
+*/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+/**
+* Minimum Requirement: PHP 7.2.0
+*/
 
-if ( !defined('IN_PHPBB') )
+if (!defined('IN_PHPBB'))
 {
-	die("Hacking attempt");
-}
-
-//
-error_reporting  (E_ERROR | E_WARNING | E_PARSE); // This will NOT report uninitialized variables
-// set_magic_quotes_runtime(0); // Disable magic_quotes_runtime
-
-// The following code (unsetting globals)
-// Thanks to Matt Kavanagh and Stefan Esser for providing feedback as well as patch files
-
-// Protect against GLOBALS tricks
-if (isset($_POST['GLOBALS']) || isset($_FILES['GLOBALS']) || isset($_GET['GLOBALS']) || isset($_COOKIE['GLOBALS']))
-{
-	die("Hacking attempt");
-}
-
-// Protect against HTTP_SESSION_VARS tricks
-if (isset($_SESSION) && !is_array($_SESSION))
-{
-	die("Hacking attempt");
-}
-
-if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on')
-{
-	// PHP4+ path
-	$not_unset = array('HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_SERVER_VARS', 'HTTP_SESSION_VARS', 'HTTP_ENV_VARS', 'HTTP_POST_FILES', 'phpEx', 'phpbb_root_path');
-
-	// Not only will array_merge give a warning if a parameter
-	// is not an array, it will actually fail. So we check if
-	// HTTP_SESSION_VARS has been initialised.
-	if (!isset($_SESSION) || !is_array($_SESSION))
-	{
-		$_SESSION = array();
-	}
-
-	// Merge all into one extremely huge array; unset
-	// this later
-	$input = array_merge($_GET, $_POST, $_COOKIE, $_SERVER, $_SESSION, $_ENV, $_FILES);
-
-	unset($input['input']);
-	unset($input['not_unset']);
-
-	while (list($var,) = @each($input))
-	{
-		if (in_array($var, $not_unset))
-		{
-			die('Hacking attempt!');
-		}
-		unset($$var);
-	}
-
-	unset($input);
-}
-
-//
-// addslashes to vars if magic_quotes_gpc is off
-// this is a security precaution to prevent someone
-// trying to break out of a SQL statement.
-//
-if( !false ) // !get_magic_quotes_gpc()
-{
-	// get_magic_quotes_gpc() always returned false when it raised a deprecation warning
-    // (at which point it was automatic),
-	// but it was removed completely from PHP 8.
-	// (!false is true, so this always runs)
-	if( isset($_GET) && is_array($_GET) )
-	{
-		while( list($k, $v) = each($_GET) )
-		{
-			if( is_array($_GET[$k]) )
-			{
-				while( list($k2, $v2) = each($_GET[$k]) )
-				{
-					$_GET[$k][$k2] = addslashes($v2);
-				}
-				@reset($_GET[$k]);
-			}
-			else
-			{
-				$_GET[$k] = addslashes($v);
-			}
-		}
-		@reset($_GET);
-	}
-
-	if(isset($_POST) && is_array($_POST) )
-	{
-		while( list($k, $v) = each($_POST) )
-		{
-			if( is_array($_POST[$k]) )
-			{
-				while( list($k2, $v2) = each($_POST[$k]) )
-				{
-					$_POST[$k][$k2] = addslashes($v2);
-				}
-				@reset($_POST[$k]);
-			}
-			else
-			{
-				$_POST[$k] = addslashes($v);
-			}
-		}
-		@reset($_POST);
-	}
-
-	if(isset($_COOKIE) && is_array($_COOKIE) )
-	{
-		while( list($k, $v) = each($_COOKIE) )
-		{
-			if( is_array($_COOKIE[$k]) )
-			{
-				while( list($k2, $v2) = each($_COOKIE[$k]) )
-				{
-					$_COOKIE[$k][$k2] = addslashes($v2);
-				}
-				@reset($_COOKIE[$k]);
-			}
-			else
-			{
-				$_COOKIE[$k] = addslashes($v);
-			}
-		}
-		@reset($_COOKIE);
-	}
-}
-
-//
-// Define some basic configuration arrays this also prevents
-// malicious rewriting of language and otherarray values via
-// URI params
-//
-$board_config = array();
-$userdata = array();
-$theme = array();
-$images = array();
-$lang = array();
-$nav_links = array();
-$dss_seeded = false;
-$gen_simple_header = FALSE;
-
-include($phpbb_root_path . 'config.'.$phpEx);
-
-if( !defined("PHPBB_INSTALLED") )
-{
-	header('Location: ' . $phpbb_root_path . 'install/install.' . $phpEx);
 	exit;
 }
 
-include($phpbb_root_path . 'includes/constants.'.$phpEx);
-include($phpbb_root_path . 'includes/template.'.$phpEx);
-include($phpbb_root_path . 'includes/sessions.'.$phpEx);
-include($phpbb_root_path . 'includes/auth.'.$phpEx);
-include($phpbb_root_path . 'includes/functions.'.$phpEx);
-include($phpbb_root_path . 'includes/db.'.$phpEx);
+require($phpbb_root_path . 'includes/startup.' . $phpEx);
+require($phpbb_root_path . 'phpbb/class_loader.' . $phpEx);
 
-// We do not need this any longer, unset for safety purposes
-unset($dbpasswd);
+$phpbb_class_loader = new \phpbb\class_loader('phpbb\\', "{$phpbb_root_path}phpbb/", $phpEx);
+$phpbb_class_loader->register();
 
-//
-// Obtain and encode users IP
-//
-// I'm removing HTTP_X_FORWARDED_FOR ... this may well cause other problems such as
-// private range IP's appearing instead of the guilty routable IP, tough, don't
-// even bother complaining ... go scream and shout at the idiots out there who feel
-// "clever" is doing harm rather than good ... karma is a great thing ... :)
-//
-$client_ip = ( !empty($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : ( ( !empty($_ENV['REMOTE_ADDR']) ) ? $_ENV['REMOTE_ADDR'] : getenv('REMOTE_ADDR') );
-$user_ip = encode_ip($client_ip);
+$phpbb_config_php_file = new \phpbb\config_php_file($phpbb_root_path, $phpEx);
+extract($phpbb_config_php_file->get_all());
 
-//
-// Setup forum wide options, if this fails
-// then we output a CRITICAL_ERROR since
-// basic forum information is not available
-//
-$sql = "SELECT *
-	FROM " . CONFIG_TABLE;
-if( !($result = $db->sql_query($sql)) )
+if (!defined('PHPBB_ENVIRONMENT'))
 {
-	message_die(CRITICAL_ERROR, "Could not query config information", "", __LINE__, __FILE__, $sql);
+	@define('PHPBB_ENVIRONMENT', 'production');
 }
 
-while ( $row = $db->sql_fetchrow($result) )
+if (!defined('PHPBB_INSTALLED'))
 {
-	$board_config[$row['config_name']] = $row['config_value'];
+	// Redirect the user to the installer
+	require($phpbb_root_path . 'includes/functions.' . $phpEx);
+
+	// We have to generate a full HTTP/1.1 header here since we can't guarantee to have any of the information
+	// available as used by the redirect function
+	$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
+	$server_port = (!empty($_SERVER['SERVER_PORT'])) ? (int) $_SERVER['SERVER_PORT'] : (int) getenv('SERVER_PORT');
+	$secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 1 : 0;
+
+	if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+	{
+		$secure = 1;
+		$server_port = 443;
+	}
+
+	$script_path = phpbb_get_install_redirect($phpbb_root_path, $phpEx);
+
+	// Eliminate . and .. from the path
+	require($phpbb_root_path . 'phpbb/filesystem/filesystem.' . $phpEx);
+	$phpbb_filesystem = new phpbb\filesystem\filesystem();
+	$script_path = $phpbb_filesystem->clean_path($script_path);
+
+	$url = (($secure) ? 'https://' : 'http://') . $server_name;
+
+	if ($server_port && (($secure && $server_port <> 443) || (!$secure && $server_port <> 80)))
+	{
+		// HTTP HOST can carry a port number...
+		if (strpos($server_name, ':') === false)
+		{
+			$url .= ':' . $server_port;
+		}
+	}
+
+	$url .= $script_path;
+	header('Location: ' . $url);
+	exit;
 }
 
-$allow_install_dirs = getenv('PHPBB_ALLOW_INSTALL_DIRS');
-if ( ($allow_install_dirs !== '1') && (file_exists('install') || file_exists('contrib')) )
+// In case $phpbb_adm_relative_path is not set (in case of an update), use the default.
+$phpbb_adm_relative_path = (isset($phpbb_adm_relative_path)) ? $phpbb_adm_relative_path : 'adm/';
+$phpbb_admin_path = (defined('PHPBB_ADMIN_PATH')) ? PHPBB_ADMIN_PATH : $phpbb_root_path . $phpbb_adm_relative_path;
+
+// Include files
+require($phpbb_root_path . 'includes/functions.' . $phpEx);
+require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
+include($phpbb_root_path . 'includes/functions_compatibility.' . $phpEx);
+
+require($phpbb_root_path . 'includes/constants.' . $phpEx);
+require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
+
+// Registered before building the container so the development environment stay capable of intercepting
+// the container builder exceptions.
+if (PHPBB_ENVIRONMENT === 'development')
 {
-	message_die(GENERAL_MESSAGE, 'Please_remove_install_contrib');
+	\phpbb\debug\debug::enable();
+}
+else
+{
+	set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');
 }
 
-//
-// Show 'Board is disabled' message if needed.
-//
-if( $board_config['board_disable'] && !defined("IN_ADMIN") && !defined("IN_LOGIN") )
+$phpbb_class_loader_ext = new \phpbb\class_loader('\\', "{$phpbb_root_path}ext/", $phpEx);
+$phpbb_class_loader_ext->register();
+
+// Set up container
+try
 {
-	message_die(GENERAL_MESSAGE, 'Board_disable', 'Information');
+	$phpbb_container_builder = new \phpbb\di\container_builder($phpbb_root_path, $phpEx);
+
+	// Check that cache directory is writable before trying to build container
+	$cache_dir = $phpbb_container_builder->get_cache_dir();
+	if (file_exists($cache_dir) && !is_writable($phpbb_container_builder->get_cache_dir()))
+	{
+		die('Unable to write to the cache directory path "' . $cache_dir . '". Ensure that the web server user can write to the cache folder.');
+	}
+
+	$phpbb_container = $phpbb_container_builder->with_config($phpbb_config_php_file)->get_container();
+}
+catch (InvalidArgumentException $e)
+{
+	if (PHPBB_ENVIRONMENT !== 'development')
+	{
+		trigger_error(
+			'The requested environment ' . PHPBB_ENVIRONMENT . ' is not available.',
+			E_USER_ERROR
+		);
+	}
+	else
+	{
+		throw $e;
+	}
 }
 
-?>
+if ($phpbb_container->getParameter('debug.error_handler'))
+{
+	\phpbb\debug\debug::enable();
+}
+
+$phpbb_class_loader->set_cache($phpbb_container->get('cache.driver'));
+$phpbb_class_loader_ext->set_cache($phpbb_container->get('cache.driver'));
+
+$phpbb_container->get('dbal.conn')->set_debug_sql_explain($phpbb_container->getParameter('debug.sql_explain'));
+$phpbb_container->get('dbal.conn')->set_debug_load_time($phpbb_container->getParameter('debug.load_time'));
+require($phpbb_root_path . 'includes/compatibility_globals.' . $phpEx);
+
+register_compatibility_globals();
+
+// Add own hook handler
+require($phpbb_root_path . 'includes/hooks/index.' . $phpEx);
+$phpbb_hook = new phpbb_hook(array('exit_handler', 'phpbb_user_session_handler', 'append_sid', array('template', 'display')));
+
+/* @var $phpbb_hook_finder \phpbb\hook\finder */
+$phpbb_hook_finder = $phpbb_container->get('hook_finder');
+
+foreach ($phpbb_hook_finder->find() as $hook)
+{
+	@include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
+}
+
+/**
+* Main event which is triggered on every page
+*
+* You can use this event to load function files and initiate objects
+*
+* NOTE:	At this point the global session ($user) and permissions ($auth)
+*		do NOT exist yet. If you need to use the user object
+*		(f.e. to include language files) or need to check permissions,
+*		please use the core.user_setup event instead!
+*
+* @event core.common
+* @since 3.1.0-a1
+*/
+$phpbb_dispatcher->dispatch('core.common');

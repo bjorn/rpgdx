@@ -1,1 +1,5 @@
 *       text=auto
+
+# Preserve official release bytes for upstream integrity checks.
+/forums/** -text
+/tools/phpbb-install/** -text

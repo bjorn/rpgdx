@@ -11,13 +11,13 @@ $result = doQuery(
 	"WHERE contest_status != ". CON_CLOSED ." GROUP BY contest_id"
 );
 
-if (mysql_num_rows($result) > 0)
+if (rpgdx_db_num_rows($result) > 0)
 {
 	$template->assign_block_vars('new_contests', array(
-		'NUMBER' => mysql_num_rows($result)
+		'NUMBER' => rpgdx_db_num_rows($result)
 	));
 
-	while ($row = mysql_fetch_object($result))
+	while ($row = rpgdx_db_fetch_object($result))
 	{
 		$template->assign_block_vars('new_contests.contest', array(
 			'NAME'  => $row->contest_name,
@@ -40,13 +40,13 @@ $result = doQuery(
 	"WHERE contest_status = ". CON_CLOSED ." GROUP BY contest_id"
 );
 
-if (mysql_num_rows($result) > 0)
+if (rpgdx_db_num_rows($result) > 0)
 {
 	$template->assign_block_vars('old_contests', array(
-		'NUMBER' => mysql_num_rows($result)
+		'NUMBER' => rpgdx_db_num_rows($result)
 	));
 
-	while ($row = mysql_fetch_object($result))
+	while ($row = rpgdx_db_fetch_object($result))
 	{
 		$template->assign_block_vars('old_contests.contest', array(
 			'NAME'  => $row->contest_name,

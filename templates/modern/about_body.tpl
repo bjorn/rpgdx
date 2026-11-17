@@ -24,7 +24,7 @@ You can help make this community grow larger by linking to our site. Here's a li
 &lt;img src="http://rpgdx.net/images/rpgdx_banner.png" width="88" height="31" border="0"&gt;
 &lt;/a&gt;
 </pre>
-<a href="http://rpgdx.net/">
+<a href="{U_NEWS}">
 <img src="images/rpgdx_banner.png" width="88" height="31" border="0">
 </a>
 </p>

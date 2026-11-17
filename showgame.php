@@ -29,7 +29,7 @@ $result = doQuery(
 	"WHERE project_id=". $project_id
 );
 
-if (!$game = mysql_fetch_object($result)) {
+if (!$game = rpgdx_db_fetch_object($result)) {
 	abort_with_error('No such project, it might have been removed.');
 }
 
@@ -104,10 +104,10 @@ $result = doQuery(
 	"ORDER BY screenshot_id"
 );
 
-if (mysql_num_rows($result) > 0) {
+if (rpgdx_db_num_rows($result) > 0) {
 	$template->assign_block_vars('screens', array());
 
-	while ($row = mysql_fetch_object($result)) {
+	while ($row = rpgdx_db_fetch_object($result)) {
 		$template->assign_block_vars('screens.shot', array(
 			'LINK'  => $row->screenshot_url,
 			'IMG'   => $row->screenshot_url.'.thumb.jpg',
@@ -164,7 +164,7 @@ $result = doQuery(
 	"WHERE project_id='$game->project_id' GROUP BY project_id"
 );
 
-if ($result && $row = mysql_fetch_assoc($result)) {
+if ($result && $row = rpgdx_db_fetch_assoc($result)) {
 	$template->assign_block_vars('reviews', array(
 		'LINK'    => "<a href='showreview.php?project_id=$game->project_id'>". $row['number']. ' review'. (($row['number'] > 1) ? 's' : '') .'</a>',
     'URL'     => append_sid('showreview.php?project_id='. $game->project_id),
@@ -182,7 +182,7 @@ $result = doQuery(
 	"WHERE project_id=$project_id ORDER BY review_added"
 );
 
-while ($row = mysql_fetch_object($result))
+while ($row = rpgdx_db_fetch_object($result))
 {
 	$template->assign_block_vars('review', array(
 		'REVIEW_ID'            => $row->review_id,

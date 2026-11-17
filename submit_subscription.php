@@ -44,7 +44,7 @@ if ($action == 'unsubscribe') {
 		"SELECT entry_id, entry_project, entry_contest FROM ". CONTEST_ENTRIES_TABLE ." ".
 		"WHERE entry_id = $entry_id"
 	);
-	if (!$entry = mysql_fetch_object($result)) {
+	if (!$entry = rpgdx_db_fetch_object($result)) {
 		abort_with_error('Somehow you didn\'t specify a valid entry_id.');
 	}
 

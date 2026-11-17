@@ -10,7 +10,7 @@ $template->set_filenames(array(
 
 if ($cat > 0) {
 	if ($result = doQuery("SELECT * FROM ". PROJECT_TYPES_TABLE ." WHERE type_id = $cat")) {
-		$genre = mysql_fetch_object($result);
+		$genre = rpgdx_db_fetch_object($result);
 	}
 
 	$template->assign_vars(array(
@@ -28,9 +28,7 @@ if (!$order) {
 		if ($userdata['user_projects_sort_method'] > 0) {
 			$order = $userdata['user_projects_sort_method'];
 		} else {
-			$result = doQuery("SELECT user_projects_last_sort_method AS sort_method FROM ". USERS_TABLE. " WHERE user_id=". $userdata['user_id']);
-			$row = mysql_fetch_object($result);
-			$order = $row->sort_method;
+			$order = $userdata['user_projects_last_sort_method'];
 		}
 	} else {
 		$order = PSORT_RATING;
@@ -38,7 +36,7 @@ if (!$order) {
 }
 else {
 	if ($userdata['session_logged_in'] && $order >= 1 && $order <= 4) {
-		doQuery("UPDATE ". USERS_TABLE ." SET user_projects_last_sort_method = ". intval($order) ." WHERE user_id=". $userdata['user_id']);
+		rpgdx_save_preferences(array('user_projects_last_sort_method' => $order));
 	}
 }
 
@@ -67,7 +65,7 @@ $result = doQuery(
 	"WHERE project_type = $genre->type_id GROUP BY ". PROJECTS_TABLE .".project_id ORDER BY $order_part"
 );
 
-if (mysql_num_rows($result) > 0) {
+if (rpgdx_db_num_rows($result) > 0) {
 	$template->assign_block_vars('rpglist', array(
 		'HIDDEN_FORM_DATA'  => '<input type="hidden" name="cat" value="'. $cat .'">',
 		'SORTMODE_ACTION'   => 'showcategory.php',
@@ -75,7 +73,7 @@ if (mysql_num_rows($result) > 0) {
 		'SORTMODE_OPTIONS'  => $sortmode_options)
 	);
 
-	while ($row = mysql_fetch_object($result)) {
+	while ($row = rpgdx_db_fetch_object($result)) {
 		$template->assign_block_vars('rpglist.rpg', array(
 			'LINK'        => append_sid("showgame.php?project_id=$row->project_id"),
 			'NAME'        => $row->project_name,

@@ -1,0 +1,154 @@
+/* Topic lists keep the compact columns of the original RPGDX forum. */
+.section-viewforum .rpgdx-forum-info { margin: 12px 9px 6px; }
+.section-viewforum .rpgdx-forum-info p { margin: 0; font-size: 10px; line-height: 12px; }
+.section-viewforum .forumbg:has(.rpgdx-topiclist) {
+    margin: 0 5px 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+.section-viewforum .rpgdx-topiclist li.header {
+    padding: 0;
+    background: #505082;
+}
+.section-viewforum .rpgdx-topiclist li.row {
+    padding: 0;
+    border-top: 0;
+    border-bottom: 1px solid #505078;
+    background: #424273;
+}
+.section-viewforum .rpgdx-topiclist li.row:hover { background: #484878; }
+.section-viewforum .rpgdx-topiclist dl.row-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 62px 109px 59px 150px;
+    align-items: center;
+    margin: 0;
+    background-position: 2px center;
+    background-size: 19px 18px;
+    min-height: 21px;
+}
+.section-viewforum .rpgdx-topiclist dl::after { display: none; }
+.section-viewforum .rpgdx-topiclist dl.row-item dt,
+.section-viewforum .rpgdx-topiclist dl.row-item dd {
+    float: none;
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: 10px/21px var(--rpgdx-font);
+}
+.section-viewforum .rpgdx-topiclist dt { min-width: 0; }
+.section-viewforum .rpgdx-topiclist dt .list-inner {
+    min-height: 0;
+    margin: 0;
+    padding: 0 3px 0 21px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.section-viewforum .rpgdx-topiclist a.topictitle {
+    font: 11px/21px var(--rpgdx-font);
+}
+.section-viewforum .rpgdx-topiclist dd.topic-author { text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.section-viewforum .rpgdx-topiclist dd.lastpost { text-align: right; white-space: nowrap; }
+.section-viewforum .rpgdx-topiclist dd.lastpost > span { padding: 0; }
+.section-viewforum .rpgdx-topiclist li.header dl { min-height: 19px; background: none; }
+.section-viewforum .rpgdx-topiclist li.header dt,
+.section-viewforum .rpgdx-topiclist li.header dd {
+    font: bold 13px/19px var(--rpgdx-font);
+    text-align: center;
+    text-transform: none;
+    color: #b4b4c8;
+}
+.section-viewforum .rpgdx-topiclist li.header dd { border-left: 1px solid #484878; }
+.section-viewforum .rpgdx-topiclist li.header .list-inner { padding: 0; }
+.section-viewforum .rpgdx-topiclist a.row-item-link { width: 19px; height: 18px; margin: -9px 0 0 1px; }
+.section-viewforum .rpgdx-topiclist .topic-flags { font-size: 10px; }
+.section-viewforum .rpgdx-topiclist .row .pagination {
+    display: inline;
+    float: none;
+    margin: 0 0 0 3px;
+    font-size: 10px;
+}
+.section-viewforum .rpgdx-topiclist .row .pagination::before { content: "[ "; }
+.section-viewforum .rpgdx-topiclist .row .pagination::after { content: " ]"; }
+.section-viewforum .rpgdx-topiclist .row .pagination ul { display: inline; padding: 0; }
+.section-viewforum .rpgdx-topiclist .row .pagination li + li::before { content: ", "; }
+.section-viewforum .pagination li a,
+.section-viewforum .pagination li span {
+    min-height: 0;
+    padding: 0 1px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    font: 10px/15px var(--rpgdx-font);
+    box-shadow: none;
+}
+.section-viewforum .pagination li.active span { color: #b4b4c8; }
+.section-viewforum .pagination li a:hover { background: transparent; text-decoration: underline; }
+.section-viewforum .pagination li.page-jump a { padding: 0 2px; }
+.section-viewforum .pagination li.page-jump a i { font-size: 11px; }
+.section-viewforum .pagination .arrow a { min-width: 0; }
+.section-viewforum .action-bar { margin: 5px 5px 6px; font-size: 10px; }
+.section-viewforum .action-bar .button {
+    min-height: 0;
+    padding: 0 3px;
+    border-radius: 0;
+    font: 11px/17px var(--rpgdx-font);
+}
+.section-viewforum .action-bar .pagination { line-height: 18px; }
+.section-viewforum .search-box { margin-left: 8px; }
+.section-viewforum .search-box .inputbox { height: 19px; font-size: 10px; }
+.section-viewforum .search-box .button { line-height: 17px; }
+.section-viewforum .permissions { text-align: right; }
+.section-viewforum .permissions p { font-size: 10px; }
+.section-viewforum .online-list { margin: 6px 9px; font-size: 10px; }
+.section-viewforum .online-list h3 { font-size: 11px; }
+@media (max-width: 700px) {
+    .section-viewforum .rpgdx-topiclist dl.row-item { display: block; }
+    .section-viewforum .rpgdx-topiclist dt .list-inner { padding-left: 23px; white-space: normal; }
+    .section-viewforum .rpgdx-topiclist li.header dt { padding: 0; }
+    .section-viewforum .rpgdx-topiclist li.row { padding: 3px 0; }
+    .section-viewforum .rpgdx-topiclist dt { line-height: 16px; }
+    .section-viewforum .rpgdx-topiclist .responsive-show { font-size: 10px; line-height: 15px; }
+    .section-viewforum .rpgdx-topiclist .left-box { float: none; }
+    .section-viewforum .rpgdx-topiclist .row .pagination { white-space: nowrap; }
+    .section-viewforum .action-bar .pagination { float: none; clear: both; padding-top: 3px; }
+    .section-viewforum .search-box { display: inline-block; float: none; margin-left: 4px; }
+}
+.section-viewforum .rpgdx-topiclist dd.topic-author { font-size: 11px; }
+.section-viewforum .rpgdx-topiclist dd.topic-author a { color: #fff !important; font-weight: normal; }
+@media (min-width: 701px) {
+    .section-viewforum .action-bar.bar-top { margin-top: 20px; position: relative; }
+    .section-viewforum .bar-top > .pagination { position: absolute; right: 0; top: -18px; }
+}
+.section-viewforum .action-bar .pagination li.page-jump a { border: 0; }
+.section-viewforum .action-bar .search-box .inputbox { height: 19px; font-size: 10px; }
+.section-viewforum .rpgdx-topic-legend {
+    display: grid;
+    grid-template-columns: 132px 146px auto;
+    gap: 3px;
+    float: left;
+    margin: 8px 9px 16px;
+    padding: 0;
+    list-style: none;
+    font: 10px/18px var(--rpgdx-font);
+}
+.section-viewforum .rpgdx-topic-legend li { display: flex; align-items: center; gap: 2px; }
+.section-viewforum .rpgdx-topic-legend img { flex-shrink: 0; }
+.section-viewforum .permissions { min-height: 76px; }
+@media (max-width: 700px) {
+    .section-viewforum .rpgdx-topic-legend {
+        float: none;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 3px 6px;
+        margin: 8px 5px 16px;
+    }
+    .section-viewforum .permissions { min-height: 0; }
+}
+
+.section-viewforum .rpgdx-page-number { display: inline-block; margin: 0 6px; font: 10px/18px var(--rpgdx-font); }
+@media (min-width: 701px) {
+    .section-viewforum .permissions { clear: none; margin-top: 8px; }
+}

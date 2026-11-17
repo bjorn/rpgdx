@@ -1,0 +1,23 @@
+{
+  "phpbb_version": "3.3.19",
+  "templates": {
+    "faq_body.html": "925a5fe2a61e63317a7b7c4e5ab2ed99cdde4da77bcd7f38484d1cfeeb4fba7b",
+    "forumlist_body.html": "71110b0be8a49c95ccb9d2698fdb783079b9f4075ff1807447b6c7ddb327f3c3",
+    "index_body.html": "3463e2fa95dc62497ad65ddc75af47d806f9d730d6ff5733ecf6b5074f9867e1",
+    "jumpbox.html": "21f40b6c6bb7c9ce824ab7aed38b78704706cd79433349eb6a4cddc274901c92",
+    "login_body.html": "c0fdfc30f23bc9afc2c4f683898fc682949be3f14667c89101fc0c614045c38a",
+    "memberlist_body.html": "74721b4a40d5a016f0399f47700bc603645e4a10e1d1958ce4e55f0e00850028",
+    "memberlist_team.html": "a198e4f95457cb56cdf7400e84cb8e967a286c05362c85423173820e1402e506",
+    "memberlist_view.html": "45a57f0ccf8f18084c9035a9cf1430e85951f566da6d6c99e2277c8dde772cc4",
+    "message_body.html": "da0c36cfedbf0817c00317ca9f612f65c5de7dd94dddbb4afbbef8f2c5210d07",
+    "navbar_footer.html": "5fa68677f925807b7ce61bae024f507e27c78f663d10d4c98e5d259969d4925c",
+    "navbar_header.html": "84a1c89166c29ab73b37afa02269ec6664231955403aa615c6a99b6489920a16",
+    "overall_header.html": "59cd62d73319ad7b4531fb6a85a902f32c2803fdf695ec0f2abcfadf88194a1f",
+    "pagination.html": "55e81798a0134185cfc557ccd463c1fa782b125999da4012997deb815539c2a0",
+    "search_body.html": "2f2b52beb761081eda8665393682896510b0b67732270d4920ce0558907618d5",
+    "search_results.html": "350f46d70df6ddb1616466566b763b8d66aa46b445c30ace341cfb6d5f496019",
+    "ucp_header.html": "b6e10fb440b906d544a5ec03dfa6df77642b43e4ce9a4e7dcf3d255ce91ebd07",
+    "viewforum_body.html": "71a7366ca72c590b6d567c2b570e9ae32e7253f08728fc2952ad98c39f4043d2",
+    "viewtopic_body.html": "22aadce2f6e786ee25633cb7cf4964b0cb89195edeabda9ca04171f6befd113e"
+  }
+}

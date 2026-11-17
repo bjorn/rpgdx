@@ -6,7 +6,7 @@
 :: {subtitle.TITLE}
 <!-- END subtitle -->
 </title>
-<meta name="Keywords" content="RPG RPGDX Indie IndieRPG Mandrake Bjørn Lindeijer Community Games Free independant programmers community">
+<meta name="Keywords" content="RPG RPGDX Indie IndieRPG Mandrake BjÃ¸rn Lindeijer Community Games Free independant programmers community">
 <meta name="Description" content="A community site for independent RPG programmers.">
 <link rel="stylesheet" href="{TEMPL_DIR}stylesheet.css" type="text/css">
 </head>

@@ -18,7 +18,7 @@ if (!isset($action) || !($action == 'add' || $action == 'remove')) {
 
 if ($action == 'add') {
 	// Check if this project has already reached its screenshot limit
-	$row = mysql_fetch_array(doQuery(
+	$row = rpgdx_db_fetch_array(doQuery(
 		"SELECT COUNT(*) AS scr_count FROM ". PROJECT_SCREENSHOTS_TABLE ." WHERE project_id=$project_id"
 	));
 	if ($row['scr_count'] >= $rpgdx_config['screenshots_limit']) {
@@ -33,10 +33,15 @@ if ($action == 'add') {
 		$error = '';
 
 		// Check caption
-		if (!(isset($_POST['screenshot_caption']) && strlen($_POST['screenshot_caption']) > 0)) {
+		// The request object retains the original text before SQL escaping.
+		$caption = $request->raw_variable('screenshot_caption', '', \phpbb\request\request_interface::POST);
+		if (!is_string($caption) || $caption === '') {
 			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'No caption specified.';
 		}
-		else if (strlen($_POST['screenshot_caption']) > 50) {
+		else if (!mb_check_encoding($caption, 'UTF-8')) {
+			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'Caption must contain valid UTF-8 text.';
+		}
+		else if (mb_strlen($caption, 'UTF-8') > 50) {
 			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'Caption exceeds maximum length (50 characters).';
 		}
 		// Check the image type and size
@@ -88,7 +93,7 @@ if ($action == 'remove' && isset($_POST['screenshots']))
 			abort_with_error('Error, invalid screenshot id: '. $screenshot_id);
 		}
 		
-		$row = mysql_fetch_array(doQuery(
+		$row = rpgdx_db_fetch_array(doQuery(
 			"SELECT project_id, ". PROJECT_SCREENSHOTS_TABLE .".upload_id, upload_ext ".
 			"FROM ". PROJECT_SCREENSHOTS_TABLE ." LEFT JOIN ". UPLOADS_TABLE ." USING (upload_id) ".
 			"WHERE screenshot_id = ". intval($screenshot_id)));

@@ -7,11 +7,11 @@
 <table border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td class="formNameCell" align="right">Username:&nbsp;</td>
-    <td width="150"><input type="text" name="username" size="25" maxlength="40" class="formInput" value="{USERNAME}"></td>
+    <td width="150"><input type="text" name="username" size="25" maxlength="255" autocomplete="username" class="formInput" value="{USERNAME}"></td>
   </tr>
   <tr>
     <td class="formNameCell" align="right">Password:&nbsp;</td>
-    <td><input type="password" name="password" size="25" maxlength="32" class="formInput"></td>
+    <td><input type="password" name="password" size="25" autocomplete="current-password" class="formInput"></td>
   </tr>
 </table>
 <br />
@@ -21,3 +21,5 @@
 </form>
 When you choose to be remembered you will be automatically logged in on future visits to RPGDX. You can stop this behaviour by explicitly logging out.
 </div>
+
+<p style="text-align: center;"><a href="{U_SEND_PASSWORD}">Forgot your password?</a></p>

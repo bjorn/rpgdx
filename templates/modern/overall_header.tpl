@@ -7,11 +7,13 @@
 &gt; {subtitle.TITLE}
 <!-- END subtitle -->
 </title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="Keywords" content="rpg, rpgs, rpgdx, indie, indierpg, mandrake, community, game, games, free, independant, programmers, community, graphics, sound, music, development, projects, resources, graphics, sound, music, qbasic, qb, quickbasic, c, c++">
 <meta name="Description" content="A community site for independent RPG programmers, allowing project pages, discussion on forums and resource sharing.">
+<!-- BEGIN production_analytics -->
 <script defer data-domain="rpgdx.net" src="https://plausible.io/js/script.js"></script>
+<!-- END production_analytics -->
 <link rel="stylesheet" href="{TEMPL_DIR}stylesheet.css?v={STYLE_VERSION}" type="text/css">
 <link rel="icon" href="data:,">
 </head>
@@ -20,7 +22,7 @@
 
 <header class="site-header-row">
   <div class="site-header-logo">
-    <a href="http://rpgdx.net/"><img src="{TEMPL_DIR}images/rpgdx_logo.png" alt="RPGDX" title="" /></a>
+    <a href="{U_NEWS}"><img src="{TEMPL_DIR}images/rpgdx_logo.png" alt="RPGDX" title="" /></a>
   </div>
   <div class="site-header-banner">
     <img src="{TEMPL_DIR}images/rpgdx_logotext.png" alt="The center of Indie-RPG gaming" title="" />

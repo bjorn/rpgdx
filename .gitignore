@@ -5,3 +5,17 @@ uploads/*.gif
 forums/images/avatars/*.jpg
 forums/images/avatars/*.png
 forums/images/avatars/*.gif
+forums/cache/*
+!forums/cache/.htaccess
+!forums/cache/index.htm
+forums/files/*
+!forums/files/.htaccess
+!forums/files/index.htm
+forums/store/*
+!forums/store/.htaccess
+!forums/store/index.htm
+forums/images/avatars/upload/*
+!forums/images/avatars/upload/index.htm
+!forums/images/avatars/upload/.htaccess
+__pycache__/
+*.pyc

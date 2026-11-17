@@ -85,7 +85,7 @@ if (($action == "edit" || $action == "remove") && $article_id > 0 && !isset($sub
 {
 	// Get information about the selected article
 	$result = doQuery("SELECT * FROM ". ARTICLES_TABLE ." WHERE article_id='$article_id'");
-	if ($row = mysql_fetch_array($result)) {
+	if ($row = rpgdx_db_fetch_array($result)) {
 		foreach ($row as $key => $value) {
       $form[$key] = htmlentities($value);
 			//$row["$key"] = htmlentities($value);
@@ -133,7 +133,7 @@ if ($action == "edit" || $action == "add")
 {
 	$type_selection = "";
 	$result = doQuery("SELECT * FROM ". ARTICLE_TYPES_TABLE);
-	while ($row = mysql_fetch_object($result))
+	while ($row = rpgdx_db_fetch_object($result))
 	{
 		$type_selection .=
 			"<input type=\"radio\" value=\"$row->type_id\" name=\"article_type\"".

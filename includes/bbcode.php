@@ -25,7 +25,7 @@ function prepare_for_store($message, $bbcode_uid = '')
 	$message = preg_replace($html_entities_match, $html_entities_replace, $message);
 
 	if ($rpgdx_config['use_bbcode'] && $bbcode_uid != '') {
-		$message = bbencode_first_pass($message, $bbcode_uid);
+		$message = \Rpgdx\Legacy\bbencode_first_pass($message, $bbcode_uid);
 	}
 
 	return $message;
@@ -42,12 +42,12 @@ function prepare_for_display($message, $bbcode_uid = '', $tpl_filename = 'bbcode
 	}
 
   if ($bbcode_uid != '') {
-    $message = bbencode_second_pass($message, $bbcode_uid, $tpl_filename);
+    $message = \Rpgdx\Legacy\bbencode_second_pass($message, $bbcode_uid, $tpl_filename);
   }
 
   // Convert text links to clickable links
 	if ($links) {
-		$message = make_clickable($message);
+		$message = \Rpgdx\Legacy\make_clickable($message);
 	}
 
   return $message;

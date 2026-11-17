@@ -489,3 +489,8 @@ TD.formNameCell {
 
 /* other things from phpbb2 */
 th.thHead,td.catHead { background-color: rgb(80,80,130); }
+
+img.avatar {
+  background-color: rgb(56,56,97);
+  border: 2px solid rgb(56,56,97);
+}
