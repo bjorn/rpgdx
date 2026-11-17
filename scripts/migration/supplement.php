@@ -178,6 +178,8 @@ foreach (['rpgdx_articles' => 'user_id', 'rpgdx_news' => 'user_id', 'rpgdx_proje
     // Existing references to deleted users remain historical references.
     $check("$table ownership mapping", $scalar("SELECT COUNT(*) FROM `$table` t JOIN $old.`$table` s USING (" . ['rpgdx_articles'=>'article_id', 'rpgdx_news'=>'news_id', 'rpgdx_projects'=>'project_id', 'rpgdx_reviews'=>'review_id', 'rpgdx_contest_votes'=>'vote_id'][$table] . ") JOIN rpgdx_user_id_map m ON m.legacy_user_id=s.`$column` WHERE t.`$column` <> m.user_id"));
 }
+require __DIR__ . '/contest-integrity-schema.php';
+rpgdx_migrate_contest_integrity_schema($pdo);
 $pdo->exec('CREATE TABLE IF NOT EXISTS rpgdx_user_preferences (user_id INT UNSIGNED NOT NULL PRIMARY KEY, user_theme INT NOT NULL DEFAULT 0, user_projects_sort_method TINYINT UNSIGNED NOT NULL DEFAULT 0, user_projects_last_sort_method TINYINT UNSIGNED NOT NULL DEFAULT 2) ENGINE=InnoDB');
 $pdo->exec('DELETE FROM rpgdx_user_preferences');
 $pdo->exec("INSERT INTO rpgdx_user_preferences SELECT m.user_id, s.user_theme, s.user_projects_sort_method, s.user_projects_last_sort_method FROM $old.phpbb_users s JOIN rpgdx_user_id_map m ON m.legacy_user_id=s.user_id");

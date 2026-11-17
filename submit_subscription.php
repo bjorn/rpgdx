@@ -1,5 +1,6 @@
 <?php
-include_once("includes/main.php");
+include_once('includes/main.php');
+include_once('includes/contest.php');
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 	abort_with_error('Contest subscriptions require a submitted form.');
@@ -10,11 +11,10 @@ $project_id = $request->variable('project_id', 0, false, \phpbb\request\request_
 $contest_id = $request->variable('contest_id', 0, false, \phpbb\request\request_interface::POST);
 $entry_id = $request->variable('entry_id', 0, false, \phpbb\request\request_interface::POST);
 
-// Standard authorisation
 if (!$userdata['session_logged_in']) {
 	abort_with_error('You have to be logged in.');
 }
-if (!isset($action) || !($action == 'subscribe' || $action == 'unsubscribe')) {
+if (!isset($action) || !($action === 'subscribe' || $action === 'unsubscribe')) {
 	abort_with_error('No or invalid action specified.');
 }
 
@@ -22,52 +22,17 @@ if (!check_form_key('rpgdx_contest_' . $action)) {
 	abort_with_error('Your form has expired. Please try again.');
 }
 
-
-if ($action == 'subscribe') {
-	if (!(isset($project_id) && $project_id > 0)) {
-		abort_with_error('Somehow you didn\'t specify a valid project_id.');
+$user_id = (int) $userdata['user_id'];
+$is_admin = (int) $userdata['user_level'] === ADMIN;
+try {
+	if ($action === 'subscribe') {
+		rpgdx_contest_subscribe_project($project_id, $contest_id, $user_id, $is_admin);
+	} else {
+		$contest_id = rpgdx_contest_unsubscribe_entry($entry_id, $user_id, $is_admin);
 	}
-	if (!(isset($contest_id) && $contest_id > 0)) {
-		abort_with_error('Somehow you didn\'t specify a valid contest_id.');
-	}
-	if ($error = check_access_level(PROJECTS_TABLE, 'project_id', $project_id)) {
-		abort_with_error($error);
-	}
-
-	// Subscribe this user with this project to this contest
-	doQuery(
-		"INSERT INTO ". CONTEST_ENTRIES_TABLE ." ".
-		"(entry_project, entry_contest, entry_date) VALUES ".
-		"($project_id, $contest_id, NOW())"
-	);
+} catch (RpgdxContestMutationException $error) {
+	abort_with_error($error->getMessage());
 }
 
-
-if ($action == 'unsubscribe') {
-	// Retrieve the contest entry to be removed
-	if (!(isset($entry_id) && $entry_id > 0)) {
-		abort_with_error('Somehow you didn\'t specify a valid entry_id.');
-	}
-	$result = doQuery(
-		"SELECT entry_id, entry_project, entry_contest FROM ". CONTEST_ENTRIES_TABLE ." ".
-		"WHERE entry_id = $entry_id"
-	);
-	if (!$entry = rpgdx_db_fetch_object($result)) {
-		abort_with_error('Somehow you didn\'t specify a valid entry_id.');
-	}
-
-	$contest_id = $entry->entry_contest;
-
-	// Check wether the current user has the right to perform the unsubscription
-	if ($error = check_access_level(PROJECTS_TABLE, 'project_id', $entry->entry_project)) {
-		abort_with_error($error);
-	}
-
-	// Unsubscribe by removed the contest entry
-	doQuery("DELETE FROM ". CONTEST_ENTRIES_TABLE ." WHERE entry_id = $entry_id");
-}
-
-
-// Return the user to the contest page
 header("Location: showcontest.php?contest_id=$contest_id");
 ?>

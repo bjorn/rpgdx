@@ -31,6 +31,55 @@ run the same PHP commands as the web user. Verify forum and site login, posting 
 phpBB 3.3.19 supplies the security fixes omitted from the 3.3.18 packages; see
 [the official changelog](https://www.phpbb.com/community/docs/CHANGELOG.html#v3318).
 
+### Contest integrity schema upgrade
+
+The contest mutation handlers require InnoDB transactions and their supporting
+unique indexes. Before deploying handlers from this release to an existing
+database, close contest and project writes, take a backup, and run this command
+from the prepared release as the database application user:
+
+```bash
+php scripts/migration/contest-integrity.php
+```
+
+The command checks engines, index definitions, and duplicate records before
+changing data or schema. Unexpected duplicate project/contest entries or
+user/category votes stop it without changes. Resolve those records explicitly
+and retain the decision audit; the migration never deletes a row. A completed
+run converts all five contest-related tables to InnoDB and installs the required
+indexes. It is safe to rerun.
+
+One explicit data correction preserves the November 2007 contest's joint first
+place. [Terry awarded both entrants first place](https://rpgdx.net/forums/viewtopic.php?p=23221#23221),
+then [confirmed Bjorn had added their award tags](https://rpgdx.net/forums/viewtopic.php?p=23280#23280).
+Votes 249 and 250 encode those administrative awards under Bjorn's account (9).
+After checking both exact records, category 19, eligible entries 83 and 84, and
+closed contest 7, the migration reassigns only vote 250 to Terry's account (35).
+This is an administrative correction approved by Bjorn, not a claim that Terry
+cast a ballot. Both scores and first-place awards remain unchanged, and the
+normal unique user/category index applies without a schema exception. Changed
+or incomplete historical records are refused; an already corrected pair is
+accepted unchanged. The migration logs the correction when it applies it.
+
+If the supplemental phpBB2 migration reports duplicates, reconcile them in the
+disposable source database and retain the decision audit there before rerunning
+the complete supplemental step. Correcting only its target copy is ineffective
+because the next supplemental run deliberately replaces those application
+tables from the disposable source again. Never alter the original backup.
+
+Do not deploy the transaction-dependent PHP handlers until this command has
+completed successfully. Keep writes closed between its duplicate preflight and
+completion so a new duplicate cannot race the unique-index creation. If an
+`ALTER TABLE` is interrupted, leave the handlers undeployed and rerun the same
+command; it resumes from the engines and indexes that are already correct.
+
+Registration and voting deliberately lock the selected contest row through each
+transaction. This serializes writes within one contest, including different
+voters, so phase transitions cannot race validated mutations and concurrent vote
+replacements cannot interleave. The expected contests are small, making this
+correctness-first contention tradeoff acceptable; unrelated contests remain
+independent.
+
 ## Local rehearsal
 
 Keep the SQL backup outside the checkout. It contains private account data and
@@ -197,7 +246,9 @@ release beside the current deployment, then switch code and database together.
    through the documented environment variables.
 5. Give the target database account temporary SELECT access to the source and
    run `MIGRATION_SOURCE_DB=source_database MIGRATION_LEGACY_FORUMS=/private/old-forum php scripts/migration/supplement.php`.
-   Review every check and any missing-asset audit rows. Then run
+   Review every check and any missing-asset audit rows. This supplemental step
+   invokes the same contest integrity migration and must finish before the new
+   handlers are served. Then run
    `php scripts/migration/finish.php` to activate the style/extension and rebuild
    search. Remove source-database access afterward. Do not use the local
    `finalize.sh` in production because it deliberately disables mail and HTTPS
