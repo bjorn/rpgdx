@@ -197,9 +197,15 @@ function bbencode_second_pass($text, $uid)
 	$replacements = array();
 
 	// [img]image_url_here[/img] code..
-	// This one gets first-passed..
-	$patterns[] = "#\[img:$uid\]([^?](?:[^\[]+|\[(?!url))*?)\[/img:$uid\]#i";
-	$replacements[] = $bbcode_tpl['img'];
+	// Revalidate the first-pass token because stored content and its UID are untrusted.
+	$quoted_uid = preg_quote($uid, '#');
+	$text = preg_replace_callback(
+		"#\[img:$quoted_uid\]((?:https?|ftps?)://[^ \?&=\#\"\n\r\t<>]*?\.(?:jpe?g|gif|png))\[/img:$quoted_uid\]#si",
+		function($matches) use ($bbcode_tpl) {
+			$url = htmlspecialchars($matches[1], ENT_QUOTES, 'UTF-8');
+			return str_replace('\\1', $url, $bbcode_tpl['img']);
+		},
+		$text);
 
 	// matches a [url]xxxx://www.phpbb.com[/url] code..
 	$patterns[] = "#\[url\]([\w]+?://([\w\#$%&~/.\-;:=,?@\]+]+|\[(?!url=))*?)\[/url\]#is";
