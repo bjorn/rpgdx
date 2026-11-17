@@ -52,6 +52,16 @@ async function confirmRemoval(page, path) {
   await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
   await healthy(page);
   assert((await page.locator('body').innerText()).includes('Your form has expired.'), 'Deletion without a form token must be rejected');
+  await visit(page, '/userpage.php');
+  const preferencesToken = await page.locator('input[name="form_token"]').inputValue();
+  const preferencesTime = await page.locator('input[name="creation_time"]').inputValue();
+  await visit(page, path);
+  await page.locator('input[name="form_token"]').evaluate((input, value) => { input.value = value; }, preferencesToken);
+  await page.locator('input[name="creation_time"]').evaluate((input, value) => { input.value = value; }, preferencesTime);
+  await page.waitForTimeout(1100);
+  await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
+  await healthy(page);
+  assert((await page.locator('body').innerText()).includes('Your form has expired.'), 'Preferences token must not authorize deletion');
   await visit(page, path);
   await page.waitForTimeout(1100);
   await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
