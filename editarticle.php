@@ -2,7 +2,7 @@
 include("includes/main.php");
 
 $action          = $_GET['action']    ?? $_POST['action']    ?? null;
-$confirmed       = $_GET['confirmed'] ?? $_POST['confirmed'] ?? null;
+$confirmed       = $_POST['confirmed'] ?? null;
 $submit          = $_POST['submit']   ?? null;
 $article_id      = (int) ($_GET['article_id']      ?? $_POST['article_id']      ?? 0);
 $article_type    = (int) ($_POST['article_type']   ?? 0);
@@ -37,6 +37,10 @@ if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "
 
 if ($action == "remove" && isset($confirmed) && $article_id > 0 && strlen($error) == 0)
 {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_remove_article')) {
+		abort_with_error('Your form has expired. Please try again.');
+	}
+
 	// DELETE article from database
 	doQuery("DELETE FROM ". ARTICLES_TABLE ." WHERE article_id=$article_id");
 	header("Location: userpage.php"); die();
@@ -151,8 +155,11 @@ if ($action == "edit" || $action == "add")
 	);
 }
 else if ($action == "remove") {
+	add_form_key('rpgdx_remove_article');
 	$template->assign_block_vars('remove', array(
-		'YES_LINK' => "editarticle.php?action=remove&amp;article_id=$article_id&amp;confirmed=1",
+		'ACTION'   => append_sid('editarticle.php'),
+		'HIDDEN'   => '<input type="hidden" name="action" value="remove">'.
+		              '<input type="hidden" name="article_id" value="'. $article_id .'">',
 		'NO_LINK'  => "userpage.php")
 	);
 }
