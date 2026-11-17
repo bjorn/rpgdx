@@ -13,12 +13,13 @@ const projectName = `${marker} ${unicode} O'Brien`;
 const projectSummary = `Summary: ${unicode}.`;
 const projectDescription = `[b]Preserved BBCode[/b] with Unicode: ${unicode}.`;
 const editedProjectName = `${marker} edited ${unicode}`;
-const screenshotCaption = `Reviewer's screenshot: ${unicode}`;
+const screenshotCaption = `"'><svg onload=alert(1)> O'Brien 東京🎮\\`;
 const maximumScreenshotCaption = screenshotCaption + 'x'.repeat(50 - [...screenshotCaption].length);
 const excessiveScreenshotCaption = maximumScreenshotCaption + 'x';
 const reviewText = `${marker}: reviewer's saved text ${unicode}.`;
 const editedReviewText = `${marker}: edited review ${unicode}.`;
 const articleTitle = `${marker} article ${unicode}`;
+const quotedUrl = `https://example.com/path?q="'><svg onload=alert(1)>&author=O'Brien&slash=\\東京🎮`;
 const articleSummary = `A temporary local article: ${unicode}.`;
 const newsTitle = `${marker} news ${unicode}`;
 const newsMessage = `[b]Local news test[/b] ${unicode}`;
@@ -43,6 +44,30 @@ async function visit(page, path) {
 async function submit(page) {
   await Promise.all([page.waitForLoadState('load'), page.locator('input[name="submit"]').click()]);
   await healthy(page);
+}
+async function confirmRemoval(page, path) {
+  await visit(page, `${path}&confirmed=1`);
+  assert.equal(await page.locator('form[method="post"] input[name="form_token"]').count(), 1, 'Confirmed GET must render a tokenized deletion form');
+  await page.locator('input[name="form_token"]').evaluate(input => input.remove());
+  await page.waitForTimeout(1100);
+  await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
+  await healthy(page);
+  assert((await page.locator('body').innerText()).includes('Your form has expired.'), 'Deletion without a form token must be rejected');
+  await visit(page, '/userpage.php');
+  const preferencesToken = await page.locator('input[name="form_token"]').inputValue();
+  const preferencesTime = await page.locator('input[name="creation_time"]').inputValue();
+  await visit(page, path);
+  await page.locator('input[name="form_token"]').evaluate((input, value) => { input.value = value; }, preferencesToken);
+  await page.locator('input[name="creation_time"]').evaluate((input, value) => { input.value = value; }, preferencesTime);
+  await page.waitForTimeout(1100);
+  await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
+  await healthy(page);
+  assert((await page.locator('body').innerText()).includes('Your form has expired.'), 'Preferences token must not authorize deletion');
+  await visit(page, path);
+  await page.waitForTimeout(1100);
+  await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
+  await healthy(page);
+  assert.equal(new URL(page.url()).pathname, '/userpage.php', 'Tokenized POST deletion must return to the user page');
 }
 async function login(page, username, password) {
   await visit(page, '/login.php');
@@ -103,6 +128,13 @@ async function chooseFirst(page, name) {
     await chooseFirst(ordinary, 'project_type');
     await ordinary.locator('[name="project_summary"]').fill(projectSummary);
     await ordinary.locator('[name="project_description"]').fill(projectDescription);
+    await ordinary.locator('[name="project_url"]').fill('javascript:alert(1)');
+    await ordinary.locator('[name="download"]').fill('data:text/html,unsafe');
+    await submit(ordinary);
+    assert((await ordinary.locator('body').innerText()).includes('Project URL must begin with http:// or https://.'));
+    assert((await ordinary.locator('body').innerText()).includes('Download URL must begin with http:// or https://.'));
+    await ordinary.locator('[name="project_url"]').fill(quotedUrl);
+    await ordinary.locator('[name="download"]').fill(quotedUrl);
     await submit(ordinary);
     projectId = new URL(ordinary.url()).searchParams.get('project_id');
     assert(projectId, 'Project created');
@@ -112,11 +144,20 @@ async function chooseFirst(page, name) {
       canvas.getContext('2d').fillRect(0, 0, 32, 32);
       return canvas.toDataURL('image/png').split(',')[1];
     }), 'base64');
+    // Keep the complete IHDR so header validation passes and GD must reject the missing image data.
+    const truncatedPng = png.subarray(0, 33);
     const iconForm = ordinary.locator('form').filter({ has: ordinary.locator('[name="uploaded_icon"]') });
     await iconForm.locator('[name="uploaded_icon"]').setInputFiles({ name: 'smoke.png', mimeType: 'image/png', buffer: png });
     await iconForm.locator('[name="upload"]').click();
     await healthy(ordinary);
     const screenshotForm = ordinary.locator('form').filter({ has: ordinary.locator('[name="uploaded_screenshot"]') });
+    await screenshotForm.locator('[name="screenshot_caption"]').fill('Truncated image');
+    await screenshotForm.locator('[name="uploaded_screenshot"]').setInputFiles({ name: 'truncated.png', mimeType: 'image/png', buffer: truncatedPng });
+    await screenshotForm.locator('input[type="submit"]').click();
+    await healthy(ordinary);
+    const malformedScreenshotRejection = await ordinary.locator('body').innerText();
+    await visit(ordinary, `/editproject.php?project_id=${projectId}`);
+    const malformedScreenshotCount = await ordinary.locator('input[name="screenshots[]"]').count();
     await screenshotForm.locator('[name="screenshot_caption"]').fill(excessiveScreenshotCaption);
     await screenshotForm.locator('[name="uploaded_screenshot"]').setInputFiles({ name: 'smoke.png', mimeType: 'image/png', buffer: png });
     await screenshotForm.locator('input[type="submit"]').click();
@@ -135,20 +176,31 @@ async function chooseFirst(page, name) {
     await healthy(ordinary);
     const savedScreenshotText = await ordinary.locator('body').innerText();
     assert.equal(await ordinary.locator('input[name="screenshots[]"]').count(), 1, 'A 50-character mixed Unicode caption must upload');
+    assert.equal(await ordinary.locator('svg[onload]').count(), 0, 'Caption markup must remain text in the editor');
+    await visit(ordinary, `/showgame.php?project_id=${projectId}`);
+    assert.equal(await ordinary.locator('img.screenshot').getAttribute('title'), maximumScreenshotCaption + ' (click for larger image)');
+    assert.equal(await ordinary.locator('svg[onload]').count(), 0, 'Caption markup must remain inside the title attribute');
+    await visit(ordinary, `/editproject.php?project_id=${projectId}`);
     await ordinary.locator('input[name="screenshots[]"]').check();
     await ordinary.locator('input[value="Remove selected"]').click();
     await healthy(ordinary);
     await ordinary.locator('input[name="remove"]').click();
     await healthy(ordinary);
+    assert(malformedScreenshotRejection.includes('Creating thumbnail failed, could not open image'), 'A header-valid truncated image must fail full decoding');
+    assert.equal(malformedScreenshotCount, 0, 'A failed full image decode must not create a screenshot row');
     assert(screenshotRejection.includes('Caption exceeds maximum length (50 characters).'), 'A 51-character caption must be rejected');
     assert.equal(rejectedScreenshotCount, 0, 'Rejected captions must not create screenshot rows');
     assert(savedScreenshotText.includes(maximumScreenshotCaption), 'Screenshot caption preserves all 50 mixed Unicode characters');
     await visit(ordinary, `/showgame.php?project_id=${projectId}`);
     assert((await ordinary.locator('body').innerText()).includes(projectName));
+    for (const label of ['Website', 'Download']) assert.equal(await ordinary.getByRole('link', { name: label, exact: true }).getAttribute('href'), quotedUrl);
+    assert.equal(await ordinary.locator('svg[onload]').count(), 0, 'URL markup must remain inside href attributes');
     assert((await ordinary.locator('body').innerText()).includes(`with Unicode: ${unicode}.`));
     assert.equal(await ordinary.locator('span[style="font-weight: bold"]').filter({ hasText: 'Preserved BBCode' }).count(), 1);
     await visit(ordinary, `/editproject_general.php?action=edit&project_id=${projectId}`);
     assert.equal(await ordinary.locator('[name="project_name"]').inputValue(), projectName);
+    assert.equal(await ordinary.locator('[name="project_url"]').inputValue(), quotedUrl);
+    assert.equal(await ordinary.locator('[name="download"]').inputValue(), quotedUrl);
     assert.equal(await ordinary.locator('[name="project_summary"]').inputValue(), projectSummary);
     assert.equal(await ordinary.locator('[name="project_description"]').inputValue(), projectDescription);
     await ordinary.locator('[name="project_name"]').fill(editedProjectName);
@@ -182,19 +234,29 @@ async function chooseFirst(page, name) {
 
     await visit(ordinary, '/editarticle.php?action=add');
     await ordinary.locator('[name="article_title"]').fill(articleTitle);
-    await ordinary.locator('[name="article_url"]').fill('https://example.com/');
+    await ordinary.locator('[name="article_url"]').fill('javascript:alert(1)');
     await ordinary.locator('[name="article_summary"]').fill(articleSummary);
     await ordinary.locator('input[name="article_type"]').first().check();
+    await submit(ordinary);
+    assert((await ordinary.locator('body').innerText()).includes('Article URL must begin with http:// or https://.'));
+    await ordinary.locator('[name="article_url"]').fill(quotedUrl);
     const articleCategory = await ordinary.locator('input[name="article_type"]:checked').inputValue();
     await submit(ordinary);
     await visit(ordinary, '/userpage.php');
     articleId = new URL(await ordinary.locator('tr').filter({ hasText: marker }).locator('a[href*="editarticle.php?action=edit"]').first().getAttribute('href'), base).searchParams.get('article_id');
     await visit(ordinary, `/editarticle.php?action=edit&article_id=${articleId}`);
     assert.equal(await ordinary.locator('[name="article_title"]').inputValue(), articleTitle);
+    assert.equal(await ordinary.locator('[name="article_url"]').inputValue(), quotedUrl);
     assert.equal(await ordinary.locator('[name="article_summary"]').inputValue(), articleSummary);
     await visit(ordinary, `/showarticles.php?cat=${articleCategory}`);
     assert((await ordinary.locator('body').innerText()).includes(articleTitle));
     assert((await ordinary.locator('body').innerText()).includes(articleSummary));
+    assert.equal(await ordinary.getByRole('link', { name: articleTitle, exact: true }).first().getAttribute('href'), quotedUrl);
+    await visit(admin, '/admin.php?page=list&class=article');
+    assert.equal(await admin.getByRole('link', { name: articleTitle, exact: true }).getAttribute('href'), quotedUrl);
+    await visit(ordinary, '/index.php');
+    assert.equal(await ordinary.getByRole('link', { name: articleTitle, exact: true }).getAttribute('href'), quotedUrl);
+    assert.equal(await ordinary.locator('svg[onload]').count(), 0, 'Article URL markup must remain inside href attributes');
 
     await visit(ordinary, '/editnews.php?action=add');
     await ordinary.locator('[name="news_title"]').fill(newsTitle);
@@ -222,10 +284,10 @@ async function chooseFirst(page, name) {
     assert.equal(browserErrors.length, 0, browserErrors.join('\n'));
     console.log('PASS: shared login, ordinary/admin permissions, preferences, mixed accented/CJK/emoji project, screenshot caption, review, article and news roundtrips, BBCode, uploads, ownership and profile');
   } finally {
-    if (admin && reviewId) await visit(admin, `/editreview.php?action=remove&review_id=${reviewId}&confirmed=1`);
-    if (ordinary && articleId) await visit(ordinary, `/editarticle.php?action=remove&article_id=${articleId}&confirmed=1`);
-    if (ordinary && newsId) await visit(ordinary, `/editnews.php?action=remove&news_id=${newsId}&confirmed=1`);
-    if (ordinary && projectId) await visit(ordinary, `/editproject_general.php?action=remove&project_id=${projectId}&confirmed=1`);
+    if (admin && reviewId) await confirmRemoval(admin, `/editreview.php?action=remove&review_id=${reviewId}`);
+    if (ordinary && articleId) await confirmRemoval(ordinary, `/editarticle.php?action=remove&article_id=${articleId}`);
+    if (ordinary && newsId) await confirmRemoval(ordinary, `/editnews.php?action=remove&news_id=${newsId}`);
+    if (ordinary && projectId) await confirmRemoval(ordinary, `/editproject_general.php?action=remove&project_id=${projectId}`);
     if (ordinary) {
       await visit(ordinary, '/userpage.php');
       const logout = ordinary.locator('a[href*="login.php?logout=true"]');

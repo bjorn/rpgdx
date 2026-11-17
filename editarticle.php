@@ -2,12 +2,14 @@
 include("includes/main.php");
 
 $action          = $_GET['action']    ?? $_POST['action']    ?? null;
-$confirmed       = $_GET['confirmed'] ?? $_POST['confirmed'] ?? null;
+$confirmed       = $_POST['confirmed'] ?? null;
 $submit          = $_POST['submit']   ?? null;
 $article_id      = (int) ($_GET['article_id']      ?? $_POST['article_id']      ?? 0);
 $article_type    = (int) ($_POST['article_type']   ?? 0);
 $article_title   = $_POST['article_title']   ?? '';
-$article_url     = $_POST['article_url']     ?? '';
+$article_url_input = $request->raw_variable('article_url', '', \phpbb\request\request_interface::POST);
+$article_url_input = is_string($article_url_input) ? $article_url_input : '';
+$article_url     = rpgdx_escape_request($article_url_input);
 $article_summary = $_POST['article_summary'] ?? '';
 
 $error = "";
@@ -37,6 +39,10 @@ if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "
 
 if ($action == "remove" && isset($confirmed) && $article_id > 0 && strlen($error) == 0)
 {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_remove_article')) {
+		abort_with_error('Your form has expired. Please try again.');
+	}
+
 	// DELETE article from database
 	doQuery("DELETE FROM ". ARTICLES_TABLE ." WHERE article_id=$article_id");
 	header("Location: userpage.php"); die();
@@ -54,7 +60,8 @@ if (($action == "edit" || $action == "add") && isset($submit) && strlen($error) 
   $article_title   = prepare_for_store($article_title,   '');
 
 	if (strlen($article_title) < 1) $error .= ((strlen($error) > 0) ? "<br />" : "") . "No article name specified.";
-	if (strlen($article_url)  < 1) $error .= ((strlen($error) > 0) ? "<br />" : "") . "No URL to article specified.";
+	if (strlen($article_url_input) < 1) $error .= ((strlen($error) > 0) ? "<br />" : "") . "No URL to article specified.";
+	else if (!rpgdx_is_http_url($article_url_input)) $error .= ((strlen($error) > 0) ? "<br />" : "") . "Article URL must begin with http:// or https://.";
 	if ($article_type  < 1) $error .= ((strlen($error) > 0) ? "<br />" : "") . "No type of article specified.";
 
 	if (strlen($error) == 0) {
@@ -151,8 +158,11 @@ if ($action == "edit" || $action == "add")
 	);
 }
 else if ($action == "remove") {
+	add_form_key('rpgdx_remove_article');
 	$template->assign_block_vars('remove', array(
-		'YES_LINK' => "editarticle.php?action=remove&amp;article_id=$article_id&amp;confirmed=1",
+		'ACTION'   => append_sid('editarticle.php'),
+		'HIDDEN'   => '<input type="hidden" name="action" value="remove">'.
+		              '<input type="hidden" name="article_id" value="'. $article_id .'">',
 		'NO_LINK'  => "userpage.php")
 	);
 }
