@@ -46,5 +46,7 @@ post-receive hook using disposable local source and destination directories,
 covering a dry run, file copying, stale-file deletion, protected server data and
 rsync failure. Repository-only exclusions are anchored at the root so phpBB
 runtime directories remain included. Access rules are copied; server
-configuration and uploaded files are preserved. The test does not contact
+configuration, uploaded files, and historical images are preserved. Historical
+image filters cover only the legacy avatar image extensions and known site image
+paths, so stale PHP files alongside them are removed. The test does not contact
 production.

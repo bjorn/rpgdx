@@ -17,12 +17,21 @@ echo "Synchronizing website at $WWW_DATA"
 rsync -rtv --delete-after --delete-excluded \
 	--include=".htaccess" \
 	--filter="protect /.htaccess_forwards" \
+	--filter="protect /.well-known/acme-challenge/***" \
 	--filter="protect /forums/config.php" \
 	--filter="protect /forums/cache/***" \
 	--filter="protect /forums/files/***" \
 	--filter="protect /forums/store/***" \
 	--filter="protect /forums/images/avatars/upload/***" \
 	--filter="protect /uploads/***" \
+	--filter="protect /forums/images/avatars/*.gif" \
+	--filter="protect /forums/images/avatars/*.jpg" \
+	--filter="protect /forums/images/avatars/*.png" \
+	--filter="protect /images/guicomp/*.png" \
+	--filter="protect /images/tablet.png" \
+	--filter="protect /images/sponge.jpg" \
+	--filter="protect /images/sourcesecure-120x90.gif" \
+	--filter="protect /templates/modern/images/rpgdx_banner.png" \
 	--exclude=".*" \
 	--exclude "/*.md" \
 	--exclude "/HOSTED" \

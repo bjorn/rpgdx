@@ -66,13 +66,23 @@ class DeploymentFilters(unittest.TestCase):
             'forums/files/attachment.dat', 'forums/store/database-backup.sql',
             'forums/images/avatars/upload/avatar.png',
             'uploads/screenshot.png', 'uploads/nested/screenshot.png',
-            '.htaccess_forwards',
+            '.htaccess_forwards', '.well-known/acme-challenge/token',
+            'forums/images/avatars/legacy.gif',
+            'forums/images/avatars/legacy.jpg',
+            'forums/images/avatars/legacy.png',
+            'images/guicomp/bjorn.png', 'images/tablet.png',
+            'images/sponge.jpg', 'images/sourcesecure-120x90.gif',
+            'templates/modern/images/rpgdx_banner.png',
         }
         for name in self.protected:
             self.write(self.destination, name, 'existing server content: ' + name)
         self.stale = {
-            'retired.php', '.retired.php', 'forums/renamed-entry.php',
-            'tools/retired.php',
+            'retired.php', '.retired.php', '.well-known/retired.php',
+            'forums/renamed-entry.php',
+            'tools/retired.php', 'forums/images/avatars/retired.php',
+            'forums/images/avatars/.retired.php', 'images/guicomp/retired.php',
+            'images/guicomp/.retired.php', 'images/retired.php',
+            'templates/modern/images/retired.php',
         }
         for name in self.stale:
             self.write(self.destination, name, 'obsolete server content: ' + name)
@@ -132,6 +142,17 @@ class DeploymentFilters(unittest.TestCase):
         self.assertFalse(self.stale & after.keys())
         self.assertFalse((self.excluded - self.protected) & after.keys())
         self.assertEqual(after.keys(), self.included | self.protected)
+
+    def test_stale_symlink_is_removed_without_following_its_target(self):
+        outside = self.directory / 'outside'
+        outside.mkdir()
+        self.write(outside, 'keep.php', 'outside deployment')
+        link = self.destination / 'retired-link'
+        link.symlink_to(outside, target_is_directory=True)
+        result = self.run_hook()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse(link.is_symlink())
+        self.assertEqual((outside / 'keep.php').read_text(), 'outside deployment')
 
     def test_rsync_failure_cannot_report_success(self):
         result = self.run_hook(fail=True)

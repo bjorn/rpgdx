@@ -179,7 +179,12 @@ release beside the current deployment, then switch code and database together.
    runtime and extensions; the old global PHP shims are no longer required.
 2. Close both forum and RPGDX writes. Take a final database backup and copies of
    uploads and avatars, and retain the entire old deployment for rollback. Copy
-   `uploads/` into the new release. Do not mix old forum PHP files into it.
+   `uploads/` into the new release. Also copy historical image assets: legacy
+   `forums/images/avatars/*.{gif,jpg,png}`, `images/guicomp/*.png`,
+   `images/tablet.png`, `images/sponge.jpg`, `images/sourcesecure-120x90.gif`,
+   and `templates/modern/images/rpgdx_banner.png`. Preserve
+   `.htaccess_forwards` and `.well-known/acme-challenge/` if present, keeping
+   certificate renewal tokens available. Do not mix old forum PHP files into it.
 3. Restore the backup into a disposable source database on the same MariaDB
    server as a new target database. Configure the new release's
    `forums/config.php` for that target and install stock phpBB using the
