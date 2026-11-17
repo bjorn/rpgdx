@@ -71,9 +71,10 @@ if ($action == 'add') {
 		create_thumbnail('uploads/screenshot' . $upload_id . $extension);
 
 		// Add screenshot to the database
+		$caption = rpgdx_escape_request($caption);
 		doQuery(
 			"INSERT INTO ". PROJECT_SCREENSHOTS_TABLE ." (project_id, upload_id, screenshot_title) VALUES ".
-			"($project_id, $upload_id, '". $_POST['screenshot_caption'] ."')"
+			"($project_id, $upload_id, '$caption')"
 		);
 	}
 	else

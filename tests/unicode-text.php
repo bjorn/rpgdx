@@ -31,6 +31,24 @@ foreach ($examples as [$name, $text, $limit, $expected]) {
 }
 echo "PASS Unicode truncation: word boundaries, complete CJK/emoji and no lost final character\n";
 
+$quotedUrl = 'https://example.com/article?q="quoted"&author=O\'Brien';
+$expect(rpgdx_is_http_url('http://example.com/'), 'HTTP article URLs remain valid');
+$expect(rpgdx_is_http_url($quotedUrl), 'HTTPS URLs with query values remain valid');
+$expect(
+    rpgdx_http_url_attribute($quotedUrl) === 'https://example.com/article?q=&quot;quoted&quot;&amp;author=O&#039;Brien',
+    'URL attributes encode quotes and ampersands'
+);
+foreach (['javascript:alert(1)', "\tjavascript:alert(1)", '//example.com/path', 'data:text/html,unsafe'] as $unsafeUrl) {
+    $expect(!rpgdx_is_http_url($unsafeUrl), "$unsafeUrl is not an allowed HTTP URL");
+    $expect(rpgdx_http_url_attribute($unsafeUrl) === null, "$unsafeUrl cannot reach an href attribute");
+}
+$expect(
+    rpgdx_html_attribute('<svg onload="alert(1)"> O\'Brien & café') ===
+        '&lt;svg onload=&quot;alert(1)&quot;&gt; O&#039;Brien &amp; café',
+    'caption markup remains inert attribute text'
+);
+echo "PASS HTML boundaries: HTTP URL allowlist and quoted attribute encoding\n";
+
 foreach (['type_cast_helper_interface', 'request_interface', 'type_cast_helper', 'request'] as $class) {
     require dirname(__DIR__) . '/forums/phpbb/request/' . $class . '.php';
 }
