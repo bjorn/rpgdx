@@ -37,6 +37,77 @@ function rpgdx_contest_mutation_query(string $sql, string $error)
 	return $result;
 }
 
+/** Refuse transactional mutations until the deployed schema supports them. */
+function rpgdx_contest_require_mutation_schema(array $tables): void
+{
+	static $verified = array();
+	$cacheKey = implode(',', $tables);
+	if (isset($verified[$cacheKey])) {
+		return;
+	}
+	$error = 'Contest updates are unavailable until the contest schema upgrade is complete.';
+	$tableList = "'" . implode("', '", $tables) . "'";
+	$result = rpgdx_contest_mutation_query(
+		'SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES '
+		. "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN ($tableList)",
+		$error
+	);
+	$engines = array();
+	while ($row = rpgdx_db_fetch_object($result)) {
+		$engines[$row->TABLE_NAME] = $row->ENGINE;
+	}
+	foreach ($tables as $table) {
+		if (!isset($engines[$table]) || strcasecmp($engines[$table], 'InnoDB') !== 0) {
+			throw new RpgdxContestMutationException($error);
+		}
+	}
+
+	$result = rpgdx_contest_mutation_query(
+		'SELECT TABLE_NAME, INDEX_NAME, NON_UNIQUE, COLUMN_NAME, SUB_PART, INDEX_TYPE '
+		. 'FROM information_schema.STATISTICS '
+		. "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN ($tableList) "
+		. 'ORDER BY TABLE_NAME, INDEX_NAME, SEQ_IN_INDEX',
+		$error
+	);
+	$indexes = array();
+	while ($row = rpgdx_db_fetch_object($result)) {
+		$index = &$indexes[$row->TABLE_NAME][$row->INDEX_NAME];
+		if (!isset($index)) {
+			$index = array('unique' => !(bool) $row->NON_UNIQUE, 'columns' => array(), 'complete' => true);
+		}
+		$index['columns'][] = $row->COLUMN_NAME;
+		$index['complete'] = $index['complete'] && $row->SUB_PART === null
+			&& strtoupper($row->INDEX_TYPE) === 'BTREE';
+		unset($index);
+	}
+	$requirements = array(
+		'categories' => array(array(false, array('category_contest'))),
+		'entries' => array(
+			array(true, array('entry_project', 'entry_contest')),
+			array(false, array('entry_contest')),
+		),
+		'votes' => array(
+			array(true, array('vote_user', 'vote_category')),
+			array(false, array('vote_entry')),
+		),
+	);
+	foreach ($requirements as $key => $requiredIndexes) {
+		foreach ($requiredIndexes as [$unique, $columns]) {
+			$found = false;
+			foreach ($indexes[$tables[$key]] ?? array() as $index) {
+				if ($index['complete'] && $index['unique'] === $unique && $index['columns'] === $columns) {
+					$found = true;
+					break;
+				}
+			}
+			if (!$found) {
+				throw new RpgdxContestMutationException($error);
+			}
+		}
+	}
+	$verified[$cacheKey] = true;
+}
+
 function rpgdx_contest_mutation_transaction(callable $callback)
 {
 	if (doQuery('START TRANSACTION', 0) === false) {
@@ -78,6 +149,7 @@ function rpgdx_contest_subscribe_project(
 		throw new RpgdxContestMutationException('Somehow you didn\'t specify a valid contest_id.');
 	}
 	$tables = rpgdx_contest_mutation_tables($tableOverrides);
+	rpgdx_contest_require_mutation_schema($tables);
 
 	rpgdx_contest_mutation_transaction(function () use ($tables, $projectId, $contestId, $userId, $isAdmin): void {
 		// The contest row is the serialization point for registration and phase changes.
@@ -133,6 +205,7 @@ function rpgdx_contest_unsubscribe_entry(
 		throw new RpgdxContestMutationException('Somehow you didn\'t specify a valid entry_id.');
 	}
 	$tables = rpgdx_contest_mutation_tables($tableOverrides);
+	rpgdx_contest_require_mutation_schema($tables);
 	$result = rpgdx_contest_mutation_query(
 		"SELECT entry_project, entry_contest FROM {$tables['entries']} WHERE entry_id = $entryId",
 		'Unable to check this contest subscription.'
@@ -202,6 +275,7 @@ function rpgdx_contest_replace_votes(
 		throw new RpgdxContestMutationException('No contest_id specified.');
 	}
 	$tables = rpgdx_contest_mutation_tables($tableOverrides);
+	rpgdx_contest_require_mutation_schema($tables);
 
 	rpgdx_contest_mutation_transaction(function () use ($tables, $contestId, $userId, $categories): void {
 		// Deliberately serialize each contest while its phase, choices and votes are

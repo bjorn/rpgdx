@@ -42,7 +42,7 @@ local `rpgdx` database. It covers exact registration and voting phases,
 participant/project registration uniqueness, vote target eligibility,
 project-level vote deduplication, permitted blanks, rollback after an injected
 insert failure, concurrent registration and vote replacement, and migration
-reruns and duplicate-data refusal. It never uses production tables, rejects any
+reruns, duplicate-data refusal, and rejection of unsafe engines or missing indexes. It never uses production tables, rejects any
 database host/name other than the local Compose target, and removes its scratch
 tables in cleanup.
 
@@ -50,6 +50,8 @@ tables in cleanup.
 docker compose -p rpgdx-phpbb3 exec -T \
   -e RPGDX_SMOKE_ALLOW_WRITES=1 web php tests/contest-integrity.php
 ```
+
+Run `php tests/legacy-bbcode.php` and `php tests/legacy-bbcode.php classic` for database-free checks that legacy image tokens reject attribute injection and nested markup, treat UIDs literally, and preserve supported image and link schemes in both templates.
 
 Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/screenshot-thumbnail.php` for thumbnail generation at square, minimum and extreme aspect ratios. The site smoke also rejects an image with a valid PNG header but incomplete image data.
 

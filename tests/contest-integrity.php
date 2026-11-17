@@ -47,6 +47,10 @@ function rpgdx_contest_test_connect(): mysqli
 
 function doQuery($query, $die = 2)
 {
+	if (isset($GLOBALS['rpgdx_contest_test_mutations'])
+		&& preg_match('/^(?:START TRANSACTION|INSERT|DELETE|UPDATE)\b/i', $query)) {
+		$GLOBALS['rpgdx_contest_test_mutations'][] = $query;
+	}
 	$connection = $GLOBALS['rpgdx_contest_test_connection'];
 	$result = mysqli_query($connection, $query);
 	if ($result === false && $die === 2) {
@@ -271,6 +275,7 @@ rpgdx_contest_test_connect();
 $suffix = bin2hex(random_bytes(4));
 $tables = rpgdx_contest_test_tables('rpgdx_ci_' . $suffix);
 $migrationTables = rpgdx_contest_test_tables('rpgdx_cm_' . $suffix);
+$guardTables = rpgdx_contest_test_tables('rpgdx_cg_' . $suffix);
 $duplicateTables = rpgdx_contest_test_tables('rpgdx_cd_' . $suffix);
 $trigger = 'rpgdx_ct_' . $suffix;
 
@@ -497,6 +502,38 @@ try {
 		'contest lock leaves one complete concurrent vote set without a hybrid'
 	);
 
+	rpgdx_contest_test_create_tables($pdo, $guardTables, 'MyISAM', false);
+	$guardProject = rpgdx_contest_test_insert($pdo, $guardTables['projects'], array(
+		'user_id' => 901, 'project_name' => 'Schema guard project',
+	));
+	$guardContest = rpgdx_contest_test_insert($pdo, $guardTables['contests'], array('contest_status' => CON_OPEN));
+	$GLOBALS['rpgdx_contest_test_mutations'] = array();
+	$guardOperation = fn() => rpgdx_contest_subscribe_project($guardProject, $guardContest, 901, false, $guardTables);
+	rpgdx_contest_test_reject($guardOperation, 'schema upgrade');
+	foreach ($guardTables as $table) {
+		$pdo->exec('ALTER TABLE ' . rpgdx_contest_test_identifier($table) . ' ENGINE=InnoDB');
+	}
+	$pdo->exec('ALTER TABLE ' . rpgdx_contest_test_identifier($guardTables['categories']) . ' ADD KEY category_contest (category_contest)');
+	$pdo->exec('ALTER TABLE ' . rpgdx_contest_test_identifier($guardTables['entries']) . ' ADD KEY entry_contest (entry_contest)');
+	$pdo->exec('ALTER TABLE ' . rpgdx_contest_test_identifier($guardTables['votes'])
+		. ' ADD UNIQUE KEY vote_user_category (vote_user, vote_category), ADD KEY vote_entry (vote_entry)');
+	rpgdx_contest_test_reject($guardOperation, 'schema upgrade');
+	rpgdx_contest_test_expect(
+		(int) $pdo->query('SELECT COUNT(*) FROM ' . rpgdx_contest_test_identifier($guardTables['entries']))->fetchColumn() === 0,
+		'unsafe engines and missing unique indexes reject registration before insertion'
+	);
+	rpgdx_contest_test_expect(
+		$GLOBALS['rpgdx_contest_test_mutations'] === array(),
+		'unsafe schemas are rejected before starting a mutation transaction'
+	);
+	unset($GLOBALS['rpgdx_contest_test_mutations']);
+	rpgdx_migrate_contest_integrity_schema($pdo, $guardTables, false);
+	$guardOperation();
+	rpgdx_contest_test_expect(
+		(int) $pdo->query('SELECT COUNT(*) FROM ' . rpgdx_contest_test_identifier($guardTables['entries']))->fetchColumn() === 1,
+		'repaired schema is accepted without caching the earlier refusal'
+	);
+
 	rpgdx_contest_test_create_tables($pdo, $migrationTables, 'MyISAM', false);
 	$changed = rpgdx_migrate_contest_integrity_schema($pdo, $migrationTables, false);
 	rpgdx_contest_test_expect(count($changed) === 5, 'first migration converts all five transactional tables');
@@ -559,5 +596,6 @@ try {
 	$pdo->exec('DROP TRIGGER IF EXISTS ' . rpgdx_contest_test_identifier($trigger));
 	rpgdx_contest_test_drop_tables($pdo, $duplicateTables);
 	rpgdx_contest_test_drop_tables($pdo, $migrationTables);
+	rpgdx_contest_test_drop_tables($pdo, $guardTables);
 	rpgdx_contest_test_drop_tables($pdo, $tables);
 }

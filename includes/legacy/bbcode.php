@@ -196,13 +196,9 @@ function bbencode_second_pass($text, $uid)
 	$patterns = array();
 	$replacements = array();
 
-	// [img]image_url_here[/img] code..
-	// This one gets first-passed..
-	$patterns[] = "#\[img:$uid\]([^?](?:[^\[]+|\[(?!url))*?)\[/img:$uid\]#i";
-	$replacements[] = $bbcode_tpl['img'];
 
 	// matches a [url]xxxx://www.phpbb.com[/url] code..
-	$patterns[] = "#\[url\]([\w]+?://([\w\#$%&~/.\-;:=,?@\]+]+|\[(?!url=))*?)\[/url\]#is";
+	$patterns[] = "#\[url\]((?:https?|ftps?)://([\w\#$%&~/.\-;:=,?@\]+]+|\[(?!url=))*?)\[/url\]#is";
 	$replacements[] = $bbcode_tpl['url1'];
 
 	// [url]www.phpbb.com[/url] code.. (no xxxx:// prefix).
@@ -210,7 +206,7 @@ function bbencode_second_pass($text, $uid)
 	$replacements[] = $bbcode_tpl['url2'];
 
 	// [url=xxxx://www.phpbb.com]phpBB[/url] code..
-	$patterns[] = "#\[url=([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*?)\]([^?\n\r\t].*?)\[/url\]#is";
+	$patterns[] = "#\[url=((?:https?|ftps?)://[\w\#$%&~/.\-;:=,?@\[\]+]*?)\]([^?\n\r\t].*?)\[/url\]#is";
 	$replacements[] = $bbcode_tpl['url3'];
 
 	// [url=www.phpbb.com]phpBB[/url] code.. (no xxxx:// prefix).
@@ -222,6 +218,18 @@ function bbencode_second_pass($text, $uid)
 	$replacements[] = $bbcode_tpl['email'];
 
 	$text = preg_replace($patterns, $replacements, $text);
+
+	// [img]image_url_here[/img] code..
+	// Render images last so later BBCode replacements cannot alter escaped attributes.
+	// Revalidate the first-pass token because stored content and its UID are untrusted.
+	$quoted_uid = preg_quote($uid, '#');
+	$text = preg_replace_callback(
+		"#\[img:$quoted_uid\]((?:https?|ftps?)://[^ \?&=\#\"\n\r\t<>]*?\.(?:jpe?g|gif|png))\[/img:$quoted_uid\]#si",
+		function($matches) use ($bbcode_tpl) {
+			$url = htmlspecialchars($matches[1], ENT_QUOTES, 'UTF-8');
+			return str_replace('\\1', $url, $bbcode_tpl['img']);
+		},
+		$text);
 
 	// Remove our padding from the string..
 	$text = substr($text, 1);
@@ -631,7 +639,7 @@ function make_clickable($text)
 	// matches an "xxxx://yyyy" URL at the start of a line, or after a space.
 	// xxxx can only be alpha characters.
 	// yyyy is anything up to the first space, newline, comma, double quote or <
-	$ret = preg_replace("#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>", $ret);
+	$ret = preg_replace("#(^|[\n ])((?:https?|ftps?)://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>", $ret);
 
 	// matches a "www|ftp.xxxx.yyyy[/zzzz]" kinda lazy URL thing
 	// Must contain at least 2 dots. xxxx contains either alphanum, or "-"
