@@ -66,7 +66,7 @@
 .post.has-profile .postprofile dt { display: contents; }
 .post.has-profile .postprofile dt > a,
 .post.has-profile .postprofile dt > strong { order: 1; font-size: 11px; font-weight: bold; }
-.post.has-profile .postprofile dd { order: 5; margin: 0; line-height: 1.1; overflow-wrap: anywhere; }
+.post.has-profile .postprofile dd { order: 5; margin: 0; overflow-wrap: anywhere; }
 .post.has-profile .postprofile dd.profile-rank { order: 2; margin-bottom: 0; }
 .post.has-profile .postprofile .avatar-container { order: 3; margin: 0 0 10px; }
 .post.has-profile .postprofile dd.profile-joined { order: 4; }
