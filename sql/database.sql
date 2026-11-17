@@ -65,8 +65,9 @@ CREATE TABLE `rpgdx_contest_categories` (
   `category_name` varchar(64) default NULL,
   `category_value` int(11) default NULL,
   `category_image` varchar(32) default NULL,
-  PRIMARY KEY  (`category_id`)
-) ENGINE=MyISAM;
+  PRIMARY KEY  (`category_id`),
+  KEY `category_contest` (`category_contest`)
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -80,8 +81,10 @@ CREATE TABLE `rpgdx_contest_entries` (
   `entry_contest` int(11) NOT NULL default '0',
   `entry_date` datetime default NULL,
   `entry_disqualified` tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (`entry_id`)
-) ENGINE=MyISAM;
+  PRIMARY KEY  (`entry_id`),
+  UNIQUE KEY `entry_project_contest` (`entry_project`,`entry_contest`),
+  KEY `entry_contest` (`entry_contest`)
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -94,8 +97,10 @@ CREATE TABLE `rpgdx_contest_votes` (
   `vote_entry` int(11) NOT NULL default '0',
   `vote_user` int(11) NOT NULL default '0',
   `vote_category` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`vote_id`)
-) ENGINE=MyISAM;
+  PRIMARY KEY  (`vote_id`),
+  UNIQUE KEY `vote_user_category` (`vote_user`,`vote_category`),
+  KEY `vote_entry` (`vote_entry`)
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -111,7 +116,7 @@ CREATE TABLE `rpgdx_contests` (
   `contest_description` text NOT NULL,
   `contest_status` int(11) NOT NULL default '0',
   PRIMARY KEY  (`contest_id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -245,7 +250,7 @@ CREATE TABLE `rpgdx_projects` (
   `progress_id` int(11) NOT NULL default '0',
   `project_allow_review` int(1) NOT NULL default '1',
   PRIMARY KEY  (`project_id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 

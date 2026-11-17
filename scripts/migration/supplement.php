@@ -178,6 +178,13 @@ foreach (['rpgdx_articles' => 'user_id', 'rpgdx_news' => 'user_id', 'rpgdx_proje
     // Existing references to deleted users remain historical references.
     $check("$table ownership mapping", $scalar("SELECT COUNT(*) FROM `$table` t JOIN $old.`$table` s USING (" . ['rpgdx_articles'=>'article_id', 'rpgdx_news'=>'news_id', 'rpgdx_projects'=>'project_id', 'rpgdx_reviews'=>'review_id', 'rpgdx_contest_votes'=>'vote_id'][$table] . ") JOIN rpgdx_user_id_map m ON m.legacy_user_id=s.`$column` WHERE t.`$column` <> m.user_id"));
 }
+$check('one project entry per contest', $scalar('SELECT COUNT(*) FROM (SELECT entry_project, entry_contest FROM rpgdx_contest_entries GROUP BY entry_project, entry_contest HAVING COUNT(*) > 1) duplicate_entries'));
+$check('one user vote per category', $scalar('SELECT COUNT(*) FROM (SELECT vote_user, vote_category FROM rpgdx_contest_votes GROUP BY vote_user, vote_category HAVING COUNT(*) > 1) duplicate_votes'));
+$pdo->exec('ALTER TABLE rpgdx_contests ENGINE=InnoDB');
+$pdo->exec('ALTER TABLE rpgdx_contest_categories ENGINE=InnoDB, ADD KEY category_contest (category_contest)');
+$pdo->exec('ALTER TABLE rpgdx_contest_entries ENGINE=InnoDB, ADD UNIQUE KEY entry_project_contest (entry_project, entry_contest), ADD KEY entry_contest (entry_contest)');
+$pdo->exec('ALTER TABLE rpgdx_contest_votes ENGINE=InnoDB, ADD UNIQUE KEY vote_user_category (vote_user, vote_category), ADD KEY vote_entry (vote_entry)');
+$pdo->exec('ALTER TABLE rpgdx_projects ENGINE=InnoDB');
 $pdo->exec('CREATE TABLE IF NOT EXISTS rpgdx_user_preferences (user_id INT UNSIGNED NOT NULL PRIMARY KEY, user_theme INT NOT NULL DEFAULT 0, user_projects_sort_method TINYINT UNSIGNED NOT NULL DEFAULT 0, user_projects_last_sort_method TINYINT UNSIGNED NOT NULL DEFAULT 2) ENGINE=InnoDB');
 $pdo->exec('DELETE FROM rpgdx_user_preferences');
 $pdo->exec("INSERT INTO rpgdx_user_preferences SELECT m.user_id, s.user_theme, s.user_projects_sort_method, s.user_projects_last_sort_method FROM $old.phpbb_users s JOIN rpgdx_user_id_map m ON m.legacy_user_id=s.user_id");
