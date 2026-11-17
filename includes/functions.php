@@ -42,6 +42,30 @@ function getmicrotime()
 	return ((float)$usec + (float)$sec); 
 }
 
+function rpgdx_html_attribute($value)
+{
+	return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+function rpgdx_is_http_url($url)
+{
+	if (!is_string($url) || $url === '' || !mb_check_encoding($url, 'UTF-8')) {
+		return false;
+	}
+	if (!preg_match('#\Ahttps?://#i', $url) || preg_match('/[\x00-\x1F\x7F]/', $url)) {
+		return false;
+	}
+
+	$parts = parse_url($url);
+	return $parts !== false && !empty($parts['host']) &&
+		isset($parts['scheme']) && in_array(strtolower($parts['scheme']), array('http', 'https'), true);
+}
+
+function rpgdx_http_url_attribute($url)
+{
+	return rpgdx_is_http_url($url) ? rpgdx_html_attribute($url) : null;
+}
+
 
 function rpgdx_add_log($string)
 {

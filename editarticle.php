@@ -7,7 +7,9 @@ $submit          = $_POST['submit']   ?? null;
 $article_id      = (int) ($_GET['article_id']      ?? $_POST['article_id']      ?? 0);
 $article_type    = (int) ($_POST['article_type']   ?? 0);
 $article_title   = $_POST['article_title']   ?? '';
-$article_url     = $_POST['article_url']     ?? '';
+$article_url_input = $request->raw_variable('article_url', '', \phpbb\request\request_interface::POST);
+$article_url_input = is_string($article_url_input) ? $article_url_input : '';
+$article_url     = rpgdx_escape_request($article_url_input);
 $article_summary = $_POST['article_summary'] ?? '';
 
 $error = "";
@@ -58,7 +60,8 @@ if (($action == "edit" || $action == "add") && isset($submit) && strlen($error) 
   $article_title   = prepare_for_store($article_title,   '');
 
 	if (strlen($article_title) < 1) $error .= ((strlen($error) > 0) ? "<br />" : "") . "No article name specified.";
-	if (strlen($article_url)  < 1) $error .= ((strlen($error) > 0) ? "<br />" : "") . "No URL to article specified.";
+	if (strlen($article_url_input) < 1) $error .= ((strlen($error) > 0) ? "<br />" : "") . "No URL to article specified.";
+	else if (!rpgdx_is_http_url($article_url_input)) $error .= ((strlen($error) > 0) ? "<br />" : "") . "Article URL must begin with http:// or https://.";
 	if ($article_type  < 1) $error .= ((strlen($error) > 0) ? "<br />" : "") . "No type of article specified.";
 
 	if (strlen($error) == 0) {
