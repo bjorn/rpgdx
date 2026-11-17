@@ -2,7 +2,7 @@
 include("includes/main.php");
 
 $action               = $_GET['action']    ?? $_POST['action']    ?? null;
-$confirmed            = $_GET['confirmed'] ?? $_POST['confirmed'] ?? null;
+$confirmed            = $_POST['confirmed'] ?? null;
 $submit               = $_POST['submit']   ?? null;
 $update_updated       = $_POST['update_updated']       ?? null;
 $project_allow_review = $_POST['project_allow_review'] ?? null;
@@ -14,8 +14,12 @@ $project_name         = $_POST['project_name']         ?? '';
 $project_contributors = $_POST['project_contributors'] ?? '';
 $project_summary      = $_POST['project_summary']      ?? '';
 $project_description  = $_POST['project_description']  ?? '';
-$project_url          = $_POST['project_url']          ?? '';
-$download             = $_POST['download']             ?? '';
+$project_url_input    = $request->raw_variable('project_url', '', \phpbb\request\request_interface::POST);
+$download_input       = $request->raw_variable('download', '', \phpbb\request\request_interface::POST);
+$project_url_input    = is_string($project_url_input) ? $project_url_input : '';
+$download_input       = is_string($download_input) ? $download_input : '';
+$project_url          = rpgdx_escape_request($project_url_input);
+$download             = rpgdx_escape_request($download_input);
 $project_bbcode_uid   = $_POST['project_bbcode_uid']   ?? '';
 
 $error = "";
@@ -56,6 +60,8 @@ if (strlen($error) == 0 && ($action == "edit" || $action == "add") && isset($sub
 	// - A genre is selected
 	if (strlen($project_name) < 1) $error .= ((strlen($error) > 0) ? '<br />' : '') . 'No project name specified.';
 	if ($project_type == 0)        $error .= ((strlen($error) > 0) ? '<br />' : '') . 'No genre selected.';
+	if ($project_url_input !== '' && !rpgdx_is_http_url($project_url_input)) $error .= ((strlen($error) > 0) ? '<br />' : '') . 'Project URL must begin with http:// or https://.';
+	if ($download_input !== '' && !rpgdx_is_http_url($download_input)) $error .= ((strlen($error) > 0) ? '<br />' : '') . 'Download URL must begin with http:// or https://.';
 
 	if (strlen($error) == 0) {
 		if ($action == "edit") {
@@ -130,6 +136,10 @@ else
 
 if (isset($action) && $action == "remove" && isset($confirmed) && $project_id > 0 && strlen($error) == 0)
 {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_remove_project')) {
+		abort_with_error('Your form has expired. Please try again.');
+	}
+
 	// DELETE project from database
 	doQuery("DELETE FROM ". PROJECTS_TABLE ." WHERE project_id=$project_id");
 	rpgdx_add_log("User ". $userdata['user_id'] ." (". $userdata['username'] .") has removed project $project_id (". $form['project_name'] .").");
@@ -220,8 +230,11 @@ if ($action == "edit" || $action == "add")
 	}
 }
 else if ($action == "remove") {
+	add_form_key('rpgdx_remove_project');
 	$template->assign_block_vars('remove', array(
-		'YES_LINK' => "editproject_general.php?action=remove&amp;project_id=$project_id&amp;confirmed=1",
+		'ACTION'   => append_sid('editproject_general.php'),
+		'HIDDEN'   => '<input type="hidden" name="action" value="remove">'.
+		              '<input type="hidden" name="project_id" value="'. $project_id .'">',
 		'NO_LINK'  => "userpage.php")
 	);
 }

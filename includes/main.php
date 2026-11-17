@@ -202,7 +202,7 @@ if (rpgdx_db_num_rows($result) > 0) {
 	{
 		$template->assign_block_vars('submenu.update', array(
 			'DATE' => $art->created,
-			'LINK' => "<a href='". htmlspecialchars($art->article_url) ."'>$art->article_title</a>")
+			'LINK' => '<a href="'. (rpgdx_http_url_attribute($art->article_url) ?? '#') .'">'. $art->article_title .'</a>')
 		);
 	}
 }

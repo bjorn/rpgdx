@@ -25,7 +25,7 @@ if (isset($category) && $category->type_id > 0)
 	// Print list of selected Articles
 	while ($row = rpgdx_db_fetch_object($result)) {
 		$template->assign_block_vars('article', array(
-			'URL'  => $row->article_url,
+			'URL'  => rpgdx_http_url_attribute($row->article_url) ?? '#',
 			'NAME' => $row->article_title,
 			'DESC' => $row->article_summary)
 		);

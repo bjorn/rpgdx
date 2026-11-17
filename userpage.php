@@ -66,7 +66,7 @@ if ($userdata['session_logged_in']) {
 			echo "<td class=\"td\" nowrap>$row->project_last_update<img src=\"images/pixel.gif\" height=0 width=0></td>";
 			echo "<td class=\"td\" nowrap>";
 			echo "[<a href=\"". append_sid("editproject.php?project_id=$row->project_id") ."\">edit</a>]";
-			echo " [<a href=\"". append_sid("editproject_general.php?action=remove&amp;project_id=$row->project_id&amp;confirmed=1"). "\" onClick=\"if (!(window.confirm('Are you sure you want to remove this project?'))) { return false; }\">remove</a>]";
+			echo " [<a href=\"". append_sid("editproject_general.php?action=remove&amp;project_id=$row->project_id"). "\">remove</a>]";
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -101,7 +101,7 @@ if ($userdata['session_logged_in']) {
 			echo "<td class=\"td\" nowrap>$row->article_created<img src=\"images/pixel.gif\" height=0 width=0></td>";
 			echo "<td class=\"td\" nowrap>";
 			echo "[<a href=\"". append_sid("editarticle.php?action=edit&article_id=$row->article_id") ."\">edit</a>]";
-			echo " [<a href=\"". append_sid("editarticle.php?action=remove&article_id=$row->article_id&amp;confirmed=1") ."\" onClick=\"if (!(window.confirm('Are you sure you want to remove this article?'))) { return false; }\">remove</a>]";
+			echo " [<a href=\"". append_sid("editarticle.php?action=remove&article_id=$row->article_id") ."\">remove</a>]";
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -135,7 +135,7 @@ if ($userdata['session_logged_in']) {
 			echo "<td class=\"td\" nowrap>$row->review_added<img src=\"images/pixel.gif\" height=0 width=0></td>";
 			echo "<td class=\"td\" nowrap>";
 			echo "[<a href=\"". append_sid("editreview.php?action=edit&amp;review_id=$row->review_id") ."\">edit</a>]";
-			echo " [<a href=\"". append_sid("editreview.php?action=remove&amp;review_id=$row->review_id&amp;confirmed=1") ."\" onClick=\"if (!(window.confirm('Are you sure you want to remove this review?'))) { return false; }\">remove</a>]";
+			echo " [<a href=\"". append_sid("editreview.php?action=remove&amp;review_id=$row->review_id") ."\">remove</a>]";
 			echo "</td>";
 			echo "</tr>";
 		}

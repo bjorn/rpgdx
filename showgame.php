@@ -111,7 +111,7 @@ if (rpgdx_db_num_rows($result) > 0) {
 		$template->assign_block_vars('screens.shot', array(
 			'LINK'  => $row->screenshot_url,
 			'IMG'   => $row->screenshot_url.'.thumb.jpg',
-			'TITLE' => "$row->screenshot_title (click for larger image)")
+			'TITLE' => rpgdx_html_attribute($row->screenshot_title . ' (click for larger image)'))
 		);
 	}
 }
@@ -122,21 +122,22 @@ if (rpgdx_db_num_rows($result) > 0) {
  * TODO: Allow multiple custom links
  */
 
-if ($game->project_url != "" || $game->download != "")
+$project_url = rpgdx_http_url_attribute($game->project_url);
+$download_url = rpgdx_http_url_attribute($game->download);
+
+if ($project_url !== null || $download_url !== null)
 {
   $template->assign_block_vars('links', array());
 
-  if ($game->project_url != "") {
+  if ($project_url !== null) {
     $template->assign_block_vars('links.link', array(
-      'LINK' => "<a href='$game->project_url'>goto website</a>",
-      'URL'  => $game->project_url,
+      'URL'  => $project_url,
       'NAME' => 'Website')
     );
   }
-  if ($game->download != "") {
+  if ($download_url !== null) {
     $template->assign_block_vars('links.link', array(
-      'LINK' => "<a href='$game->download'>download</a>",
-      'URL'  => $game->download,
+      'URL'  => $download_url,
       'NAME' => 'Download')
     );
   }

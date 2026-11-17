@@ -45,8 +45,8 @@ if ($action == 'add') {
 			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'Caption exceeds maximum length (50 characters).';
 		}
 		// Check the image type and size
-		$img = getimagesize($temp_file);
-		if (!($img[2] == 1 || $img[2] == 2 || $img[2] == 3)) {
+		$img = @getimagesize($temp_file);
+		if (!$img || !($img[2] == 1 || $img[2] == 2 || $img[2] == 3)) {
 			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'Uploaded file has wrong type.';
 		}
 		else if ($img[1] > $img[0] || $img[0] < 10 || $img[1] < 10 || $img[0] > 1600 || $img[1] > 1600) {
@@ -95,9 +95,10 @@ if ($action == 'add') {
 		@unlink($temp_thumbnail);
 
 		// Add screenshot to the database
+		$caption = rpgdx_escape_request($caption);
 		if (!doQuery(
 			"INSERT INTO ". PROJECT_SCREENSHOTS_TABLE ." (project_id, upload_id, screenshot_title) VALUES ".
-			"($project_id, $upload_id, '". $_POST['screenshot_caption'] ."')",
+			"($project_id, $upload_id, '$caption')",
 			0
 		)) {
 			$cleanup_upload();
