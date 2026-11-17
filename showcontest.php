@@ -144,9 +144,11 @@ if ($contest->contest_status == CON_OPEN) {
 			// The user is subscribed, offer unsubscription
 			$row = rpgdx_db_fetch_object($result);
 
+			add_form_key('rpgdx_contest_unsubscribe', '_CONTEST_SUBSCRIPTION');
 			$template->assign_block_vars('unsubscribe', array(
-				'ACTION'    => append_sid('submit_subscription.php?action=unsubscribe'),
-				'HIDDEN'    => '<input type="hidden" name="entry_id" value="'. $row->entry_id . '">',
+				'ACTION'    => append_sid('submit_subscription.php'),
+				'HIDDEN'    => '<input type="hidden" name="action" value="unsubscribe">' .
+				              '<input type="hidden" name="entry_id" value="'. $row->entry_id . '">',
 				'GAME_NAME' => $row->project_name
 			));
 		}
@@ -163,9 +165,11 @@ if ($contest->contest_status == CON_OPEN) {
 					$project_options .= '<option value="'. $row->project_id .'">'. $row->project_name .'</option>\n';
 				}
 
+				add_form_key('rpgdx_contest_subscribe', '_CONTEST_SUBSCRIPTION');
 				$template->assign_block_vars('subscribe', array(
-					'ACTION'          => append_sid('submit_subscription.php?action=subscribe'),
-					'HIDDEN'          => '<input type="hidden" name="contest_id" value="'. $contest->contest_id .'">',
+					'ACTION'          => append_sid('submit_subscription.php'),
+					'HIDDEN'          => '<input type="hidden" name="action" value="subscribe">' .
+					                    '<input type="hidden" name="contest_id" value="'. $contest->contest_id .'">',
 					'PROJECT_FIELD'   => 'project_id',
 					'PROJECT_OPTIONS' => $project_options
 				));
@@ -242,6 +246,7 @@ if ($contest->contest_status == CON_VOTING)
 				$project_options .= '<option value="'. $row->entry_id .'">'. $row->project_name .'</option>\n';
 			}
 
+			add_form_key('rpgdx_contest_votes', '_CONTEST_VOTES');
 			$template->assign_block_vars('voting', array(
 				'ACTION'          => append_sid('submit_contest_votes.php'),
 				'HIDDEN'          => '<input type="hidden" name="contest_id" value="'. $contest->contest_id .'">',

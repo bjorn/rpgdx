@@ -42,6 +42,12 @@ if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "
 	abort_with_error('No valid action specified.');
 }
 
+if (($action === 'add' || $action === 'edit') && isset($submit)) {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_project_' . $action)) {
+		abort_with_error('Your form has expired. Please try again.');
+	}
+}
+
 
 // Make sure there is a bbcode_uid
 if (empty($project_bbcode_uid)) {$project_bbcode_uid = \Rpgdx\Legacy\make_bbcode_uid();}
@@ -183,6 +189,7 @@ if (strlen($message) > 0) {
 
 if ($action == "edit" || $action == "add")
 {
+	add_form_key('rpgdx_project_' . $action);
 	$genre_options = "<option value=0 selected>- please select a genre -</option>\n";
 	$genres = doQuery("SELECT * FROM ". PROJECT_TYPES_TABLE);
 	while ($genre = rpgdx_db_fetch_object($genres)) {

@@ -21,6 +21,7 @@
           <tr>
             <td class="boxBody">
               <form action="{SCREENSHOT_REMOVE_TARGET}" method="post" style="margin: 0px; padding: 0px;">
+              {S_FORM_TOKEN_SCREENSHOT_REMOVE}
               <input type="hidden" name="{PROJECT_ID_FIELD}" value="{PROJECT_ID}" />
               <table cellspacing="2" cellpadding="0" border="0">
                 <!-- BEGIN shot -->
@@ -58,6 +59,7 @@
               <div class="remark">You can upload screenshots of your project which will be shown on the project page. They can be no larger than 150 kb and need to be either PNG, GIF or JPG. You can add a maximum of {MAX_SCREENSHOTS} screenshots.</div>
               <br/>
               <form action="{SCREENSHOT_UPLOAD_TARGET}" method="post" enctype="multipart/form-data">
+              {S_FORM_TOKEN_SCREENSHOT_ADD}
               <input type="hidden" name="{PROJECT_ID_FIELD}" value="{PROJECT_ID}" />
               <table cellspacing="2" cellpadding="0" border="0">
                 <tr>
@@ -95,6 +97,7 @@
               <br />
               <!-- END icon -->
               <form action="{ICON_UPLOAD_TARGET}" method="post" enctype="multipart/form-data">
+              {S_FORM_TOKEN_ICON}
               <input type="hidden" name="{PROJECT_ID_FIELD}" value="{PROJECT_ID}" />
               <table cellspacing="2" cellpadding="0" border="0">
                 <tr>

@@ -30,6 +30,12 @@ if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "
 	abort_with_error('No valid action specified.');
 }
 
+if (($action === 'add' || $action === 'edit') && isset($submit)) {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_news_' . $action)) {
+		abort_with_error('Your form has expired. Please try again.');
+	}
+}
+
 
 // Make sure there is an bbcode_uid
 if (empty($news_bbcode_uid)) {$news_bbcode_uid = \Rpgdx\Legacy\make_bbcode_uid();}
@@ -127,6 +133,7 @@ if (strlen($message) > 0) {
 
 if ($action == "edit" || $action == "add")
 {
+	add_form_key('rpgdx_news_' . $action);
 	$template->assign_block_vars('form', array(
 		'ACTION'            => "editnews.php?action=$action",
 		'HIDDEN'            => ((isset($form) && isset($form['news_id'])) ? '<input type=hidden name=news_id value='. $form['news_id'] .'>' : '').

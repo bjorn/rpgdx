@@ -2,16 +2,24 @@
 include_once('includes/main.php');
 include_once('includes/contest.php');
 
-$action     = $_GET['action'] ?? $_POST['action'] ?? null;
-$project_id = (int) ($_GET['project_id'] ?? $_POST['project_id'] ?? 0);
-$contest_id = (int) ($_GET['contest_id'] ?? $_POST['contest_id'] ?? 0);
-$entry_id   = (int) ($_GET['entry_id']   ?? $_POST['entry_id']   ?? 0);
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+	abort_with_error('Contest subscriptions require a submitted form.');
+}
+
+$action = $request->variable('action', '', false, \phpbb\request\request_interface::POST);
+$project_id = $request->variable('project_id', 0, false, \phpbb\request\request_interface::POST);
+$contest_id = $request->variable('contest_id', 0, false, \phpbb\request\request_interface::POST);
+$entry_id = $request->variable('entry_id', 0, false, \phpbb\request\request_interface::POST);
 
 if (!$userdata['session_logged_in']) {
 	abort_with_error('You have to be logged in.');
 }
 if (!isset($action) || !($action === 'subscribe' || $action === 'unsubscribe')) {
 	abort_with_error('No or invalid action specified.');
+}
+
+if (!check_form_key('rpgdx_contest_' . $action)) {
+	abort_with_error('Your form has expired. Please try again.');
 }
 
 $user_id = (int) $userdata['user_id'];

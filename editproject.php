@@ -25,6 +25,10 @@ $project_id = $row->project_id;
 $project_name = $row->project_name;
 //$project_icon_file = $row->project_icon_file;
 
+add_form_key('rpgdx_screenshot_add', '_SCREENSHOT_ADD');
+add_form_key('rpgdx_screenshot_remove', '_SCREENSHOT_REMOVE');
+add_form_key('rpgdx_icon', '_ICON');
+
 $template->assign_vars(array(
 	'EDIT_GENERAL_URL'             => append_sid('editproject_general.php?action=edit&project_id='. $project_id),
 	'SCREENSHOT_UPLOAD_TARGET'     => 'submit_screenshots.php?action=add&project_id='. $project_id,

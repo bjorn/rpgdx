@@ -21,6 +21,7 @@ One or more errors have occured:<br />
 
 <p>If you have problems running the game or questions about how to get further in the game, the review is not the place to put them. Post those on the forum instead.</p>
 <form action="{form.ACTION}" method="post">
+{S_FORM_TOKEN}
 {form.HIDDEN}
 <h4>Review</h4>
 <table cellpadding="0" cellspacing="1" border="0" width="100%">
