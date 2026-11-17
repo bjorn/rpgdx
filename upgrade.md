@@ -166,8 +166,10 @@ still required at production cutover.
 
 ## Production cutover
 
-The ordinary push-to-deploy hook is not the initial upgrade procedure: it keeps
-old files and would leave obsolete phpBB2 entrypoints in place. Prepare a clean
+The ordinary push-to-deploy hook is not the initial upgrade procedure: although
+it removes application files absent from the public checkout, including
+repository-excluded paths, it deliberately preserves production configuration
+and runtime data and cannot coordinate the database cutover. Prepare a clean
 release beside the current deployment, then switch code and database together.
 
 1. Build that clean release from this checkout, excluding `.git`, private SQL

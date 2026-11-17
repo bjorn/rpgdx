@@ -66,10 +66,16 @@ class DeploymentFilters(unittest.TestCase):
             'forums/files/attachment.dat', 'forums/store/database-backup.sql',
             'forums/images/avatars/upload/avatar.png',
             'uploads/screenshot.png', 'uploads/nested/screenshot.png',
-            '.htaccess_forwards', 'images/server-only/file.png',
+            '.htaccess_forwards',
         }
         for name in self.protected:
             self.write(self.destination, name, 'existing server content: ' + name)
+        self.stale = {
+            'retired.php', '.retired.php', 'forums/renamed-entry.php',
+            'tools/retired.php',
+        }
+        for name in self.stale:
+            self.write(self.destination, name, 'obsolete server content: ' + name)
         self.write(self.destination, 'index.php', 'old website')
         self.before = self.snapshot()
 
@@ -114,7 +120,7 @@ class DeploymentFilters(unittest.TestCase):
         self.assertFalse(self.excluded & listed, self.excluded & listed)
         self.assertEqual(self.snapshot(), self.before)
 
-    def test_copy_preserves_server_data_and_copies_required_files(self):
+    def test_copy_removes_stale_files_and_preserves_server_data(self):
         result = self.run_hook()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('Website deployed!', result.stdout)
@@ -123,6 +129,7 @@ class DeploymentFilters(unittest.TestCase):
             self.assertEqual(after[name], (self.source / name).read_bytes(), name)
         for name in self.protected:
             self.assertEqual(after[name], self.before[name], name)
+        self.assertFalse(self.stale & after.keys())
         self.assertFalse((self.excluded - self.protected) & after.keys())
         self.assertEqual(after.keys(), self.included | self.protected)
 

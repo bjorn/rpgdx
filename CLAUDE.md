@@ -29,10 +29,12 @@ copies the worktree into the public directory using `deploy/post-receive`.
 The installed hook must be kept in sync with this tracked file.
 
 The first phpBB3 deployment requires a clean release directory and coordinated
-database conversion. The ordinary hook deliberately does not delete old files,
-so it cannot remove obsolete phpBB2 scripts. Follow upgrade.md for cutover and
-rollback, and perform a dry run before production deployment.
+database conversion. The ordinary hook deletes application files absent from the
+public checkout, including repository-excluded paths, after transfer. It uses
+explicit filters to preserve production configuration and runtime data. Follow
+upgrade.md for cutover and rollback, and perform a dry run before production
+deployment.
 
 Protect server-specific `forums/config.php`, avatars, `uploads/`, forum
 attachments, caches, and stored backups. Do not add broad delete operations to
-the deployment hook.
+the deployment hook without explicit protection for this runtime state.

@@ -10,10 +10,19 @@ cd "$REPO" || exit 1
 
 echo "Synchronizing website at $WWW_DATA"
 
-# Repository-only exclusions are anchored so phpBB runtime directories survive.
+# Receiver-only filters protect configuration and runtime data from deletion.
+# Delete other destination-only and repository-excluded files after transfer so
+# retired code cannot linger in the public directory.
 # Include access rules before hiding dotfiles and protecting runtime contents.
-rsync -rtv \
+rsync -rtv --delete-after --delete-excluded \
 	--include=".htaccess" \
+	--filter="protect /.htaccess_forwards" \
+	--filter="protect /forums/config.php" \
+	--filter="protect /forums/cache/***" \
+	--filter="protect /forums/files/***" \
+	--filter="protect /forums/store/***" \
+	--filter="protect /forums/images/avatars/upload/***" \
+	--filter="protect /uploads/***" \
 	--exclude=".*" \
 	--exclude "/*.md" \
 	--exclude "/HOSTED" \
