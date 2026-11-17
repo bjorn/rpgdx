@@ -36,3 +36,17 @@ The manifest defaults to `/tmp/rpgdx-forum-fixtures.json` inside the container; 
 `application-encoding.php` checks the migration's Latin1 conversion, CJK/emoji round-trips, binary and serialized byte preservation, archive/session exclusions, and idempotence. It uses only connection-local temporary tables and requires the local `db` host, `rpgdx` database, and explicit write opt-in. Run `docker compose -p rpgdx-phpbb3 exec -T -e RPGDX_SMOKE_ALLOW_WRITES=1 web php tests/application-encoding.php`.
 
 Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/unicode-text.php` for database-free checks of Unicode truncation and original POST caption character counts, including the 50-character boundary and apostrophe escaping.
+
+`contest-integrity.php` uses uniquely named scratch tables in the disposable
+local `rpgdx` database. It covers exact registration and voting phases,
+participant/project registration uniqueness, vote target eligibility,
+project-level vote deduplication, permitted blanks, rollback after an injected
+insert failure, concurrent registration and vote replacement, and migration
+reruns and duplicate-data refusal. It never uses production tables, rejects any
+database host/name other than the local Compose target, and removes its scratch
+tables in cleanup.
+
+```sh
+docker compose -p rpgdx-phpbb3 exec -T \
+  -e RPGDX_SMOKE_ALLOW_WRITES=1 web php tests/contest-integrity.php
+```
