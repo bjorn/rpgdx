@@ -42,14 +42,24 @@ from the prepared release as the database application user:
 php scripts/migration/contest-integrity.php
 ```
 
-The command inspects current engines and complete index definitions before it
-changes anything. It first reports duplicate project/contest entries and
-user/category votes, including their numeric keys, then stops without altering
-the schema. Resolve those historical rows explicitly according to the contest
-record, retain an audit of that decision, and rerun; the migration never chooses
-or deletes a row. A completed run converts the contests, categories, entries,
-votes, and projects tables to InnoDB and adds only missing equivalent indexes.
-It is safe to rerun and reports when the schema is already current.
+The command checks engines, index definitions, and duplicate records before
+changing data or schema. Unexpected duplicate project/contest entries or
+user/category votes stop it without changes. Resolve those records explicitly
+and retain the decision audit; the migration never deletes a row. A completed
+run converts all five contest-related tables to InnoDB and installs the required
+indexes. It is safe to rerun.
+
+One explicit data correction preserves the November 2007 contest's joint first
+place. [Terry awarded both entrants first place](https://rpgdx.net/forums/viewtopic.php?p=23221#23221),
+then [confirmed Bjorn had added their award tags](https://rpgdx.net/forums/viewtopic.php?p=23280#23280).
+Votes 249 and 250 encode those administrative awards under Bjorn's account (9).
+After checking both exact records, category 19, eligible entries 83 and 84, and
+closed contest 7, the migration reassigns only vote 250 to Terry's account (35).
+This is an administrative correction approved by Bjorn, not a claim that Terry
+cast a ballot. Both scores and first-place awards remain unchanged, and the
+normal unique user/category index applies without a schema exception. Changed
+or incomplete historical records are refused; an already corrected pair is
+accepted unchanged. The migration logs the correction when it applies it.
 
 If the supplemental phpBB2 migration reports duplicates, reconcile them in the
 disposable source database and retain the decision audit there before rerunning

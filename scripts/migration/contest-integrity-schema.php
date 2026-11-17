@@ -73,20 +73,24 @@ function rpgdx_contest_integrity_duplicate_summary(
 	PDO $pdo,
 	string $table,
 	array $columns,
-	string $label
+	string $label,
+	bool $correctHistoricalVoter = false
 ): ?string {
 	$quotedTable = rpgdx_contest_integrity_identifier($table);
+	$source = $correctHistoricalVoter
+		? "(SELECT CASE WHEN vote_id=250 AND vote_entry=84 AND vote_user=9 AND vote_category=19 THEN 35 ELSE vote_user END AS vote_user, vote_category FROM $quotedTable) projected_votes"
+		: $quotedTable;
 	$quotedColumns = array_map('rpgdx_contest_integrity_identifier', $columns);
 	$columnList = implode(', ', $quotedColumns);
 	$groupCount = (int) $pdo->query(
-		"SELECT COUNT(*) FROM (SELECT 1 FROM $quotedTable "
+		"SELECT COUNT(*) FROM (SELECT 1 FROM $source "
 		. "GROUP BY $columnList HAVING COUNT(*) > 1) duplicate_groups"
 	)->fetchColumn();
 	if (!$groupCount) {
 		return null;
 	}
 	$rows = $pdo->query(
-		"SELECT $columnList, COUNT(*) AS duplicate_count FROM $quotedTable "
+		"SELECT $columnList, COUNT(*) AS duplicate_count FROM $source "
 		. "GROUP BY $columnList HAVING COUNT(*) > 1 ORDER BY duplicate_count DESC LIMIT 10"
 	)->fetchAll(PDO::FETCH_ASSOC);
 
@@ -101,10 +105,57 @@ function rpgdx_contest_integrity_duplicate_summary(
 	return "$label ($groupCount groups; first 10): " . implode(', ', $samples);
 }
 
+/** Preflight the approved voter correction for the 2007 joint-first awards. */
+function rpgdx_contest_integrity_needs_voter_correction(PDO $pdo, array $tables): bool
+{
+	$votes = rpgdx_contest_integrity_identifier($tables['votes']);
+	$original = $pdo->query("SELECT vote_id, vote_entry, vote_user, vote_category FROM $votes WHERE vote_id IN (249,250) ORDER BY vote_id")->fetchAll(PDO::FETCH_NUM);
+	if (!$original) {
+		$contests = rpgdx_contest_integrity_identifier($tables['contests']);
+		$categories = rpgdx_contest_integrity_identifier($tables['categories']);
+		$entries = rpgdx_contest_integrity_identifier($tables['entries']);
+		$context = (int) $pdo->query(
+			"SELECT (SELECT COUNT(*) FROM $contests WHERE contest_id=7) "
+			. "+ (SELECT COUNT(*) FROM $categories WHERE category_id=19) "
+			. "+ (SELECT COUNT(*) FROM $entries WHERE entry_id IN (83,84))"
+		)->fetchColumn();
+		if ($context) {
+			throw new RuntimeException('Historical joint-first award records are missing; no data or schema changes made');
+		}
+		return false;
+	}
+	$rows = array_map(fn($row) => array_map('intval', $row), $original);
+	$expected = array(array(249,83,9,19), array(250,84,9,19));
+	$corrected = array(array(249,83,9,19), array(250,84,35,19));
+	$valid = $rows === $expected || $rows === $corrected;
+	$valid = $valid && (int) $pdo->query("SELECT COUNT(*) FROM $votes WHERE vote_category=19")->fetchColumn() === 2;
+	$contests = rpgdx_contest_integrity_identifier($tables['contests']);
+	$categories = rpgdx_contest_integrity_identifier($tables['categories']);
+	$entries = rpgdx_contest_integrity_identifier($tables['entries']);
+	$projects = rpgdx_contest_integrity_identifier($tables['projects']);
+	$valid = $valid && (int) $pdo->query(
+		"SELECT COUNT(*) FROM $contests c JOIN $categories k ON k.category_contest=c.contest_id "
+		. "WHERE c.contest_id=7 AND c.contest_status=3 AND k.category_id=19 AND k.category_value=3"
+	)->fetchColumn() === 1;
+	$valid = $valid && (int) $pdo->query(
+		"SELECT COUNT(*) FROM $entries e JOIN $projects p ON p.project_id=e.entry_project "
+		. "WHERE e.entry_contest=7 AND e.entry_disqualified=0 AND p.project_name IS NOT NULL "
+		. "AND ((e.entry_id=83 AND e.entry_project=384) OR (e.entry_id=84 AND e.entry_project=383))"
+	)->fetchColumn() === 2;
+	if ($valid && $tables === rpgdx_contest_integrity_tables()) {
+		$accounts = $pdo->query('SELECT user_id, username FROM phpbb_users WHERE user_id IN (9,35) ORDER BY user_id')->fetchAll(PDO::FETCH_KEY_PAIR);
+		$valid = $accounts === array(9 => 'Bjorn', 35 => 'Terry');
+	}
+	if (!$valid) {
+		throw new RuntimeException('Historical joint-first award records are changed, partial or unexpected; no data or schema changes made');
+	}
+	return $rows === $expected;
+}
+
 /**
  * Upgrade contest tables without deleting or merging historical rows.
  *
- * All duplicate and index-definition checks complete before the first ALTER.
+ * All historical, duplicate and index checks complete before any data or schema write.
  * The returned list contains only tables changed by this invocation.
  */
 function rpgdx_migrate_contest_integrity_schema(
@@ -129,6 +180,7 @@ function rpgdx_migrate_contest_integrity_schema(
 		$states[$key] = rpgdx_contest_integrity_table_state($pdo, $schema, $table);
 	}
 
+	$correctHistoricalVoter = rpgdx_contest_integrity_needs_voter_correction($pdo, $tables);
 	$duplicates = array_filter(array(
 		rpgdx_contest_integrity_duplicate_summary(
 			$pdo,
@@ -140,7 +192,8 @@ function rpgdx_migrate_contest_integrity_schema(
 			$pdo,
 			$tables['votes'],
 			array('vote_user', 'vote_category'),
-			'duplicate user/category votes'
+			'duplicate user/category votes',
+			$correctHistoricalVoter
 		),
 	));
 	if ($duplicates) {
@@ -191,6 +244,20 @@ function rpgdx_migrate_contest_integrity_schema(
 			}
 		}
 		$plans[$key] = $clauses;
+	}
+
+	// The owner approved assigning the second award record to Terry's account. The
+	// historical IDs, entries, categories and resulting scores stay unchanged.
+	if ($correctHistoricalVoter) {
+		$votes = rpgdx_contest_integrity_identifier($tables['votes']);
+		$updated = $pdo->exec("UPDATE $votes SET vote_user=35 WHERE vote_id=250 AND vote_entry=84 AND vote_user=9 AND vote_category=19");
+		if ($updated !== 1) {
+			throw new RuntimeException('Historical award voter correction did not update exactly one approved row');
+		}
+		if ($verbose) {
+			echo "Historical award correction: vote 250 voter 9 (Bjorn) -> 35 (Terry); vote 249 and both scores preserved\n";
+			echo "Sources: https://rpgdx.net/forums/viewtopic.php?p=23221#23221 and https://rpgdx.net/forums/viewtopic.php?p=23280#23280\n";
+		}
 	}
 
 	$changed = array();

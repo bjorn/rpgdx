@@ -132,6 +132,7 @@ function rpgdx_contest_test_create_tables(PDO $pdo, array $tables, string $engin
 	$pdo->exec('CREATE TABLE ' . rpgdx_contest_test_identifier($tables['categories']) . " (
 		category_id INT NOT NULL AUTO_INCREMENT,
 		category_contest INT NOT NULL,
+		category_value INT NOT NULL DEFAULT 3,
 		PRIMARY KEY (category_id)$categoryIndex
 	) ENGINE=$engine");
 	$pdo->exec('CREATE TABLE ' . rpgdx_contest_test_identifier($tables['projects']) . " (
@@ -175,6 +176,38 @@ function rpgdx_contest_test_insert(PDO $pdo, string $table, array $values): int
 	);
 	$statement->execute(array_values($values));
 	return (int) $pdo->lastInsertId();
+}
+
+/** Reproduce the two administrative awards from the closed November 2007 contest. */
+function rpgdx_contest_test_historical_awards(PDO $pdo, array $tables): void
+{
+	rpgdx_contest_test_create_tables($pdo, $tables, 'MyISAM', false);
+	rpgdx_contest_test_insert($pdo, $tables['contests'], array('contest_id' => 7, 'contest_status' => CON_CLOSED));
+	rpgdx_contest_test_insert($pdo, $tables['categories'], array('category_id' => 19, 'category_contest' => 7));
+	foreach (array(83 => 384, 84 => 383) as $entry => $project) {
+		rpgdx_contest_test_insert($pdo, $tables['projects'], array(
+			'project_id' => $project, 'user_id' => 101, 'project_name' => 'Historical winner ' . $project,
+		));
+		rpgdx_contest_test_insert($pdo, $tables['entries'], array(
+			'entry_id' => $entry, 'entry_project' => $project, 'entry_contest' => 7,
+		));
+		rpgdx_contest_test_insert($pdo, $tables['votes'], array(
+			'vote_id' => $entry + 166, 'vote_entry' => $entry, 'vote_user' => 9, 'vote_category' => 19,
+		));
+	}
+}
+
+function rpgdx_contest_test_snapshot(PDO $pdo, array $tables): array
+{
+	$snapshot = array();
+	foreach ($tables as $key => $table) {
+		$quoted = rpgdx_contest_test_identifier($table);
+		$snapshot[$key] = array(
+			$pdo->query('SHOW CREATE TABLE ' . $quoted)->fetch(PDO::FETCH_NUM)[1],
+			$pdo->query('SELECT * FROM ' . $quoted . ' ORDER BY 1')->fetchAll(PDO::FETCH_ASSOC),
+		);
+	}
+	return $snapshot;
 }
 
 function rpgdx_contest_test_votes(PDO $pdo, array $tables, int $userId, int $contestId): array
@@ -277,6 +310,7 @@ $tables = rpgdx_contest_test_tables('rpgdx_ci_' . $suffix);
 $migrationTables = rpgdx_contest_test_tables('rpgdx_cm_' . $suffix);
 $guardTables = rpgdx_contest_test_tables('rpgdx_cg_' . $suffix);
 $duplicateTables = rpgdx_contest_test_tables('rpgdx_cd_' . $suffix);
+$historyTables = rpgdx_contest_test_tables('rpgdx_ch_' . $suffix);
 $trigger = 'rpgdx_ct_' . $suffix;
 
 try {
@@ -591,9 +625,80 @@ try {
 		rpgdx_contest_test_expect($currentSchema === $beforeRefusal[$table], "$table is not mutated after duplicate preflight refusal");
 	}
 
+	// Historical awards are accepted only as the complete, documented pair.
+	foreach (array(
+		'missing pair' => "DELETE FROM {$historyTables['votes']} WHERE vote_id IN (249,250)",
+		'partial pair' => "DELETE FROM {$historyTables['votes']} WHERE vote_id=250",
+		'changed voter' => "UPDATE {$historyTables['votes']} SET vote_user=99 WHERE vote_id=250",
+		'changed entry' => "UPDATE {$historyTables['votes']} SET vote_entry=83 WHERE vote_id=250",
+		'changed category' => "UPDATE {$historyTables['votes']} SET vote_category=20 WHERE vote_id=250",
+		'open contest' => "UPDATE {$historyTables['contests']} SET contest_status=0 WHERE contest_id=7",
+		'wrong contest' => "UPDATE {$historyTables['categories']} SET category_contest=8 WHERE category_id=19",
+		'changed score' => "UPDATE {$historyTables['categories']} SET category_value=4 WHERE category_id=19",
+		'wrong project' => "UPDATE {$historyTables['entries']} SET entry_project=385 WHERE entry_id=84",
+		'disqualified entry' => "UPDATE {$historyTables['entries']} SET entry_disqualified=1 WHERE entry_id=84",
+		'extra historical vote' => "INSERT INTO {$historyTables['votes']} (vote_entry,vote_user,vote_category) VALUES (84,35,19)",
+		'unrelated duplicate votes' => "INSERT INTO {$historyTables['votes']} (vote_entry,vote_user,vote_category) VALUES (83,50,20),(84,50,20)",
+		'incompatible index' => "ALTER TABLE {$historyTables['votes']} ADD KEY vote_user_category(vote_user)",
+	) as $case => $sql) {
+		rpgdx_contest_test_historical_awards($pdo, $historyTables);
+		$pdo->exec($sql);
+		$before = rpgdx_contest_test_snapshot($pdo, $historyTables);
+		$refused = false;
+		try {
+			rpgdx_migrate_contest_integrity_schema($pdo, $historyTables, false);
+		} catch (RuntimeException $error) {
+			$refused = true;
+		}
+		rpgdx_contest_test_expect($refused, "historical correction refuses $case");
+		rpgdx_contest_test_expect(
+			rpgdx_contest_test_snapshot($pdo, $historyTables) === $before,
+			"historical correction leaves rows and schema untouched for $case"
+		);
+		rpgdx_contest_test_drop_tables($pdo, $historyTables);
+	}
+
+	rpgdx_contest_test_historical_awards($pdo, $historyTables);
+	$historyBefore = rpgdx_contest_test_snapshot($pdo, $historyTables);
+	$scoreSql = "SELECT entry_project, SUM(category_value) AS score FROM {$historyTables['votes']} "
+		. "JOIN {$historyTables['entries']} ON vote_entry=entry_id "
+		. "JOIN {$historyTables['categories']} ON vote_category=category_id "
+		. 'GROUP BY entry_project ORDER BY entry_project';
+	$scores = $pdo->query($scoreSql)->fetchAll(PDO::FETCH_ASSOC);
+	rpgdx_contest_test_expect(
+		$scores === array(array('entry_project' => 383, 'score' => '3'), array('entry_project' => 384, 'score' => '3')),
+		'both historical projects start tied for first place with three points'
+	);
+	rpgdx_migrate_contest_integrity_schema($pdo, $historyTables, false);
+	$historyAfter = rpgdx_contest_test_snapshot($pdo, $historyTables);
+	$historyBefore['votes'][1][1]['vote_user'] = 35;
+	foreach ($historyTables as $key => $table) {
+		rpgdx_contest_test_expect(
+			$historyBefore[$key][1] === $historyAfter[$key][1],
+			"only the approved historical voter changes in $table"
+		);
+	}
+	rpgdx_contest_test_expect($pdo->query($scoreSql)->fetchAll(PDO::FETCH_ASSOC) === $scores, 'joint first-place scores survive correction');
+	rpgdx_contest_test_expect(
+		rpgdx_migrate_contest_integrity_schema($pdo, $historyTables, false) === array()
+		&& rpgdx_contest_test_snapshot($pdo, $historyTables) === $historyAfter,
+		'corrected historical awards and schema are unchanged on rerun'
+	);
+	foreach (array(9, 35) as $voter) {
+		try {
+			rpgdx_contest_test_insert($pdo, $historyTables['votes'], array(
+				'vote_entry' => 83, 'vote_user' => $voter, 'vote_category' => 19,
+			));
+			throw new RuntimeException('Contest integrity test failed: historical category accepted another vote');
+		} catch (PDOException $error) {
+			rpgdx_contest_test_expect($error->getCode() === '23000', 'normal vote uniqueness applies to both historical award accounts');
+		}
+	}
+
 	echo "PASS contest integrity: phases, eligibility, atomicity, concurrency and rerunnable migration\n";
 } finally {
 	$pdo->exec('DROP TRIGGER IF EXISTS ' . rpgdx_contest_test_identifier($trigger));
+	rpgdx_contest_test_drop_tables($pdo, $historyTables);
 	rpgdx_contest_test_drop_tables($pdo, $duplicateTables);
 	rpgdx_contest_test_drop_tables($pdo, $migrationTables);
 	rpgdx_contest_test_drop_tables($pdo, $guardTables);
