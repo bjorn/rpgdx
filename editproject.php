@@ -60,7 +60,7 @@ if (rpgdx_db_num_rows($result) > 0)
 
 		$template->assign_block_vars('screenshots.shot', array(
 			'URL'         => $url.'.thumb.jpg',
-			'CAPTION'     => $row->screenshot_title,
+			'CAPTION'     => rpgdx_html_attribute($row->screenshot_title),
 			'DIMENSIONS'  => $size[0] ."x". $size[1],
 			'CHECK_FIELD' => 'screenshots[]',
 			'ID'          => $row->screenshot_id)
