@@ -144,11 +144,20 @@ async function chooseFirst(page, name) {
       canvas.getContext('2d').fillRect(0, 0, 32, 32);
       return canvas.toDataURL('image/png').split(',')[1];
     }), 'base64');
+    // Keep the complete IHDR so header validation passes and GD must reject the missing image data.
+    const truncatedPng = png.subarray(0, 33);
     const iconForm = ordinary.locator('form').filter({ has: ordinary.locator('[name="uploaded_icon"]') });
     await iconForm.locator('[name="uploaded_icon"]').setInputFiles({ name: 'smoke.png', mimeType: 'image/png', buffer: png });
     await iconForm.locator('[name="upload"]').click();
     await healthy(ordinary);
     const screenshotForm = ordinary.locator('form').filter({ has: ordinary.locator('[name="uploaded_screenshot"]') });
+    await screenshotForm.locator('[name="screenshot_caption"]').fill('Truncated image');
+    await screenshotForm.locator('[name="uploaded_screenshot"]').setInputFiles({ name: 'truncated.png', mimeType: 'image/png', buffer: truncatedPng });
+    await screenshotForm.locator('input[type="submit"]').click();
+    await healthy(ordinary);
+    const malformedScreenshotRejection = await ordinary.locator('body').innerText();
+    await visit(ordinary, `/editproject.php?project_id=${projectId}`);
+    const malformedScreenshotCount = await ordinary.locator('input[name="screenshots[]"]').count();
     await screenshotForm.locator('[name="screenshot_caption"]').fill(excessiveScreenshotCaption);
     await screenshotForm.locator('[name="uploaded_screenshot"]').setInputFiles({ name: 'smoke.png', mimeType: 'image/png', buffer: png });
     await screenshotForm.locator('input[type="submit"]').click();
@@ -177,6 +186,8 @@ async function chooseFirst(page, name) {
     await healthy(ordinary);
     await ordinary.locator('input[name="remove"]').click();
     await healthy(ordinary);
+    assert(malformedScreenshotRejection.includes('Creating thumbnail failed, could not open image'), 'A header-valid truncated image must fail full decoding');
+    assert.equal(malformedScreenshotCount, 0, 'A failed full image decode must not create a screenshot row');
     assert(screenshotRejection.includes('Caption exceeds maximum length (50 characters).'), 'A 51-character caption must be rejected');
     assert.equal(rejectedScreenshotCount, 0, 'Rejected captions must not create screenshot rows');
     assert(savedScreenshotText.includes(maximumScreenshotCaption), 'Screenshot caption preserves all 50 mixed Unicode characters');

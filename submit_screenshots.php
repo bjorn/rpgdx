@@ -45,8 +45,8 @@ if ($action == 'add') {
 			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'Caption exceeds maximum length (50 characters).';
 		}
 		// Check the image type and size
-		$img = getimagesize($temp_file);
-		if (!($img[2] == 1 || $img[2] == 2 || $img[2] == 3)) {
+		$img = @getimagesize($temp_file);
+		if (!$img || !($img[2] == 1 || $img[2] == 2 || $img[2] == 3)) {
 			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'Uploaded file has wrong type.';
 		}
 		else if ($img[1] > $img[0] || $img[0] < 10 || $img[1] < 10 || $img[0] > 1600 || $img[1] > 1600) {
@@ -63,19 +63,47 @@ if ($action == 'add') {
 
 		$extensions = array(0, '.gif', '.jpg', '.png');
 		$extension = $extensions[$img[2]];
+		$temp_thumbnail = $temp_file . '.thumb.jpg';
+
+		// Fully decode the image and create its thumbnail before making anything durable.
+		register_shutdown_function(static function () use ($temp_thumbnail) {
+			if (is_file($temp_thumbnail)) {
+				@unlink($temp_thumbnail);
+			}
+		});
+		create_thumbnail($temp_file);
+		if (!is_file($temp_thumbnail) || filesize($temp_thumbnail) < 1) {
+			abort_with_error('Creating thumbnail failed, could not save the image preview.');
+		}
 
 		// Add the screenshot file to the database
 		$upload_id = add_uploaded_file($temp_file, 'screenshot', $extension);
+		$uploaded_file = 'uploads/screenshot' . $upload_id . $extension;
+		$uploaded_thumbnail = $uploaded_file . '.thumb.jpg';
+		$cleanup_upload = static function () use ($upload_id, $uploaded_file, $uploaded_thumbnail) {
+			@unlink($uploaded_thumbnail);
+			@unlink($uploaded_file);
+			doQuery("DELETE FROM ". UPLOADS_TABLE ." WHERE upload_id = ". (int) $upload_id, 0);
+		};
 
-		// Create a thumbnail
-		create_thumbnail('uploads/screenshot' . $upload_id . $extension);
+		// Publish the thumbnail created from the validated temporary upload.
+		if (!@copy($temp_thumbnail, $uploaded_thumbnail)) {
+			$cleanup_upload();
+			abort_with_error('Error while trying to store the screenshot thumbnail.');
+		}
+		@chmod($uploaded_thumbnail, 0644);
+		@unlink($temp_thumbnail);
 
 		// Add screenshot to the database
 		$caption = rpgdx_escape_request($caption);
-		doQuery(
+		if (!doQuery(
 			"INSERT INTO ". PROJECT_SCREENSHOTS_TABLE ." (project_id, upload_id, screenshot_title) VALUES ".
-			"($project_id, $upload_id, '$caption')"
-		);
+			"($project_id, $upload_id, '$caption')",
+			0
+		)) {
+			$cleanup_upload();
+			abort_with_error('Error while trying to save the screenshot.');
+		}
 	}
 	else
 	{

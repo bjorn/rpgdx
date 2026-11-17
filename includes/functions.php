@@ -184,25 +184,34 @@ function remove_uploaded_file($upload_id)
 }
 
 
-// Creates a thumbnail alongside the image, adding _thumb to the filename.
+// Creates a JPEG thumbnail alongside the image.
 function create_thumbnail($img_filename)
 {
-	$img_size = getimagesize($img_filename);
+	$img_size = @getimagesize($img_filename);
 	$img = false;
 
-	switch ($img_size[2])
+	switch ($img_size[2] ?? 0)
 	{
-		case 1: $img = imagecreatefromgif($img_filename); break; // GIF
-		case 2: $img = imagecreatefromjpeg($img_filename); break; // JPG
-		case 3: $img = imagecreatefrompng($img_filename); break; // PNG
+		case 1: $img = @imagecreatefromgif($img_filename); break; // GIF
+		case 2: $img = @imagecreatefromjpeg($img_filename); break; // JPG
+		case 3: $img = @imagecreatefrompng($img_filename); break; // PNG
 	}
 
 	if (!$img) {
-		abort_with_error("Creating thumbnail failed, could not open image ($img_filename).");
-	} else {
-		$thumb = imagecreatetruecolor(140, imagesy($img) * (140 / imagesx($img)));
-		imagecopyresampled($thumb, $img, 0, 0, 0, 0, 140, imagesy($img) * (140 / imagesx($img)), imagesx($img), imagesy($img));
-		imagejpeg($thumb, $img_filename.'.thumb.jpg', 90);
+		abort_with_error('Creating thumbnail failed, could not open image.');
+	}
+
+	$height = max(1, (int) (imagesy($img) * (140 / imagesx($img))));
+	$thumb = imagecreatetruecolor(140, $height);
+	$saved = $thumb && imagecopyresampled($thumb, $img, 0, 0, 0, 0, 140, $height, imagesx($img), imagesy($img))
+		&& @imagejpeg($thumb, $img_filename . '.thumb.jpg', 90);
+	if ($thumb) {
+		imagedestroy($thumb);
+	}
+	imagedestroy($img);
+	if (!$saved) {
+		@unlink($img_filename . '.thumb.jpg');
+		abort_with_error('Creating thumbnail failed, could not save the image preview.');
 	}
 }
 
