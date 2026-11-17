@@ -45,6 +45,26 @@ async function submit(page) {
   await Promise.all([page.waitForLoadState('load'), page.locator('input[name="submit"]').click()]);
   await healthy(page);
 }
+async function checkStoredImageTokens(page, editPath, displayPath, field, uidField, original) {
+  await visit(page, editPath);
+  const uid = await page.locator(`[name="${uidField}"]`).inputValue();
+  assert(uid, 'The edit form exposes its actual stored BBCode UID');
+  const imageUrl = new URL('/images/ap_banner.png', base).href;
+  const missingUrl = new URL('/images/rpgdx_smoke_missing.png', base).href;
+  const attack = `[img:${uid}]${missingUrl}" onerror="window.__rpgdxImageXss=1[/img:${uid}]`;
+  const loadAttack = `[img:${uid}]${imageUrl}" onload="window.__rpgdxImageXss=1[/img:${uid}]`;
+  await page.locator(`[name="${field}"]`).fill(`${original}\n${attack}\n${loadAttack}\n[img]${imageUrl}[/img]`);
+  await submit(page);
+  await visit(page, displayPath);
+  assert.equal(await page.locator('img[onerror*="__rpgdxImageXss"], img[onload*="__rpgdxImageXss"]').count(), 0, 'Stored pretagged images must not create attacker event attributes');
+  assert.equal(await page.evaluate(() => window.__rpgdxImageXss), undefined, 'Stored image event payloads must not execute');
+  const validImage = page.locator(`img[src="${imageUrl}"]`);
+  assert.equal(await validImage.count(), 1, 'Ordinary local BBCode images still render');
+  assert(await validImage.evaluate(image => image.complete && image.naturalWidth > 0), 'The ordinary local image loads successfully');
+  await visit(page, editPath);
+  await page.locator(`[name="${field}"]`).fill(original);
+  await submit(page);
+}
 async function confirmRemoval(page, path) {
   await visit(page, `${path}&confirmed=1`);
   assert.equal(await page.locator('form[method="post"] input[name="form_token"]').count(), 1, 'Confirmed GET must render a tokenized deletion form');
@@ -211,6 +231,8 @@ async function chooseFirst(page, name) {
     assert.equal(await admin.locator('[name="project_summary"]').inputValue(), projectSummary);
     assert.equal(await admin.locator('[name="project_description"]').inputValue(), projectDescription);
 
+    await checkStoredImageTokens(admin, `/editproject_general.php?action=edit&project_id=${projectId}`, `/showgame.php?project_id=${projectId}`, 'project_description', 'project_bbcode_uid', projectDescription);
+
     await visit(admin, `/editreview.php?action=add&project_id=${projectId}`);
     await admin.locator('[name="review_score"]').selectOption('8');
     await admin.locator('[name="review_text"]').fill(reviewText);
@@ -279,6 +301,8 @@ async function chooseFirst(page, name) {
     await visit(ordinary, '/index.php');
     assert((await ordinary.locator('body').innerText()).includes(newsTitle));
     assert((await ordinary.locator('body').innerText()).includes(`Edited local news ${unicode}`));
+    await checkStoredImageTokens(ordinary, `/editnews.php?action=edit&news_id=${newsId}`, '/index.php', 'news_message', 'news_bbcode_uid', editedNewsMessage);
+    await visit(ordinary, '/index.php');
     await visit(ordinary, '/profile.php?user_id=' + new URL(await ordinary.locator('a[href*="profile.php?user_id="]').first().getAttribute('href'), base).searchParams.get('user_id'));
     assert((await ordinary.locator('body').innerText()).includes('Personal Information'));
     assert.equal(browserErrors.length, 0, browserErrors.join('\n'));
