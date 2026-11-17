@@ -11,6 +11,7 @@ One or more errors have occured:<br />
 
 <!-- BEGIN form -->
 <form action="{form.ACTION}" method="post">
+{S_FORM_TOKEN}
 {form.HIDDEN}
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>

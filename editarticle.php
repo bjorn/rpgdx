@@ -36,6 +36,12 @@ if (!isset($action) || ($action != "edit" && $action != "remove" && $action != "
 	abort_with_error('No valid action specified.');
 }
 
+if (($action === 'add' || $action === 'edit') && isset($submit)) {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_article_' . $action)) {
+		abort_with_error('Your form has expired. Please try again.');
+	}
+}
+
 
 if ($action == "remove" && isset($confirmed) && $article_id > 0 && strlen($error) == 0)
 {
@@ -138,6 +144,7 @@ if (strlen($message) > 0) {
 
 if ($action == "edit" || $action == "add")
 {
+	add_form_key('rpgdx_article_' . $action);
 	$type_selection = "";
 	$result = doQuery("SELECT * FROM ". ARTICLE_TYPES_TABLE);
 	while ($row = rpgdx_db_fetch_object($result))

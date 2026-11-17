@@ -30,6 +30,12 @@ if (!isset($action) || ($action != "edit" && $action != "remove"
 	abort_with_error('No valid action specified.');
 }
 
+if (($action === 'add' || $action === 'edit') && isset($submit)) {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_review_' . $action)) {
+		abort_with_error('Your form has expired. Please try again.');
+	}
+}
+
 if ($action == 'add') {
   if (!($project_id > 0)) {
     abort_with_error('No valid game to review specified.');
@@ -160,6 +166,7 @@ if (strlen($message) > 0) {
 
 if ($action == "edit" || $action == "add")
 {
+	add_form_key('rpgdx_review_' . $action);
 	if ($action == "add") $template->assign_block_vars('writing', array());
 	else $template->assign_block_vars('editing', array());
 

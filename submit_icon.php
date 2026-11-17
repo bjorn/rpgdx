@@ -32,6 +32,9 @@ if ($error = check_access_level(PROJECTS_TABLE, 'project_id', $project_id)) {
 if (!isset($action) || !($action == 'upload' || $action == 'remove')) {
 	abort_with_error('No or invalid action specified.');
 }
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_icon')) {
+	abort_with_error('Your form has expired. Please try again.');
+}
 
 
 if ($action == 'upload')

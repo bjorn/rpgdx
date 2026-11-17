@@ -59,6 +59,7 @@
       <i>If you have added a project with which you want to subscribe, subscribe with it here.</i><br /><br />
       <form action="{subscribe.ACTION}" method="post">
       {subscribe.HIDDEN}
+      {S_FORM_TOKEN_CONTEST_SUBSCRIPTION}
       <table cellpadding="0" cellspacing="2" border="0">
         <tr>
           <td class="th">Project:</td>
@@ -82,6 +83,7 @@
       <p>You are currently subscribed with {unsubscribe.GAME_NAME}.</p>
       <form action="{unsubscribe.ACTION}" method="post">
       {unsubscribe.HIDDEN}
+      {S_FORM_TOKEN_CONTEST_SUBSCRIPTION}
       <input type="submit" name="unsubscribe" value="Unsubscribe" class="formButton">
       </form>
       <!-- END unsubscribe -->
@@ -121,7 +123,9 @@
       </table>
       <br>
       {voting.HIDDEN}
+      {S_FORM_TOKEN_CONTEST_VOTES}
       <input type="submit" name="vote" value="Submit votes" class="formButton">
+      </form>
       <!-- END voting -->
 
       <!-- BEGIN no_voting -->

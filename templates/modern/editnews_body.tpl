@@ -14,6 +14,7 @@ One or more errors have occured:<br />
 <h4>Guidelines</h4>
 <p>Your message may contain anything about one of your games or articles, or anything else that you think is important and relates to RPGs (either directly or indirectly). It will be visible in the news instantly, please check if everything went ok after posting.</p>
 <form action="{form.ACTION}" method="post">
+{S_FORM_TOKEN}
 {form.HIDDEN}
 <h4>News message:</h4>
 <table cellpadding="0" cellspacing="1" border="0" width="100%">

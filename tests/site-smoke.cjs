@@ -42,8 +42,37 @@ async function visit(page, path) {
   await healthy(page);
 }
 async function submit(page) {
+  const form = await page.locator('input[name="submit"]').evaluate(button => {
+    const fields = Object.fromEntries(new FormData(button.form));
+    delete fields.form_token;
+    fields.submit = button.value;
+    return { action: button.form.action, fields };
+  });
+  const denied = await page.context().request.post(form.action, { form: form.fields });
+  assert((await denied.text()).includes('Your form has expired.'), 'Content submission without a token must be rejected');
+  await page.waitForTimeout(1100);
   await Promise.all([page.waitForLoadState('load'), page.locator('input[name="submit"]').click()]);
   await healthy(page);
+}
+async function checkRejectedEdit(page, path, field) {
+  await visit(page, '/userpage.php');
+  const otherToken = await page.locator('input[name="form_token"]').inputValue();
+  const otherTime = await page.locator('input[name="creation_time"]').inputValue();
+  await visit(page, path);
+  const original = await page.locator(`[name="${field}"]`).inputValue();
+  const form = await page.locator('input[name="submit"]').evaluate(button => ({
+    action: button.form.action,
+    fields: { ...Object.fromEntries(new FormData(button.form)), submit: button.value }
+  }));
+  await page.waitForTimeout(1100);
+  for (const token of ['', 'invalid', otherToken]) {
+    const denied = await page.context().request.post(form.action, {
+      form: { ...form.fields, [field]: 'Forged replacement', form_token: token, creation_time: otherTime }
+    });
+    assert((await denied.text()).includes('Your form has expired.'), 'Forged edit must be rejected');
+    await visit(page, path);
+    assert.equal(await page.locator(`[name="${field}"]`).inputValue(), original, 'Rejected edit must preserve stored content');
+  }
 }
 async function checkStoredImageTokens(page, editPath, displayPath, field, uidField, original) {
   await visit(page, editPath);
@@ -168,11 +197,13 @@ async function chooseFirst(page, name) {
     const truncatedPng = png.subarray(0, 33);
     const iconForm = ordinary.locator('form').filter({ has: ordinary.locator('[name="uploaded_icon"]') });
     await iconForm.locator('[name="uploaded_icon"]').setInputFiles({ name: 'smoke.png', mimeType: 'image/png', buffer: png });
+    await ordinary.waitForTimeout(1100);
     await iconForm.locator('[name="upload"]').click();
     await healthy(ordinary);
     const screenshotForm = ordinary.locator('form').filter({ has: ordinary.locator('[name="uploaded_screenshot"]') });
     await screenshotForm.locator('[name="screenshot_caption"]').fill('Truncated image');
     await screenshotForm.locator('[name="uploaded_screenshot"]').setInputFiles({ name: 'truncated.png', mimeType: 'image/png', buffer: truncatedPng });
+    await ordinary.waitForTimeout(1100);
     await screenshotForm.locator('input[type="submit"]').click();
     await healthy(ordinary);
     const malformedScreenshotRejection = await ordinary.locator('body').innerText();
@@ -180,6 +211,7 @@ async function chooseFirst(page, name) {
     const malformedScreenshotCount = await ordinary.locator('input[name="screenshots[]"]').count();
     await screenshotForm.locator('[name="screenshot_caption"]').fill(excessiveScreenshotCaption);
     await screenshotForm.locator('[name="uploaded_screenshot"]').setInputFiles({ name: 'smoke.png', mimeType: 'image/png', buffer: png });
+    await ordinary.waitForTimeout(1100);
     await screenshotForm.locator('input[type="submit"]').click();
     await healthy(ordinary);
     const screenshotRejection = await ordinary.locator('body').innerText();
@@ -187,11 +219,13 @@ async function chooseFirst(page, name) {
     const rejectedScreenshotCount = await ordinary.locator('input[name="screenshots[]"]').count();
     if (rejectedScreenshotCount) {
       for (let index = 0; index < rejectedScreenshotCount; index++) await ordinary.locator('input[name="screenshots[]"]').nth(index).check();
+      await ordinary.waitForTimeout(1100);
       await ordinary.locator('input[value="Remove selected"]').click();
       await healthy(ordinary);
     }
     await screenshotForm.locator('[name="screenshot_caption"]').fill(maximumScreenshotCaption);
     await screenshotForm.locator('[name="uploaded_screenshot"]').setInputFiles({ name: 'smoke.png', mimeType: 'image/png', buffer: png });
+    await ordinary.waitForTimeout(1100);
     await screenshotForm.locator('input[type="submit"]').click();
     await healthy(ordinary);
     const savedScreenshotText = await ordinary.locator('body').innerText();
@@ -201,9 +235,24 @@ async function chooseFirst(page, name) {
     assert.equal(await ordinary.locator('img.screenshot').getAttribute('title'), maximumScreenshotCaption + ' (click for larger image)');
     assert.equal(await ordinary.locator('svg[onload]').count(), 0, 'Caption markup must remain inside the title attribute');
     await visit(ordinary, `/editproject.php?project_id=${projectId}`);
+    const screenshotId = await ordinary.locator('input[name="screenshots[]"]').inputValue();
+    for (const [endpoint, fields] of [
+      ['/submit_icon.php', { project_id: projectId, remove: 'Remove icon' }],
+      ['/submit_icon.php', { project_id: projectId, upload: 'Upload' }],
+      ['/submit_screenshots.php?action=add', { project_id: projectId }],
+      ['/submit_screenshots.php?action=remove', { project_id: projectId, 'screenshots[]': screenshotId }]
+    ]) {
+      const denied = await ordinary.context().request.post(new URL(endpoint, base).href, { form: fields });
+      assert((await denied.text()).includes('Your form has expired.'), 'Media removal without a token must be rejected');
+    }
+    await visit(ordinary, `/editproject.php?project_id=${projectId}`);
+    assert.equal(await ordinary.locator('input[name="screenshots[]"]').count(), 1, 'Rejected removal preserves the screenshot');
+    assert.equal(await ordinary.locator('img[src*="uploads/icon"]').count(), 1, 'Rejected removal preserves the icon');
     await ordinary.locator('input[name="screenshots[]"]').check();
+    await ordinary.waitForTimeout(1100);
     await ordinary.locator('input[value="Remove selected"]').click();
     await healthy(ordinary);
+    await ordinary.waitForTimeout(1100);
     await ordinary.locator('input[name="remove"]').click();
     await healthy(ordinary);
     assert(malformedScreenshotRejection.includes('Creating thumbnail failed, could not open image'), 'A header-valid truncated image must fail full decoding');
@@ -305,6 +354,10 @@ async function chooseFirst(page, name) {
     await visit(ordinary, '/index.php');
     await visit(ordinary, '/profile.php?user_id=' + new URL(await ordinary.locator('a[href*="profile.php?user_id="]').first().getAttribute('href'), base).searchParams.get('user_id'));
     assert((await ordinary.locator('body').innerText()).includes('Personal Information'));
+    await checkRejectedEdit(ordinary, `/editproject_general.php?action=edit&project_id=${projectId}`, 'project_name');
+    await checkRejectedEdit(ordinary, `/editarticle.php?action=edit&article_id=${articleId}`, 'article_title');
+    await checkRejectedEdit(ordinary, `/editnews.php?action=edit&news_id=${newsId}`, 'news_title');
+    await checkRejectedEdit(admin, `/editreview.php?action=edit&review_id=${reviewId}`, 'review_text');
     assert.equal(browserErrors.length, 0, browserErrors.join('\n'));
     console.log('PASS: shared login, ordinary/admin permissions, preferences, mixed accented/CJK/emoji project, screenshot caption, review, article and news roundtrips, BBCode, uploads, ownership and profile');
   } finally {

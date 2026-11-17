@@ -18,6 +18,7 @@ One or more errors have occured:<br />
 
 <!-- BEGIN form -->
 <form action="{form.ACTION}" method="post">
+{S_FORM_TOKEN}
 {form.HIDDEN}
 <h4>Rating:</h4>
 <p>

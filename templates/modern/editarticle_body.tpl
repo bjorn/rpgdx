@@ -11,6 +11,7 @@ One or more errors have occured:<br />
 
 <!-- BEGIN form -->
 <form action="{form.ACTION}" method="post">
+{S_FORM_TOKEN}
 {form.HIDDEN}
 <h4>Article:</h4>
 <table cellpadding="0" cellspacing="1" border="0" width="100%">
