@@ -186,7 +186,8 @@ else if ($page == 'list')
 		$result = doQuery(
 			'SELECT '.
 				'article_id, '.
-				'CONCAT("<a href=\"", article_url ,"\">", article_title, "</a>") AS article_title, '.
+				'article_url, '.
+				'article_title, '.
 				'article_created, '.
 				'CONCAT("<a href=\"editarticle.php?action=edit&article_id=", article_id ,"\"><img src=\"images/icon_edit.png\" border=\"0\"></a>") AS e, '.
 				'CONCAT("<a href=\"editarticle.php?action=remove&article_id=", article_id ,"\"><img src=\"images/icon_nack.png\" border=\"0\"></a>") AS d '.
@@ -226,6 +227,7 @@ else if ($page == 'list')
 	if ($row) {
 		$template->assign_block_vars('header', array());
 		foreach ($row as $key => $col_value) {
+			if ($class == 'article' && $key == 'article_url') continue;
 			$template->assign_block_vars('header.column', array('TITLE' => strtoupper($key)));
 		}
 	}
@@ -233,7 +235,12 @@ else if ($page == 'list')
 	while ($row) {
 		$template->assign_block_vars('row', array());
 		foreach ($row as $key => $col_value) {
+			if ($class == 'article' && $key == 'article_url') continue;
 			$template->assign_block_vars('row.cell', array('VALUE' => $col_value));
+			if ($class == 'article' && $key == 'article_title') {
+				$template->assign_block_vars('row.cell.url', array(
+					'URL' => rpgdx_http_url_attribute($row['article_url']) ?? '#'));
+			}
 		}
 		$row = rpgdx_db_fetch_assoc($result);
 	}

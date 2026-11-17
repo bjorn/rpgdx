@@ -37,4 +37,8 @@ The manifest defaults to `/tmp/rpgdx-forum-fixtures.json` inside the container; 
 
 Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/unicode-text.php` for database-free checks of Unicode truncation and original POST caption character counts, including the 50-character boundary and apostrophe escaping.
 
-Run `php tests/legacy-bbcode.php` for database-free checks that legacy image tokens reject attribute injection, treat UIDs literally and preserve ordinary HTTPS images.
+Run `php tests/legacy-bbcode.php` and `php tests/legacy-bbcode.php classic` for database-free checks that legacy image tokens reject attribute injection and nested markup, treat UIDs literally, and preserve supported image and link schemes in both templates.
+
+Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/screenshot-thumbnail.php` for thumbnail generation at square, minimum and extreme aspect ratios. The site smoke also rejects an image with a valid PNG header but incomplete image data.
+
+Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/search-highlight.php` for database-free checks of literal, case-insensitive search highlighting, including regex metacharacters.

@@ -36,5 +36,7 @@ legacy helpers. They do not replace phpBB3's template or text rendering systems.
 Rehearse conversion with a recent database backup and copies of uploaded files.
 Switch the site and forum together during a posting freeze, following the
 migration instructions. Existing phpBB2 files must not remain in the deployed
-forum directory. The ordinary rsync deployment hook does not remove old files,
-so the initial migration requires a prepared, clean release directory.
+forum directory. The ordinary rsync deployment hook removes files absent from
+the public checkout, including repository-excluded paths, while explicit filters
+preserve production configuration and runtime data. The coordinated initial
+migration still requires a prepared, clean release directory.

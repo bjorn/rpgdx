@@ -166,8 +166,10 @@ still required at production cutover.
 
 ## Production cutover
 
-The ordinary push-to-deploy hook is not the initial upgrade procedure: it keeps
-old files and would leave obsolete phpBB2 entrypoints in place. Prepare a clean
+The ordinary push-to-deploy hook is not the initial upgrade procedure: although
+it removes application files absent from the public checkout, including
+repository-excluded paths, it deliberately preserves production configuration
+and runtime data and cannot coordinate the database cutover. Prepare a clean
 release beside the current deployment, then switch code and database together.
 
 1. Build that clean release from this checkout, excluding `.git`, private SQL
@@ -177,7 +179,12 @@ release beside the current deployment, then switch code and database together.
    runtime and extensions; the old global PHP shims are no longer required.
 2. Close both forum and RPGDX writes. Take a final database backup and copies of
    uploads and avatars, and retain the entire old deployment for rollback. Copy
-   `uploads/` into the new release. Do not mix old forum PHP files into it.
+   `uploads/` into the new release. Also copy historical image assets: legacy
+   `forums/images/avatars/*.{gif,jpg,png}`, `images/guicomp/*.png`,
+   `images/tablet.png`, `images/sponge.jpg`, `images/sourcesecure-120x90.gif`,
+   and `templates/modern/images/rpgdx_banner.png`. Preserve
+   `.htaccess_forwards` and `.well-known/acme-challenge/` if present, keeping
+   certificate renewal tokens available. Do not mix old forum PHP files into it.
 3. Restore the backup into a disposable source database on the same MariaDB
    server as a new target database. Configure the new release's
    `forums/config.php` for that target and install stock phpBB using the
