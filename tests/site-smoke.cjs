@@ -44,6 +44,30 @@ async function submit(page) {
   await Promise.all([page.waitForLoadState('load'), page.locator('input[name="submit"]').click()]);
   await healthy(page);
 }
+async function confirmRemoval(page, path) {
+  await visit(page, `${path}&confirmed=1`);
+  assert.equal(await page.locator('form[method="post"] input[name="form_token"]').count(), 1, 'Confirmed GET must render a tokenized deletion form');
+  await page.locator('input[name="form_token"]').evaluate(input => input.remove());
+  await page.waitForTimeout(1100);
+  await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
+  await healthy(page);
+  assert((await page.locator('body').innerText()).includes('Your form has expired.'), 'Deletion without a form token must be rejected');
+  await visit(page, '/userpage.php');
+  const preferencesToken = await page.locator('input[name="form_token"]').inputValue();
+  const preferencesTime = await page.locator('input[name="creation_time"]').inputValue();
+  await visit(page, path);
+  await page.locator('input[name="form_token"]').evaluate((input, value) => { input.value = value; }, preferencesToken);
+  await page.locator('input[name="creation_time"]').evaluate((input, value) => { input.value = value; }, preferencesTime);
+  await page.waitForTimeout(1100);
+  await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
+  await healthy(page);
+  assert((await page.locator('body').innerText()).includes('Your form has expired.'), 'Preferences token must not authorize deletion');
+  await visit(page, path);
+  await page.waitForTimeout(1100);
+  await Promise.all([page.waitForLoadState('load'), page.locator('input[name="confirmed"]').click()]);
+  await healthy(page);
+  assert.equal(new URL(page.url()).pathname, '/userpage.php', 'Tokenized POST deletion must return to the user page');
+}
 async function login(page, username, password) {
   await visit(page, '/login.php');
   await page.locator('[name="username"]').fill(username);
@@ -222,10 +246,10 @@ async function chooseFirst(page, name) {
     assert.equal(browserErrors.length, 0, browserErrors.join('\n'));
     console.log('PASS: shared login, ordinary/admin permissions, preferences, mixed accented/CJK/emoji project, screenshot caption, review, article and news roundtrips, BBCode, uploads, ownership and profile');
   } finally {
-    if (admin && reviewId) await visit(admin, `/editreview.php?action=remove&review_id=${reviewId}&confirmed=1`);
-    if (ordinary && articleId) await visit(ordinary, `/editarticle.php?action=remove&article_id=${articleId}&confirmed=1`);
-    if (ordinary && newsId) await visit(ordinary, `/editnews.php?action=remove&news_id=${newsId}&confirmed=1`);
-    if (ordinary && projectId) await visit(ordinary, `/editproject_general.php?action=remove&project_id=${projectId}&confirmed=1`);
+    if (admin && reviewId) await confirmRemoval(admin, `/editreview.php?action=remove&review_id=${reviewId}`);
+    if (ordinary && articleId) await confirmRemoval(ordinary, `/editarticle.php?action=remove&article_id=${articleId}`);
+    if (ordinary && newsId) await confirmRemoval(ordinary, `/editnews.php?action=remove&news_id=${newsId}`);
+    if (ordinary && projectId) await confirmRemoval(ordinary, `/editproject_general.php?action=remove&project_id=${projectId}`);
     if (ordinary) {
       await visit(ordinary, '/userpage.php');
       const logout = ordinary.locator('a[href*="login.php?logout=true"]');

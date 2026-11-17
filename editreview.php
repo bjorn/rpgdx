@@ -2,7 +2,7 @@
 include("includes/main.php");
 
 $action       = $_GET['action']    ?? $_POST['action']    ?? null;
-$confirmed    = $_GET['confirmed'] ?? $_POST['confirmed'] ?? null;
+$confirmed    = $_POST['confirmed'] ?? null;
 $submit       = $_POST['submit']   ?? null;
 $project_id   = (int) ($_GET['project_id']   ?? $_POST['project_id']   ?? 0);
 $review_id    = (int) ($_GET['review_id']    ?? $_POST['review_id']    ?? 0);
@@ -55,6 +55,10 @@ if (isset($project_id) && $project_id > 0) {
 
 if ($action == "remove" && isset($confirmed) && $review_id > 0 && strlen($error) == 0)
 {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !check_form_key('rpgdx_remove_review')) {
+		abort_with_error('Your form has expired. Please try again.');
+	}
+
 	// DELETE review from database
 	doQuery("DELETE FROM ". REVIEWS_TABLE ." WHERE review_id=$review_id");
 	header("Location: userpage.php"); die();
@@ -179,8 +183,11 @@ if ($action == "edit" || $action == "add")
 	);
 }
 else if ($action == "remove") {
+	add_form_key('rpgdx_remove_review');
 	$template->assign_block_vars('remove', array(
-		'YES_LINK' => "editreview.php?action=remove&amp;review_id=$review_id&amp;confirmed=1",
+		'ACTION'   => append_sid('editreview.php'),
+		'HIDDEN'   => '<input type="hidden" name="action" value="remove">'.
+		              '<input type="hidden" name="review_id" value="'. $review_id .'">',
 		'NO_LINK'  => "userpage.php")
 	);
 }

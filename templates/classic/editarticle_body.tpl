@@ -37,8 +37,12 @@ One or more errors have occured:<br />
 <!-- END form -->
 
 <!-- BEGIN remove -->
-<p align="center">
+<div align="center">
 <b>Are you sure you want to remove the article "{ART_NAME}" from RPGDX?</b><br />
-[<a href="{remove.YES_LINK}">yes</a>] [<a href="{remove.NO_LINK}">no</a>]
-</p>
+<form action="{remove.ACTION}" method="post">
+{S_FORM_TOKEN}
+{remove.HIDDEN}
+<input type="submit" name="confirmed" value="yes"> [<a href="{remove.NO_LINK}">no</a>]
+</form>
+</div>
 <!-- END remove -->
