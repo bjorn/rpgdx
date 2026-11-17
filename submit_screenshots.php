@@ -33,10 +33,15 @@ if ($action == 'add') {
 		$error = '';
 
 		// Check caption
-		if (!(isset($_POST['screenshot_caption']) && strlen($_POST['screenshot_caption']) > 0)) {
+		// The request object retains the original text before SQL escaping.
+		$caption = $request->raw_variable('screenshot_caption', '', \phpbb\request\request_interface::POST);
+		if (!is_string($caption) || $caption === '') {
 			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'No caption specified.';
 		}
-		else if (strlen($_POST['screenshot_caption']) > 50) {
+		else if (!mb_check_encoding($caption, 'UTF-8')) {
+			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'Caption must contain valid UTF-8 text.';
+		}
+		else if (mb_strlen($caption, 'UTF-8') > 50) {
 			$error .= ((strlen($error) > 0) ? '<br />' : '' ) . 'Caption exceeds maximum length (50 characters).';
 		}
 		// Check the image type and size

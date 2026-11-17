@@ -5,6 +5,7 @@ if (PHP_SAPI !== 'cli') {
     exit;
 }
 require dirname(__DIR__, 2) . '/forums/config.php';
+require __DIR__ . '/application-encoding.php';
 error_reporting(E_ALL & ~E_DEPRECATED);
 $source = getenv('MIGRATION_SOURCE_DB') ?: 'rpgdx_legacy';
 if (!preg_match('/^[a-zA-Z0-9_]+$/', $source) || !preg_match('/^[a-zA-Z0-9_]+$/', $dbname)) {
@@ -109,16 +110,23 @@ if ($missingAvatars) {
     $check("uploaded avatar files copied ($avatarCount checked)", 0);
 }
 
-// Copy every application and wiki table, including unknown archival tables.
+// Copy application and wiki tables, including archives, but not obsolete sessions.
 $tables = $pdo->query("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = " . $pdo->quote($source) . " AND (LEFT(TABLE_NAME, 6) = 'rpgdx_' OR LEFT(TABLE_NAME, 3) = 'mw_') ORDER BY TABLE_NAME")->fetchAll(PDO::FETCH_COLUMN);
 foreach ($tables as $table) {
     if (!preg_match('/^[a-zA-Z0-9_]+$/', $table)) {
         throw new RuntimeException('Invalid source table');
     }
+    if ($table === 'rpgdx_sessions') {
+        continue;
+    }
     $pdo->exec("DROP TABLE IF EXISTS `$table`");
     $pdo->exec("CREATE TABLE `$table` LIKE $old.`$table`");
+    $unicode = rpgdx_convert_application_table($pdo, $table);
     $pdo->exec("INSERT INTO `$table` SELECT * FROM $old.`$table`");
     $check("$table row count", abs($scalar("SELECT COUNT(*) FROM `$table`") - $scalar("SELECT COUNT(*) FROM $old.`$table`")));
+    if ($unicode) {
+        $check("$table Unicode text preserved", rpgdx_application_text_mismatches($pdo, $source, $table));
+    }
 }
 $pdo->exec('CREATE TABLE IF NOT EXISTS rpgdx_migration_missing_assets (user_id INT UNSIGNED NOT NULL PRIMARY KEY, source_avatar VARCHAR(255) NOT NULL, converted_avatar VARCHAR(255) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4');
 $pdo->exec('DELETE FROM rpgdx_migration_missing_assets');
@@ -184,7 +192,7 @@ $check('valid native read markers', $scalar('SELECT COUNT(*) FROM phpbb_topics_t
 $check('all surviving read markers copied', abs($scalar("SELECT COUNT(*) FROM (SELECT m.user_id, r.read_topic_id FROM $old.phpbb_reads r JOIN rpgdx_user_id_map m ON m.legacy_user_id=r.read_user_id JOIN phpbb_topics t ON t.topic_id=r.read_topic_id WHERE m.user_id<>1 GROUP BY m.user_id, r.read_topic_id) reads_to_copy") - $scalar('SELECT COUNT(*) FROM phpbb_topics_track')));
 $pdo->exec("UPDATE phpbb_config SET config_value='1' WHERE config_name='load_db_lastread'");
 // Sessions are intentionally expired when switching authentication systems.
-$pdo->exec('DELETE FROM rpgdx_sessions');
+$pdo->exec('DROP TABLE IF EXISTS rpgdx_sessions');
 $pdo->exec('DELETE FROM phpbb_sessions');
 $pdo->exec('DELETE FROM phpbb_sessions_keys');
 echo 'Supplemental migration completed; source database unchanged' . PHP_EOL;

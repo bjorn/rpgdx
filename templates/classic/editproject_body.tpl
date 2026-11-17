@@ -62,7 +62,7 @@
               <table cellspacing="2" cellpadding="0" border="0">
                 <tr>
                   <td class="th" align="right" width="0">Caption:</td>
-                  <td class="td"><input type="text" name="{SCREENSHOT_CAPTION_FIELD}" value="" class="formInput" maxlength="{SCREENSHOT_CAPTION_MAXLENGTH}" /></td>
+                  <td class="td"><input type="text" name="{SCREENSHOT_CAPTION_FIELD}" value="" class="formInput" /></td>
                 </tr>
                 <tr>
                   <td class="th" align="right">File:</td>

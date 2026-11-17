@@ -101,9 +101,22 @@ avatars and smilies. It creates native profile fields such as
 `pf_phpbb_location`, `pf_phpbb_occupation`, `pf_phpbb_interests`, and
 `pf_phpbb_website`.
 
-The supplemental script copies every `rpgdx_*` and `mw_*` source table. MediaWiki
-tables retain their original schema and data. The legacy session table is emptied
-because authentication now uses phpBB3 sessions.
+The supplemental script copies the `rpgdx_*` and `mw_*` source tables except
+obsolete `rpgdx_sessions`. The known application tables listed in
+`scripts/migration/application-encoding.php` use
+`utf8mb4_unicode_ci` in the target. Copying transcodes text from each source
+column's declared character set, and migration checks compare every copied text
+column with its Unicode source value. Binary columns are not transcoded.
+MediaWiki and unknown archival tables retain their original schema and data.
+The legacy session table is not copied, and any leftover target copy is dropped
+because authentication now uses phpBB3 sessions. The source copy is unchanged.
+
+Main-site requests configure the shared mysqli connection as `utf8mb4` before
+escaping form input, allowing CJK text and four-byte characters such as emoji in
+RPGDX content. The standalone forum keeps phpBB's own connection configuration.
+Caption length limits and search excerpt truncation count Unicode characters.
+The application encoding regression test checks legacy text and binary data;
+the site smoke test verifies Unicode through create, edit and display forms.
 
 phpBB3 reserves user ID 1 for its anonymous account. The official conversion maps
 legacy anonymous ID -1 to 1 and moves an existing legacy user ID 1 to one greater

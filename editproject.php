@@ -36,7 +36,6 @@ $template->assign_vars(array(
 	'PROJECT_ID_FIELD'             => 'project_id',
 	'SCREENSHOT_FILE_FIELD'        => 'uploaded_screenshot',
 	'SCREENSHOT_CAPTION_FIELD'     => 'screenshot_caption',
-	'SCREENSHOT_CAPTION_MAXLENGTH' => '50',
 	'ICON_FILE_FIELD'              => 'uploaded_icon')
 );
 

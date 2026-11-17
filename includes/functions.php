@@ -270,9 +270,12 @@ function get_contest_results($project_id)
 // Cut project description without cutting words
 function shorten_text($text, $maxTextLength)
 {
-  if (strlen($text) > $maxTextLength) {
-     $text = substr( trim($text), 0, $maxTextLength ); 
-     $text = substr( $text, 0, strlen($text) - strpos(strrev($text), ' ') - 1 );
+  if (mb_strlen($text, 'UTF-8') > $maxTextLength) {
+     $text = mb_substr(trim($text), 0, $maxTextLength, 'UTF-8');
+     $last_space = mb_strrpos($text, ' ', 0, 'UTF-8');
+     if ($last_space !== false) {
+        $text = mb_substr($text, 0, $last_space, 'UTF-8');
+     }
      $text = $text . '...';
   }
 	return $text;

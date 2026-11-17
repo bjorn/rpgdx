@@ -14,6 +14,12 @@ $auth->acl($user->data);
 $user->setup();
 $phpbb_template = $template;
 
+// RPGDX content supports four-byte Unicode independently of phpBB's own schema.
+// Use the mysqli API so request escaping uses the same charset as the connection.
+if (!mysqli_set_charset($db->get_db_connect_id(), 'utf8mb4')) {
+    throw new RuntimeException('Unable to configure the RPGDX database character set');
+}
+
 // Preserve the small API expected by the separate RPGDX application.
 define('ADMIN', 1);
 $userdata = $user->data;
