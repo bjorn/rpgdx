@@ -36,3 +36,12 @@ to upstream files fail `tools/check-phpbb-core.py`.
 Do not use the ordinary deployment hook for the initial phpBB2 replacement.
 It preserves existing server files, including obsolete phpBB2 entrypoints.
 Follow the clean release and rollback procedure in the upgrade instructions.
+
+## Deployment filter test
+
+Run `python3 tests/test_deploy.py` with rsync installed. It exercises the actual
+post-receive hook using disposable local source and destination directories,
+covering a dry run, file copying, protected server data and rsync failure.
+Repository-only exclusions are anchored at the root so phpBB runtime directories
+remain included. Access rules are copied; server configuration and uploaded files
+are preserved. The test does not contact production.

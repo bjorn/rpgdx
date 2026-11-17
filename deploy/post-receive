@@ -1,6 +1,7 @@
 #!/bin/bash
 # Installed at /home/private/rpgdx/.git/hooks/post-receive on the NFS host.
-# Runs after `git push live master`; rsyncs the worktree to /home/public.
+# Runs after `git push live master:master`; rsyncs the worktree to /home/public.
+set -euo pipefail
 
 REPO="/home/private/rpgdx"
 WWW_DATA="/home/public"
@@ -9,26 +10,31 @@ cd "$REPO" || exit 1
 
 echo "Synchronizing website at $WWW_DATA"
 
+# Repository-only exclusions are anchored so phpBB runtime directories survive.
+# Include access rules before hiding dotfiles and protecting runtime contents.
 rsync -rtv \
 	--include=".htaccess" \
 	--exclude=".*" \
-	--exclude "*.md" \
-	--exclude "HOSTED" \
-	--exclude "TODO" \
-	--exclude "rpgdx.code-workspace" \
-	--exclude "sql" \
-	--exclude "install" \
-	--exclude "docker" \
-	--exclude "docker-compose*.yml" \
-	--exclude "deploy" \
-	--exclude "tools" \
-	--exclude "scripts" \
-	--exclude "tests" \
-	--exclude "forums/config.php" \
-	--exclude "forums/cache/*" \
-	--exclude "forums/files/*" \
-	--exclude "forums/store/*" \
-	--exclude "forums/images/avatars/upload/*" \
+	--exclude "/*.md" \
+	--exclude "/HOSTED" \
+	--exclude "/TODO" \
+	--exclude "/rpgdx.code-workspace" \
+	--exclude "/sql/" \
+	--exclude "/install/" \
+	--exclude "/forums/install/" \
+	--exclude "/docker/" \
+	--exclude "/docker-compose*.yml" \
+	--exclude "/docker-compose*.yaml" \
+	--exclude "/deploy/" \
+	--exclude "/tools/" \
+	--exclude "/scripts/" \
+	--exclude "/tests/" \
+	--exclude "/forums/config.php" \
+	--exclude "/forums/cache/*" \
+	--exclude "/forums/files/*" \
+	--exclude "/forums/store/*" \
+	--exclude "/forums/images/avatars/upload/*" \
+	--exclude "/uploads/*" \
 	./ "$WWW_DATA"
 
 echo "Website deployed!"
