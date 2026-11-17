@@ -325,11 +325,10 @@ function highlight($text, $words)
 	$replacements = array();
 	foreach ($words as $key => $word) {
 		$replacements[$key] = '<u>\\0</u>';
-		$word = str_replace(array('.'), array('\.'), $word);
-		$words[$key] = "/$word/i";
+		$words[$key] = '/' . preg_quote($word, '/') . '/i';
 	}
-	$text = preg_replace($words, $replacements, $text);
-	return $text;
+	$highlighted_text = preg_replace($words, $replacements, $text);
+	return ($highlighted_text === null) ? $text : $highlighted_text;
 }
 
 
