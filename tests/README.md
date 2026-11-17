@@ -36,3 +36,5 @@ The manifest defaults to `/tmp/rpgdx-forum-fixtures.json` inside the container; 
 `application-encoding.php` checks the migration's Latin1 conversion, CJK/emoji round-trips, binary and serialized byte preservation, archive/session exclusions, and idempotence. It uses only connection-local temporary tables and requires the local `db` host, `rpgdx` database, and explicit write opt-in. Run `docker compose -p rpgdx-phpbb3 exec -T -e RPGDX_SMOKE_ALLOW_WRITES=1 web php tests/application-encoding.php`.
 
 Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/unicode-text.php` for database-free checks of Unicode truncation and original POST caption character counts, including the 50-character boundary and apostrophe escaping.
+
+Run `docker compose -p rpgdx-phpbb3 exec -T web php tests/search-highlight.php` for database-free checks of literal, case-insensitive search highlighting, including regex metacharacters.
