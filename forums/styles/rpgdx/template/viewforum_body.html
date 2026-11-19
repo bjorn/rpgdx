@@ -3,11 +3,7 @@
 <!-- EVENT viewforum_forum_name_prepend -->
 <!-- EVENT viewforum_forum_name_append -->
 <!-- EVENT viewforum_forum_title_after -->
-<!-- IF MODERATORS -->
-<div class="rpgdx-forum-info">
-	<!-- IF MODERATORS --><p><strong><!-- IF S_SINGLE_MODERATOR -->{L_MODERATOR}<!-- ELSE -->{L_MODERATORS}<!-- ENDIF -->{L_COLON}</strong> {MODERATORS}</p><!-- ENDIF -->
-</div>
-<!-- ENDIF -->
+<!-- INCLUDE rpgdx_moderators.html -->
 
 <!-- IF S_FORUM_RULES -->
 	<div class="rules<!-- IF U_FORUM_RULES --> rules-link<!-- ENDIF -->">

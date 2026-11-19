@@ -6,11 +6,7 @@
 <!-- EVENT viewtopic_topic_title_append -->
 <!-- EVENT viewtopic_topic_title_after -->
 
-<!-- IF MODERATORS -->
-<p>
-	<strong><!-- IF S_SINGLE_MODERATOR -->{L_MODERATOR}<!-- ELSE -->{L_MODERATORS}<!-- ENDIF -->{L_COLON}</strong> {MODERATORS}
-</p>
-<!-- ENDIF -->
+<!-- INCLUDE rpgdx_moderators.html -->
 
 <!-- IF S_FORUM_RULES -->
 	<div class="rules<!-- IF U_FORUM_RULES --> rules-link<!-- ENDIF -->">
