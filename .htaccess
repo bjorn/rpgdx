@@ -19,10 +19,6 @@ IndexIgnore .htaccess */.??* *~ *# */HEADER* */README*
 
 AuthName www.rpgdx.net
 
-<Files wiki>
-    SetHandler application/x-httpd-php
-</Files>
-
 AddType application/x-java-jnlp-file jnlp
 AddType text/plain dyne
 AddType text/vnd.sun.j2me.app-descriptor jad

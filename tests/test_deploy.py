@@ -143,6 +143,15 @@ class DeploymentFilters(unittest.TestCase):
         self.assertFalse((self.excluded - self.protected) & after.keys())
         self.assertEqual(after.keys(), self.included | self.protected)
 
+    def test_wiki_archive_symlink_survives_deployment(self):
+        archive = self.directory / 'wiki-release'
+        archive.mkdir()
+        link = self.destination / 'wiki'
+        link.symlink_to(archive, target_is_directory=True)
+        result = self.run_hook()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(link.readlink(), archive)
+
     def test_stale_symlink_is_removed_without_following_its_target(self):
         outside = self.directory / 'outside'
         outside.mkdir()

@@ -1,0 +1,7 @@
+DirectoryIndex index.php
+Options -Indexes
+AcceptPathInfo On
+
+<LimitExcept GET HEAD>
+    Require all denied
+</LimitExcept>
