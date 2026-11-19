@@ -1,0 +1,52 @@
+@import 'mediawiki.skin.codex-design-tokens/theme-wikimedia-ui-mixin-dark.less';
+
+@media screen {
+    html:root {
+        .cdx-mode-dark();
+        color-scheme: dark;
+        --background-color-base: #424273;
+        --background-color-neutral: #505082;
+        --background-color-neutral-subtle: #383861;
+        --background-color-interactive: #646480;
+        --background-color-interactive-subtle: #505082;
+        --background-color-progressive: #605078;
+        --background-color-progressive--hover: #705e88;
+        --background-color-progressive--active: #504068;
+        --background-color-progressive-subtle: #383861;
+        --background-color-button-quiet--hover: #505082;
+        --background-color-button-quiet--active: #646480;
+        --color-base: #dedeee;
+        --color-emphasized: #fff;
+        --color-subtle: #c9c9dc;
+        --color-placeholder: #c9c9dc;
+        --color-progressive: #e0d4ff;
+        --color-progressive--hover: #fff;
+        --color-progressive--active: #c8c8ff;
+        --color-visited: #c8c8ff;
+        --color-link-red: #ffb8bd;
+        --color-link-red--visited: #eda8bc;
+        --color-link-red--hover: #ffe0e2;
+        --color-link-red--active: #fff;
+        --border-color-base: #85859d;
+        --border-color-subtle: #646480;
+        --border-color-muted: #646480;
+        --border-color-interactive: #aaa0c7;
+        --border-color-progressive: #aaa0c7;
+        --border-color-progressive--focus: #e0d4ff;
+        --outline-color-progressive--focus: #e0d4ff;
+        --filter-invert-icon: 1;
+    }
+
+    .vector-header-container {
+        background-color: #383861;
+        border-bottom: 1px solid #646480;
+    }
+
+    .mw-logo-wordmark {
+        color: #fff;
+    }
+
+    .mw-parser-output a:not(.new) {
+        text-decoration: underline;
+    }
+}

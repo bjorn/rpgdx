@@ -30,3 +30,12 @@ $wgDefaultUserOptions['rcdays'] = 10950;
 $wgDefaultUserOptions['rclimit'] = 500;
 
 wfLoadSkin( 'Vector' );
+
+$wgVectorNightMode = [ 'logged_out' => false, 'logged_in' => false, 'beta' => false ];
+$wgResourceModules['site.rpgdx.styles'] = [
+    'localBasePath' => __DIR__,
+    'styles' => [ 'rpgdx.less' ],
+];
+$wgHooks['BeforePageDisplay'][] = static function ( $out, $skin ) {
+    $out->addModuleStyles( 'site.rpgdx.styles' );
+};
