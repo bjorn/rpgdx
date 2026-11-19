@@ -12,7 +12,6 @@ $wgCacheDirectory = '/home/protected/rpgdx-wiki-archive/cache';
 $wgLocalisationCacheConf['store'] = 'files';
 $wgMainCacheType = CACHE_NONE;
 $wgReadOnly = 'The RPGDX wiki is a read-only archive.';
-$wgReadOnlyWatchedItemStore = true;
 $wgEnableEmail = false;
 $wgEnableUploads = false;
 $wgUseDatabaseMessages = false;

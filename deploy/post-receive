@@ -16,7 +16,8 @@ echo "Synchronizing website at $WWW_DATA"
 # Include access rules before hiding dotfiles and protecting runtime contents.
 rsync -rtv --delete-after --delete-excluded \
 	--include=".htaccess" \
-	--filter="protect /wiki" \
+	--filter="protect /wiki/resources/***" \
+	--filter="protect /wiki/skins/***" \
 	--filter="protect /.htaccess_forwards" \
 	--filter="protect /.well-known/acme-challenge/***" \
 	--filter="protect /forums/config.php" \

@@ -33,7 +33,7 @@ class DeploymentFilters(unittest.TestCase):
         for name in runtime:
             self.assertTrue((ROOT / name).is_file(), name)
         self.included = {
-            'index.php', 'forums/index.php', '.htaccess',
+            'index.php', 'forums/index.php', 'wiki/index.php', 'wiki/.htaccess', '.htaccess',
             'forums/.htaccess', 'forums/includes/.htaccess',
             'forums/cache/.htaccess', 'forums/files/.htaccess',
             'forums/store/.htaccess', 'uploads/.htaccess',
@@ -66,6 +66,7 @@ class DeploymentFilters(unittest.TestCase):
             'forums/files/attachment.dat', 'forums/store/database-backup.sql',
             'forums/images/avatars/upload/avatar.png',
             'uploads/screenshot.png', 'uploads/nested/screenshot.png',
+            'wiki/resources/assets/wiki.png', 'wiki/skins/Vector/resources/icon.svg',
             '.htaccess_forwards', '.well-known/acme-challenge/token',
             'forums/images/avatars/legacy.gif',
             'forums/images/avatars/legacy.jpg',
@@ -77,7 +78,7 @@ class DeploymentFilters(unittest.TestCase):
         for name in self.protected:
             self.write(self.destination, name, 'existing server content: ' + name)
         self.stale = {
-            'retired.php', '.retired.php', '.well-known/retired.php',
+            'retired.php', 'wiki/retired.php', '.retired.php', '.well-known/retired.php',
             'forums/renamed-entry.php',
             'tools/retired.php', 'forums/images/avatars/retired.php',
             'forums/images/avatars/.retired.php', 'images/guicomp/retired.php',
@@ -142,15 +143,6 @@ class DeploymentFilters(unittest.TestCase):
         self.assertFalse(self.stale & after.keys())
         self.assertFalse((self.excluded - self.protected) & after.keys())
         self.assertEqual(after.keys(), self.included | self.protected)
-
-    def test_wiki_archive_symlink_survives_deployment(self):
-        archive = self.directory / 'wiki-release'
-        archive.mkdir()
-        link = self.destination / 'wiki'
-        link.symlink_to(archive, target_is_directory=True)
-        result = self.run_hook()
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(link.readlink(), archive)
 
     def test_stale_symlink_is_removed_without_following_its_target(self):
         outside = self.directory / 'outside'
