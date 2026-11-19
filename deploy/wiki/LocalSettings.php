@@ -27,7 +27,6 @@ foreach ( [ 'edit', 'createpage', 'createtalk', 'createaccount', 'writeapi' ] as
 $wgRCMaxAge = 10950 * 86400;
 $wgRCLinkDays[] = 10950;
 $wgDefaultUserOptions['rcdays'] = 10950;
-$wgRCLinkLimits = [ 50, 100, 250, 500, 1000, 2500, 5000 ];
-$wgDefaultUserOptions['rclimit'] = 2500;
+$wgDefaultUserOptions['rclimit'] = 500;
 
 wfLoadSkin( 'Vector' );
