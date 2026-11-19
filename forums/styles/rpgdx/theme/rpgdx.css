@@ -49,6 +49,7 @@ h3, hr { border-color: #646480; }
 #nav-breadcrumbs .rpgdx-page-title { box-sizing: content-box; flex: 0 0 100%; margin: 0 -5px; padding: 3px 5px; background: #383861; color: #b4b4c8; font: bold 20px/24px var(--rpgdx-font); }
 #nav-breadcrumbs .rpgdx-page-title > h1 { margin: 0; padding: 0; color: inherit; font: inherit; }
 #nav-breadcrumbs .breadcrumbs { float: none; margin: 0; padding-block: 2px; max-width: 100%; font: normal 12px/14px var(--rpgdx-font); }
+#nav-breadcrumbs .rpgdx-watch-forum { align-self: center; margin: 0; margin-inline-start: auto; padding: 2px 0; padding-inline-start: 8px; font: inherit; }
 .breadcrumbs .crumb > a { font-weight: normal; line-height: 14px; }
 .breadcrumbs .crumb::before { content: ">>"; font: normal 12px/14px var(--rpgdx-font); padding: 0 3px; }
 .breadcrumbs .crumb:first-child::before { display: none; }
